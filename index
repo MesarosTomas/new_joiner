@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syntax · Onboarding Routing</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root{
+  --navy:#0D2480;
+  --navy-ink:#101C3A;
+  --cyan:#00AEEF;
+  --cyan-soft:#DDF2FC;
+  --green:#5BAE3E;
+  --green-soft:#E3F3DC;
+  --ink:#141C2E;
+  --ink-soft:#4A5568;
+  --paper:#EEF1F6;
+  --card:#FFFFFF;
+  --line:#DBE2EE;
+  --amber:#A8791F;
+  --amber-soft:#F3E7C9;
+  --slate:#8B93A0;
+  --slate-soft:#E7E9EC;
+  --coral:#B94A38;
+  --coral-soft:#F5DAD2;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.display{font-family:'Space Grotesk',sans-serif;}
+
+#app{max-width:900px;margin:0 auto;padding:32px 20px 80px;}
+
+.wordmark{
+  display:flex;align-items:baseline;justify-content:space-between;
+  margin-bottom:24px;
+}
+.wordmark .brand{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.wordmark .brand b{color:var(--navy);}
+.wordmark .reset-link{
+  font-size:12px;color:var(--ink-soft);background:none;border:none;
+  cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+  font-family:'Inter',sans-serif;
+}
+.wordmark .reset-link:hover{color:var(--coral);}
+
+.setup-card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:32px 34px 28px;
+  margin-bottom:22px;
+  box-shadow:0 1px 2px rgba(13,36,128,.05);
+}
+.setup-eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:10px;font-weight:600;
+}
+.setup-card h1{
+  font-family:'Space Grotesk',sans-serif;font-size:25px;font-weight:600;
+  margin:0 0 8px;line-height:1.25;color:var(--navy-ink);
+}
+.setup-card p.sub{
+  color:var(--ink-soft);font-size:14px;line-height:1.55;margin:0 0 24px;max-width:560px;
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.field{margin-bottom:16px;}
+.field label{
+  display:block;font-size:11.5px;font-weight:600;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;
+}
+.field input[type=text],
+.field input[type=date],
+.field select{
+  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:7px;
+  font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);
+  background:#fff;
+}
+.field input:focus,.field select:focus{outline:2px solid var(--cyan);outline-offset:1px;}
+.segmented{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.segmented button{
+  flex:1;padding:10px 10px;background:#fff;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink-soft);
+  border-right:1px solid var(--line);
+}
+.segmented button:last-child{border-right:none;}
+.segmented button.active{background:var(--cyan);color:#fff;font-weight:600;}
+.field-inline{display:none;margin-top:8px;}
+.field-inline.show{display:block;}
+.cta{
+  padding:13px 22px;background:var(--navy);color:#fff;border:none;
+  border-radius:7px;font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;
+  cursor:pointer;margin-top:6px;letter-spacing:.01em;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.cta:hover{background:var(--cyan);}
+.cta:disabled{background:var(--slate);cursor:not-allowed;}
+
+.summary-bar{
+  background:var(--navy);color:#fff;border-radius:var(--radius);
+  padding:20px 26px;margin-bottom:22px;
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;
+}
+.summary-bar .who h2{
+  font-family:'Space Grotesk',sans-serif;font-size:19px;margin:0 0 5px;font-weight:600;
+}
+.summary-bar .who .meta{
+  font-size:12.5px;color:#B9C6EE;display:flex;gap:14px;flex-wrap:wrap;
+}
+.summary-bar .who .meta span b{color:#fff;font-weight:600;}
+.summary-bar .pct{text-align:right;}
+.summary-bar .pct .num{
+  font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;color:var(--cyan);
+}
+.summary-bar .pct .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9AAAD8;margin-top:2px;}
+
+.section-label{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);margin:8px 0 12px;font-weight:600;
+}
+
+.locked-zone{
+  background:var(--card);border:1.5px dashed var(--line);border-radius:var(--radius);
+  padding:50px 30px;text-align:center;color:var(--ink-soft);
+}
+.locked-zone .lock-icon{
+  width:36px;height:36px;border-radius:50%;background:var(--cyan-soft);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:16px;
+}
+.locked-zone .lock-title{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--navy-ink);margin-bottom:6px;
+}
+.locked-zone .lock-sub{font-size:13px;line-height:1.5;max-width:380px;margin:0 auto;}
+.locked-preview{
+  display:flex;gap:8px;justify-content:center;margin-top:26px;opacity:.45;flex-wrap:wrap;
+}
+.locked-preview .ghost{
+  width:64px;height:34px;border-radius:6px;background:var(--slate-soft);
+}
+
+.routing-strip{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;margin-bottom:26px;
+}
+.routing-strip .strip-title{
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  margin-bottom:14px;font-weight:600;
+}
+.strip-row{display:flex;align-items:center;overflow-x:auto;padding-bottom:6px;}
+.strip-op{
+  flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
+  width:74px;cursor:pointer;
+}
+.strip-op .dot{
+  width:15px;height:15px;border-radius:50%;border:2px solid var(--slate);background:#fff;
+  margin-bottom:6px;
+}
+.strip-op.status-done .dot{background:var(--green);border-color:var(--green);}
+.strip-op.status-progress .dot{background:var(--amber);border-color:var(--amber);}
+.strip-op.status-attention .dot{background:var(--coral);border-color:var(--coral);}
+.strip-op .num{font-size:10px;color:var(--ink-soft);}
+.strip-line{
+  flex:1 1 auto;height:2px;background:var(--line);min-width:14px;
+}
+
+.op-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:14px;overflow:hidden;
+}
+.op-head{
+  display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;
+}
+.op-head .op-num{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--navy);
+  background:var(--cyan-soft);border-radius:5px;padding:4px 8px;flex:0 0 auto;
+}
+.op-head .op-title{
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15.5px;flex:1 1 auto;
+}
+.op-head .op-owner{
+  font-size:12px;color:var(--ink-soft);flex:0 0 auto;display:none;
+}
+.op-head .op-badge{
+  font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;flex:0 0 auto;
+}
+.badge-done{background:var(--green-soft);color:var(--green);}
+.badge-progress{background:var(--amber-soft);color:var(--amber);}
+.badge-none{background:var(--slate-soft);color:var(--slate);}
+.op-head .op-count{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);flex:0 0 auto;
+}
+.op-head .chev{
+  transition:transform .15s ease;color:var(--ink-soft);flex:0 0 auto;
+}
+.op-card.collapsed .chev{transform:rotate(-90deg);}
+.op-body{border-top:1px solid var(--line);}
+.op-card.collapsed .op-body{display:none;}
+.task-row{
+  display:flex;align-items:flex-start;gap:12px;padding:12px 20px;
+  border-bottom:1px solid #F0F2F0;
+}
+.task-row:last-child{border-bottom:none;}
+.task-row input[type=checkbox]{
+  margin-top:2px;width:17px;height:17px;accent-color:var(--navy);cursor:pointer;flex:0 0 auto;
+}
+.task-main{flex:1 1 auto;min-width:0;}
+.task-text{font-size:14px;line-height:1.4;}
+.task-text.done{color:var(--slate);text-decoration:line-through;}
+.task-tags{display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;}
+.tag-day{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:4px;
+  background:var(--slate-soft);color:var(--ink-soft);
+}
+.tag-day.attention{background:var(--coral-soft);color:var(--coral);}
+.tag-role{
+  font-size:10.5px;padding:2px 7px;border-radius:4px;background:var(--cyan-soft);color:var(--navy);
+}
+.task-note{
+  width:100%;margin-top:8px;padding:6px 9px;font-size:12.5px;border:1px solid var(--line);
+  border-radius:5px;font-family:'Inter',sans-serif;resize:vertical;min-height:30px;
+}
+.footer-note{
+  text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:30px;line-height:1.6;
+}
+.footer-note b{color:var(--ink);}
+@media(max-width:640px){
+  .grid2{grid-template-columns:1fr;}
+  .op-head .op-owner{display:none !important;}
+  .summary-bar{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="wordmark">
+    <div class="brand"><b>Syntax</b> · Onboarding Routing</div>
+    <button class="reset-link" id="reset-btn" style="display:none;">Start a new routing</button>
+    <span id="reset-confirm" style="display:none;font-size:12px;color:#fff;background:var(--coral);padding:5px 10px;border-radius:6px;align-items:center;gap:8px;">
+      Clear progress and start over?
+      <button id="reset-yes" style="background:#fff;color:var(--coral);border:none;border-radius:4px;padding:3px 8px;font-size:11.5px;font-weight:600;cursor:pointer;">Yes, reset</button>
+      <button id="reset-no" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:4px;padding:3px 8px;font-size:11.5px;cursor:pointer;">Cancel</button>
+    </span>
+  </div>
+  <div id="setup-zone"></div>
+  <div class="section-label">Your routing</div>
+  <div id="dashboard-zone"></div>
+</div>
+
+<script>
+const POSITIONS = [
+  "Developer","SAP Consultant","DM Consultant","Project Manager",
+  "Senior Project Manager","Solution Architect","Business Architect",
+  "Change Manager (OCM)","QA / Test Engineer","Other"
+];
+
+const MANAGERS = [
+  "Felix Tschorn","Laura Faatz","Jakob Weber","Rosalie Schindler",
+  "Sooraj Pai Ballambettu","Other"
+];
+
+const ROLE_EXTRA = {
+  "Developer": {cat:"c3", day:5, text:"Dev tooling access requested (GitHub, IDE licences, sandbox system)"},
+  "SAP Consultant": {cat:"c5", day:5, text:"SAP Activate / Rollout methodology pages reviewed"},
+  "DM Consultant": {cat:"c5", day:5, text:"DMS Project Template space explored (Discover → Realize phases)"},
+  "Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
+  "Senior Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
+  "Solution Architect": {cat:"c5", day:6, text:"Catalogue of the 73 predefined Business Processes reviewed"},
+  "Business Architect": {cat:"c5", day:6, text:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)"},
+  "Change Manager (OCM)": {cat:"c5", day:6, text:"OCM engagement model on DM projects reviewed"},
+  "QA / Test Engineer": {cat:"c4", day:6, text:"Test case / bug tracking conventions in Jira reviewed"}
+};
+
+const TYPE_EXTRA = {
+  "new": {cat:"c3", day:1, text:"Laptop & equipment received and set up"},
+  "switch": {cat:"c3", day:3, text:"Access handover from previous team lead confirmed (old accesses reviewed/revoked)"}
+};
+
+const CATEGORIES = [
+  {id:"c1", num:"0010", title:"SAP SuccessFactors", owner:"Team Lead / HR", tasks:[
+    {day:1, text:"Profile set up — photo and personal info added"},
+    {day:1, text:"Contract details verified"},
+    {day:10, text:"SMART goals discussed / created"},
+    {day:7, text:"Learning Hub explored, mandatory trainings started"}
+  ]},
+  {id:"c2", num:"0020", title:"eHuman", note:"SK team only", owner:"HR · SK team only", tasks:[
+    {day:1, text:"First login done, password changed (default: 123)"},
+    {day:2, text:"First HomeOffice / Office request submitted"},
+    {day:3, text:"Attendance records checked and correct"}
+  ]},
+  {id:"c3", num:"0030", title:"IT Help Desk", owner:"IT Help Desk", tasks:[
+    {day:7, text:"SAP ERP Login — ticket created / solved"},
+    {day:7, text:"Cisco VPN — ticket created / solved"},
+    {day:7, text:"Single Sign-On (SSO) — ticket created / solved"},
+    {day:7, text:"SIRION access — ticket created / solved"},
+    {day:7, text:"CAT2 Timesheets — ticket created / solved"}
+  ]},
+  {id:"c4", num:"0040", title:"Jira", owner:"{manager}", tasks:[
+    {day:5, text:"Jira licence requested from {manager}"},
+    {day:7, text:"Logged in and explored DM dashboard"},
+    {day:10, text:"Familiar with Task / Story / Bug / Epic types"}
+  ]},
+  {id:"c5", num:"0050", title:"Confluence", owner:"Self-guided", tasks:[
+    {day:3, text:"DMS space and main sections explored"},
+    {day:4, text:"PL Handbook read (Project Leads section)"},
+    {day:5, text:"Lessons Learned page reviewed"}
+  ]},
+  {id:"c6", num:"0060", title:"Cisco VPN", owner:"IT Help Desk", tasks:[
+    {day:3, text:"VPN access ticket submitted via IT Help Desk"},
+    {day:5, text:"Cisco Secure Client installed"},
+    {day:5, text:"VPN tested — login with company email works"}
+  ]},
+  {id:"c7", num:"0070", title:"Mural", owner:"{manager}", tasks:[
+    {day:4, text:"Team dashboard access requested from {manager}"},
+    {day:10, text:"At least one DM Mural board explored"}
+  ]},
+  {id:"c8", num:"0080", title:"Sirion", owner:"IT Help Desk", tasks:[
+    {day:2, text:"Sirion access ticket created via IT Help Desk"},
+    {day:5, text:"First login and contract repository explored"}
+  ]},
+  {id:"c9", num:"0090", title:"Smartsheets", owner:"Toni Schmidt", tasks:[
+    {day:3, text:"Access requested from Toni Schmidt"},
+    {day:7, text:"Monthly forecasting process understood (5th of each month)"},
+    {day:10, text:"KPI fields familiar: Budget, AC, Status indicators"}
+  ]},
+  {id:"c10", num:"0100", title:"Teams & SharePoint", owner:"{manager}", tasks:[
+    {day:7, text:"Added to project Teams channel by {manager}"},
+    {day:4, text:"Added to general DM team channels"},
+    {day:5, text:"SharePoint / OneDrive access received from {manager}"},
+    {day:7, text:"All key links saved as browser bookmarks"}
+  ]}
+];
+
+const STORAGE_KEY = "onboarding-profile";
+let state = null;
+let taskIndex = [];
+
+async function loadState(){
+  try{
+    const r = await window.storage.get(STORAGE_KEY, false);
+    return r ? JSON.parse(r.value) : null;
+  }catch(e){ return null; }
+}
+async function saveState(){
+  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(state), false); }
+  catch(e){ console.error("save failed", e); }
+}
+async function clearState(){
+  try{ await window.storage.delete(STORAGE_KEY, false); }catch(e){}
+  state = null;
+}
+
+function buildTasks(profile){
+  const list = [];
+  let idc = 0;
+  CATEGORIES.forEach(cat=>{
+    const catTasks = cat.tasks.map(t=>({...t}));
+    if(ROLE_EXTRA[profile.position] && ROLE_EXTRA[profile.position].cat === cat.id){
+      catTasks.push({...ROLE_EXTRA[profile.position], role:true});
+    }
+    if(TYPE_EXTRA[profile.type] && TYPE_EXTRA[profile.type].cat === cat.id){
+      catTasks.push({...TYPE_EXTRA[profile.type], role:true});
+    }
+    catTasks.forEach(t=>{
+      idc++;
+      const tid = "t"+idc;
+      const text = t.text.replace("{manager}", profile.manager);
+      list.push({tid, catId:cat.id, day:t.day, text, role: !!t.role});
+    });
+  });
+  return list;
+}
+
+function dayNumber(startDateStr){
+  const start = new Date(startDateStr+"T00:00:00");
+  const now = new Date();
+  const diff = Math.floor((now - start) / 86400000) + 1;
+  return Math.max(1, diff);
+}
+function escapeHtml(str){
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+function formatDate(iso){
+  try{
+    const d = new Date(iso+"T00:00:00");
+    return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+  }catch(e){ return iso; }
+}
+
+function renderSetupZone(){
+  const zone = document.getElementById("setup-zone");
+  const resetBtn = document.getElementById("reset-btn");
+
+  if(!state){
+    resetBtn.style.display = "none";
+    document.getElementById("reset-confirm").style.display = "none";
+    zone.innerHTML = `
+      <div class="setup-card">
+        <div class="setup-eyebrow">Routing header · create</div>
+        <h1>Let's set up your routing.</h1>
+        <p class="sub">A few details, and we'll release your personal onboarding routing — operations 0010 through 0100, sequenced across your first ten days.</p>
+
+        <div class="grid2">
+          <div class="field">
+            <label>Your name</label>
+            <input type="text" id="f-name" placeholder="e.g. Tomáš Mesároš">
+          </div>
+          <div class="field">
+            <label>Start date</label>
+            <input type="date" id="f-date">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Joining as</label>
+          <div class="segmented" id="f-type">
+            <button data-val="new" class="active">New to Syntax</button>
+            <button data-val="switch">Switching teams</button>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label>Position</label>
+            <select id="f-position"></select>
+          </div>
+          <div class="field">
+            <label>Team manager</label>
+            <select id="f-manager"></select>
+          </div>
+        </div>
+        <div class="field-inline" id="manager-other-wrap">
+          <input type="text" id="f-manager-other" placeholder="Manager name">
+        </div>
+
+        <button class="cta" id="f-submit">Release routing →</button>
+      </div>
+    `;
+
+    const posSel = document.getElementById("f-position");
+    POSITIONS.forEach(p=>{
+      const o = document.createElement("option"); o.value=p; o.textContent=p; posSel.appendChild(o);
+    });
+    const mgrSel = document.getElementById("f-manager");
+    MANAGERS.forEach(m=>{
+      const o = document.createElement("option"); o.value=m; o.textContent=m; mgrSel.appendChild(o);
+    });
+
+    let chosenType = "new";
+    document.getElementById("f-type").querySelectorAll("button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.getElementById("f-type").querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        chosenType = btn.dataset.val;
+      });
+    });
+
+    mgrSel.addEventListener("change", ()=>{
+      document.getElementById("manager-other-wrap").classList.toggle("show", mgrSel.value === "Other");
+    });
+
+    const todayISO = new Date().toISOString().slice(0,10);
+    document.getElementById("f-date").value = todayISO;
+
+    document.getElementById("f-submit").addEventListener("click", async ()=>{
+      const name = document.getElementById("f-name").value.trim() || "New joiner";
+      const startDate = document.getElementById("f-date").value || todayISO;
+      const position = posSel.value;
+      let manager = mgrSel.value;
+      if(manager === "Other"){
+        const other = document.getElementById("f-manager-other").value.trim();
+        manager = other || "your manager";
+      }
+      state = { name, type: chosenType, position, manager, startDate, tasks:{}, notes:{} };
+      await saveState();
+      renderAll();
+      document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+  } else {
+    resetBtn.style.display = "inline";
+    const currentDay = dayNumber(state.startDate);
+    taskIndex = buildTasks(state);
+    const total = taskIndex.length;
+    const done = taskIndex.filter(t=>state.tasks[t.tid]).length;
+    const pct = total ? Math.round((done/total)*100) : 0;
+
+    zone.innerHTML = `
+      <div class="summary-bar">
+        <div class="who">
+          <h2>${escapeHtml(state.name)}</h2>
+          <div class="meta">
+            <span><b>${escapeHtml(state.position)}</b></span>
+            <span>Manager: <b>${escapeHtml(state.manager)}</b></span>
+            <span>Day <b>${currentDay}</b> of routing · started ${formatDate(state.startDate)}</span>
+          </div>
+        </div>
+        <div class="pct">
+          <div class="num mono">${pct}%</div>
+          <div class="lbl">Confirmed · ${done}/${total} operations</div>
+        </div>
+      </div>
+    `;
+
+    const confirmBar = document.getElementById("reset-confirm");
+    resetBtn.onclick = ()=>{
+      resetBtn.style.display = "none";
+      confirmBar.style.display = "inline-flex";
+    };
+    document.getElementById("reset-no").onclick = ()=>{
+      confirmBar.style.display = "none";
+      resetBtn.style.display = "inline";
+    };
+    document.getElementById("reset-yes").onclick = async ()=>{
+      await clearState();
+      renderAll();
+      window.scrollTo({top:0, behavior:"smooth"});
+    };
+  }
+}
+
+function renderDashboardZone(){
+  const zone = document.getElementById("dashboard-zone");
+
+  if(!state){
+    zone.innerHTML = `
+      <div class="locked-zone">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-title">Waiting for routing release</div>
+        <div class="lock-sub">Fill in the details above and press <b>Release routing</b> — your ten operations (0010 to 0100) will unlock here, with tasks sequenced across your first ten days.</div>
+        <div class="locked-preview">
+          <div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const currentDay = dayNumber(state.startDate);
+  taskIndex = buildTasks(state);
+
+  zone.innerHTML = `
+    <div class="routing-strip">
+      <div class="strip-title">Routing overview</div>
+      <div class="strip-row" id="strip-row"></div>
+    </div>
+    <div id="op-list"></div>
+    <div class="footer-note">Welcome to the team! Questions about any operation? <b>Ask your buddy or manager.</b></div>
+  `;
+
+  renderStrip();
+  renderOpList(currentDay);
+}
+
+function catStatus(catId){
+  const tasks = taskIndex.filter(t=>t.catId===catId);
+  const done = tasks.filter(t=>state.tasks[t.tid]).length;
+  if(done === tasks.length) return "done";
+  if(done > 0) return "progress";
+  const currentDay = dayNumber(state.startDate);
+  const overdue = tasks.some(t=> !state.tasks[t.tid] && t.day < currentDay);
+  return overdue ? "attention" : "none";
+}
+
+function renderStrip(){
+  const row = document.getElementById("strip-row");
+  row.innerHTML = "";
+  CATEGORIES.forEach((cat, i)=>{
+    const status = catStatus(cat.id);
+    const el = document.createElement("div");
+    el.className = "strip-op status-"+status;
+    el.innerHTML = `<div class="dot"></div><div class="num mono">${cat.num}</div>`;
+    el.addEventListener("click", ()=>{
+      const card = document.getElementById("card-"+cat.id);
+      if(card){ card.classList.remove("collapsed"); card.scrollIntoView({behavior:"smooth", block:"center"}); }
+    });
+    row.appendChild(el);
+    if(i < CATEGORIES.length-1){
+      const line = document.createElement("div");
+      line.className = "strip-line";
+      row.appendChild(line);
+    }
+  });
+}
+
+function renderOpList(currentDay){
+  const wrap = document.getElementById("op-list");
+  wrap.innerHTML = "";
+  CATEGORIES.forEach(cat=>{
+    const tasks = taskIndex.filter(t=>t.catId===cat.id);
+    const doneCount = tasks.filter(t=>state.tasks[t.tid]).length;
+    const status = catStatus(cat.id);
+    const badgeClass = status==="done" ? "badge-done" : (status==="progress" || status==="attention") ? "badge-progress" : "badge-none";
+    const badgeText = status==="done" ? "Completed" : (doneCount>0 ? "In process" : "Not started");
+
+    const card = document.createElement("div");
+    card.className = "op-card" + (status==="done" ? " collapsed" : "");
+    card.id = "card-"+cat.id;
+    card.innerHTML = `
+      <div class="op-head">
+        <div class="op-num mono">${cat.num}</div>
+        <div class="op-title">${escapeHtml(cat.title)}${cat.note ? ` <span style="font-weight:400;color:var(--ink-soft);font-size:12.5px;">· ${escapeHtml(cat.note)}</span>` : ""}</div>
+        <div class="op-owner">${escapeHtml((cat.owner||"").replace("{manager}", state.manager))}</div>
+        <div class="op-count mono">${doneCount}/${tasks.length}</div>
+        <div class="op-badge ${badgeClass}">${badgeText}</div>
+        <div class="chev">▾</div>
+      </div>
+      <div class="op-body"></div>
+    `;
+    const body = card.querySelector(".op-body");
+    tasks.forEach(t=>{
+      const isDone = !!state.tasks[t.tid];
+      const overdue = !isDone && t.day < currentDay;
+      const row = document.createElement("div");
+      row.className = "task-row";
+      row.innerHTML = `
+        <input type="checkbox" ${isDone ? "checked":""} data-tid="${t.tid}">
+        <div class="task-main">
+          <div class="task-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
+          <div class="task-tags">
+            <span class="tag-day ${overdue?'attention':''}">Day ${t.day}${overdue?' · due':''}</span>
+            ${t.role ? `<span class="tag-role">Role-specific</span>` : ""}
+          </div>
+          <textarea class="task-note" placeholder="Notes / comments" data-note-tid="${t.tid}">${escapeHtml(state.notes[t.tid]||"")}</textarea>
+        </div>
+      `;
+      body.appendChild(row);
+    });
+
+    card.querySelector(".op-head").addEventListener("click", ()=>{
+      card.classList.toggle("collapsed");
+    });
+
+    wrap.appendChild(card);
+  });
+
+  wrap.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+    cb.addEventListener("click", (e)=>e.stopPropagation());
+    cb.addEventListener("change", async (e)=>{
+      const tid = e.target.dataset.tid;
+      state.tasks[tid] = e.target.checked;
+      await saveState();
+      renderAll();
+    });
+  });
+  wrap.querySelectorAll('textarea.task-note').forEach(ta=>{
+    ta.addEventListener("click", e=>e.stopPropagation());
+    ta.addEventListener("blur", async (e)=>{
+      const tid = e.target.dataset.noteTid;
+      state.notes[tid] = e.target.value;
+      await saveState();
+    });
+  });
+}
+
+function renderAll(){
+  renderSetupZone();
+  renderDashboardZone();
+}
+
+(async function init(){
+  state = await loadState();
+  renderAll();
+})();
+</script>
+</body>
+</html>
