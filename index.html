@@ -281,31 +281,32 @@ body{
 
 <script>
 const POSITIONS = [
-  "Developer","SAP Consultant","DM Consultant","Project Manager",
+  "Developer","SAP Consultant","DM Consultant","Senior Consultant","Project Manager",
   "Senior Project Manager","Solution Architect","Business Architect",
   "Change Manager (OCM)","QA / Test Engineer","Other"
 ];
 
 const MANAGERS = [
-  "Felix Tschorn","Laura Faatz","Jakob Weber","Rosalie Schindler",
-  "Sooraj Pai Ballambettu","Other"
+  "Felix Tschorn","Lev Löwen","Luisa Mauer","Mathieu Bagonneau",
+  "Andreas Pfister","Katja Hezner","Other"
+];
+
+const COUNTRIES = [
+  "Slovakia","Germany","France","Spain","Switzerland","United Kingdom",
+  "United States","Canada","Mexico","India","Morocco","South Africa","Other"
 ];
 
 const ROLE_EXTRA = {
   "Developer": {cat:"c3", day:5, text:"Dev tooling access requested (GitHub, IDE licences, sandbox system)"},
   "SAP Consultant": {cat:"c5", day:5, text:"SAP Activate / Rollout methodology pages reviewed"},
   "DM Consultant": {cat:"c5", day:5, text:"DMS Project Template space explored (Discover → Realize phases)"},
+  "Senior Consultant": {cat:"c5", day:4, text:"Assigned account/project context reviewed with manager"},
   "Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
   "Senior Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
   "Solution Architect": {cat:"c5", day:6, text:"Catalogue of the 73 predefined Business Processes reviewed"},
   "Business Architect": {cat:"c5", day:6, text:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)"},
   "Change Manager (OCM)": {cat:"c5", day:6, text:"OCM engagement model on DM projects reviewed"},
   "QA / Test Engineer": {cat:"c4", day:6, text:"Test case / bug tracking conventions in Jira reviewed"}
-};
-
-const TYPE_EXTRA = {
-  "new": {cat:"c3", day:1, text:"Laptop & equipment received and set up"},
-  "switch": {cat:"c3", day:3, text:"Access handover from previous team lead confirmed (old accesses reviewed/revoked)"}
 };
 
 const CATEGORIES = [
@@ -321,6 +322,7 @@ const CATEGORIES = [
     {day:3, text:"Attendance records checked and correct"}
   ]},
   {id:"c3", num:"03", title:"IT Help Desk", owner:"IT Help Desk", tasks:[
+    {day:1, text:"Laptop & equipment received and set up"},
     {day:7, text:"SAP ERP Login — ticket created / solved"},
     {day:7, text:"Cisco VPN — ticket created / solved"},
     {day:7, text:"Single Sign-On (SSO) — ticket created / solved"},
@@ -382,16 +384,20 @@ async function clearState(){
   state = null;
 }
 
+function getActiveCategories(){
+  if(state && state.country && state.country !== "Slovakia"){
+    return CATEGORIES.filter(c => c.id !== "c2");
+  }
+  return CATEGORIES;
+}
+
 function buildTasks(profile){
   const list = [];
   let idc = 0;
-  CATEGORIES.forEach(cat=>{
+  getActiveCategories().forEach(cat=>{
     const catTasks = cat.tasks.map(t=>({...t}));
     if(ROLE_EXTRA[profile.position] && ROLE_EXTRA[profile.position].cat === cat.id){
       catTasks.push({...ROLE_EXTRA[profile.position], role:true});
-    }
-    if(TYPE_EXTRA[profile.type] && TYPE_EXTRA[profile.type].cat === cat.id){
-      catTasks.push({...TYPE_EXTRA[profile.type], role:true});
     }
     catTasks.forEach(t=>{
       idc++;
@@ -445,14 +451,6 @@ function renderSetupZone(){
           </div>
         </div>
 
-        <div class="field">
-          <label>Joining as</label>
-          <div class="segmented" id="f-type">
-            <button data-val="new" class="active">New to Syntax</button>
-            <button data-val="switch">Switching teams</button>
-          </div>
-        </div>
-
         <div class="grid2">
           <div class="field">
             <label>Position</label>
@@ -467,26 +465,36 @@ function renderSetupZone(){
           <input type="text" id="f-manager-other" placeholder="Manager name">
         </div>
 
+        <div class="field">
+          <label>Country / Region</label>
+          <select id="f-country"></select>
+        </div>
+
         <button class="cta" id="f-submit">Release routing →</button>
+        <div id="f-error" style="display:none;color:var(--coral);font-size:12.5px;margin-top:10px;">Please choose a position, manager and country before releasing.</div>
       </div>
     `;
 
+    function addPlaceholder(sel, text){
+      const ph = document.createElement("option");
+      ph.value = ""; ph.textContent = text; ph.disabled = true; ph.selected = true;
+      sel.appendChild(ph);
+    }
+
     const posSel = document.getElementById("f-position");
+    addPlaceholder(posSel, "Choose...");
     POSITIONS.forEach(p=>{
       const o = document.createElement("option"); o.value=p; o.textContent=p; posSel.appendChild(o);
     });
     const mgrSel = document.getElementById("f-manager");
+    addPlaceholder(mgrSel, "Choose...");
     MANAGERS.forEach(m=>{
       const o = document.createElement("option"); o.value=m; o.textContent=m; mgrSel.appendChild(o);
     });
-
-    let chosenType = "new";
-    document.getElementById("f-type").querySelectorAll("button").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.getElementById("f-type").querySelectorAll("button").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        chosenType = btn.dataset.val;
-      });
+    const countrySel = document.getElementById("f-country");
+    addPlaceholder(countrySel, "Choose...");
+    COUNTRIES.forEach(c=>{
+      const o = document.createElement("option"); o.value=c; o.textContent=c; countrySel.appendChild(o);
     });
 
     mgrSel.addEventListener("change", ()=>{
@@ -497,15 +505,21 @@ function renderSetupZone(){
     document.getElementById("f-date").value = todayISO;
 
     document.getElementById("f-submit").addEventListener("click", async ()=>{
+      const position = posSel.value;
+      const country = countrySel.value;
+      const managerRaw = mgrSel.value;
+      if(!position || !country || !managerRaw){
+        document.getElementById("f-error").style.display = "block";
+        return;
+      }
       const name = document.getElementById("f-name").value.trim() || "New joiner";
       const startDate = document.getElementById("f-date").value || todayISO;
-      const position = posSel.value;
-      let manager = mgrSel.value;
+      let manager = managerRaw;
       if(manager === "Other"){
         const other = document.getElementById("f-manager-other").value.trim();
         manager = other || "your manager";
       }
-      state = { name, type: chosenType, position, manager, startDate, tasks:{}, notes:{} };
+      state = { name, position, manager, country, startDate, tasks:{}, notes:{} };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -525,6 +539,7 @@ function renderSetupZone(){
           <h2>${escapeHtml(state.name)}</h2>
           <div class="meta">
             <span><b>${escapeHtml(state.position)}</b></span>
+            <span>${escapeHtml(state.country||"")}</span>
             <span>Manager: <b>${escapeHtml(state.manager)}</b></span>
             <span>Day <b>${currentDay}</b> of routing · started ${formatDate(state.startDate)}</span>
           </div>
@@ -600,7 +615,8 @@ function catStatus(catId){
 function renderStrip(){
   const row = document.getElementById("strip-row");
   row.innerHTML = "";
-  CATEGORIES.forEach((cat, i)=>{
+  const cats = getActiveCategories();
+  cats.forEach((cat, i)=>{
     const status = catStatus(cat.id);
     const el = document.createElement("div");
     el.className = "strip-op status-"+status;
@@ -610,7 +626,7 @@ function renderStrip(){
       if(card){ card.classList.remove("collapsed"); card.scrollIntoView({behavior:"smooth", block:"center"}); }
     });
     row.appendChild(el);
-    if(i < CATEGORIES.length-1){
+    if(i < cats.length-1){
       const line = document.createElement("div");
       line.className = "strip-line";
       row.appendChild(line);
@@ -621,7 +637,7 @@ function renderStrip(){
 function renderOpList(currentDay){
   const wrap = document.getElementById("op-list");
   wrap.innerHTML = "";
-  CATEGORIES.forEach(cat=>{
+  getActiveCategories().forEach(cat=>{
     const tasks = taskIndex.filter(t=>t.catId===cat.id);
     const doneCount = tasks.filter(t=>state.tasks[t.tid]).length;
     const status = catStatus(cat.id);
