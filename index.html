@@ -228,6 +228,27 @@ body{
 .mgr-code-box .code{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--navy-ink);letter-spacing:.06em;}
 .mgr-code-box .hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
 .mgr-error{color:var(--coral);font-size:12.5px;margin-top:10px;display:none;}
+
+.pin-box{
+  background:var(--cyan-soft);border:1.5px dashed var(--cyan);border-radius:var(--radius);
+  padding:24px 26px;margin-top:16px;text-align:center;
+}
+.pin-box-icon{
+  width:38px;height:38px;border-radius:50%;background:var(--card);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:17px;
+  box-shadow:0 1px 3px rgba(13,36,128,.12);
+}
+.pin-box-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;color:var(--navy-ink);margin-bottom:6px;}
+.pin-box-sub{font-size:12.5px;color:var(--ink-soft);line-height:1.5;max-width:340px;margin:0 auto 18px;}
+.pin-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;text-align:left;}
+.pin-label{display:block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;}
+.pin-input{
+  width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);
+  font-family:'IBM Plex Mono',monospace;font-size:20px;letter-spacing:.4em;text-align:center;margin-bottom:16px;
+}
+.pin-input:focus{outline:2px solid var(--cyan);outline-offset:1px;}
+.pin-box .cta{max-width:280px;margin:0 auto;}
+.pin-box .mgr-error{text-align:center;}
 .mgr-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
 .mgr-chart-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:20px;}
 .mgr-chart-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:14px;}
@@ -1385,33 +1406,43 @@ async function onManagerNameChosen(){
 function renderEnterPinForm(name){
   const section = document.getElementById("mgr-pin-section");
   section.innerHTML = `
-    <div class="field">
-      <label>Your PIN</label>
-      <input type="password" id="mgr-pin-input" placeholder="Enter your PIN" inputmode="numeric">
+    <div class="pin-box">
+      <div class="pin-box-icon">🔐</div>
+      <div class="pin-box-title">Welcome back, ${escapeHtml(name)}</div>
+      <div class="pin-box-sub">Enter your PIN to open your team's dashboard.</div>
+      <input type="password" class="pin-input" id="mgr-pin-input" placeholder="••••" inputmode="numeric" autofocus>
+      <button class="cta" id="mgr-pin-submit">View my team →</button>
+      <div class="mgr-error" id="mgr-error">Incorrect PIN.</div>
     </div>
-    <button class="cta" id="mgr-pin-submit">View my team →</button>
-    <div class="mgr-error" id="mgr-error">Incorrect PIN.</div>
   `;
   document.getElementById("mgr-pin-submit").addEventListener("click", ()=>submitEnterPin(name));
   document.getElementById("mgr-pin-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitEnterPin(name); });
+  document.getElementById("mgr-pin-input").focus();
 }
 
 function renderSetPinForm(name){
   const section = document.getElementById("mgr-pin-section");
   section.innerHTML = `
-    <div class="sub" style="margin:6px 0 14px;">First time as ${escapeHtml(name)} — set a PIN (4+ digits or characters). You'll use this every time you come back.</div>
-    <div class="field">
-      <label>Choose a PIN</label>
-      <input type="password" id="mgr-pin-new" placeholder="New PIN" inputmode="numeric">
+    <div class="pin-box">
+      <div class="pin-box-icon">✦</div>
+      <div class="pin-box-title">First time as ${escapeHtml(name)}</div>
+      <div class="pin-box-sub">Set a PIN (4+ characters) — you'll use this every time you come back. Nobody else will see it.</div>
+      <div class="pin-grid2">
+        <div>
+          <label class="pin-label">New PIN</label>
+          <input type="password" class="pin-input" id="mgr-pin-new" placeholder="••••" inputmode="numeric">
+        </div>
+        <div>
+          <label class="pin-label">Confirm</label>
+          <input type="password" class="pin-input" id="mgr-pin-confirm" placeholder="••••" inputmode="numeric">
+        </div>
+      </div>
+      <button class="cta" id="mgr-pin-set-submit">Set PIN & continue →</button>
+      <div class="mgr-error" id="mgr-error">PINs must match and be at least 4 characters.</div>
     </div>
-    <div class="field">
-      <label>Confirm PIN</label>
-      <input type="password" id="mgr-pin-confirm" placeholder="Confirm PIN" inputmode="numeric">
-    </div>
-    <button class="cta" id="mgr-pin-set-submit">Set PIN & continue →</button>
-    <div class="mgr-error" id="mgr-error">PINs must match and be at least 4 characters.</div>
   `;
   document.getElementById("mgr-pin-set-submit").addEventListener("click", ()=>submitSetPin(name));
+  document.getElementById("mgr-pin-new").focus();
 }
 
 async function submitEnterPin(name){
