@@ -153,6 +153,29 @@ body{
 .segmented button.active{background:var(--cyan);color:#fff;font-weight:600;}
 .field-inline{display:none;margin-top:8px;}
 .field-inline.show{display:block;}
+
+.resume-wrap{text-align:center;margin-bottom:22px;}
+.resume-link{
+  background:none;border:none;color:var(--ink-soft);font-size:12.5px;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;font-family:'Inter',sans-serif;
+}
+.resume-link:hover{color:var(--navy);}
+.resume-box{
+  max-width:420px;margin:12px auto 0;background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:16px;text-align:left;
+}
+.resume-box input{
+  width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:13.5px;
+  margin-bottom:10px;background:var(--card);color:var(--ink);font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+}
+.resume-submit{
+  width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:6px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;
+}
+.resume-submit:hover{background:var(--cyan);}
+.resume-submit:disabled{background:var(--slate);cursor:not-allowed;}
+.resume-error{color:var(--coral);font-size:12px;margin-top:8px;}
 .cta{
   padding:13px 22px;background:var(--navy);color:#fff;border:none;
   border-radius:7px;font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;
@@ -206,6 +229,22 @@ body{
 .mgr-code-box .hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
 .mgr-error{color:var(--coral);font-size:12.5px;margin-top:10px;display:none;}
 .mgr-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.mgr-chart-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:20px;}
+.mgr-chart-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;margin-bottom:14px;}
+.mgr-chart-bars{display:flex;align-items:flex-end;gap:12px;height:110px;}
+.mgr-chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
+.mgr-chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-bottom:4px;min-height:14px;}
+.mgr-chart-bar{width:100%;max-width:34px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--cyan),var(--navy));transition:height .3s ease;}
+.mgr-chart-label{font-size:10.5px;color:var(--ink-soft);margin-top:6px;}
+.pin-reminder{
+  display:flex;align-items:center;gap:10px;background:var(--cyan-soft);border:1px dashed var(--cyan);
+  border-radius:8px;padding:9px 14px;margin-bottom:16px;font-size:12.5px;color:var(--navy-ink);
+}
+.pin-reminder .pin-value{font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:.08em;}
+.pin-reveal-btn{
+  margin-left:auto;background:none;border:1px solid var(--navy);color:var(--navy);border-radius:5px;
+  padding:3px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;
+}
 .mgr-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
 .mgr-stat .num{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--navy-ink);}
 .mgr-stat .lbl{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
@@ -516,6 +555,48 @@ function genAccessCode(){
   return out;
 }
 
+async function resumeFromCode(){
+  const input = document.getElementById("resume-code-input");
+  const errEl = document.getElementById("resume-error");
+  const submitBtn = document.getElementById("resume-submit");
+  const code = input.value.trim().toUpperCase();
+  errEl.style.display = "none";
+  if(!code) return;
+  if(!cloudConfigured()){
+    errEl.textContent = "Cloud sync isn't configured yet, so resuming from a code isn't available.";
+    errEl.style.display = "block";
+    return;
+  }
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Looking...";
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&access_code=eq.${encodeURIComponent(code)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length){
+      errEl.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Find my routing";
+      return;
+    }
+    const r = rows[0];
+    state = {
+      id: r.id, name: r.name, position: r.position, manager: r.manager,
+      country: r.country, startDate: r.start_date, accessCode: r.access_code,
+      tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || []
+    };
+    await kvSet(STORAGE_KEY, JSON.stringify(state));
+    renderAll();
+    document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
+  }catch(e){
+    errEl.textContent = "Something went wrong reaching the database. Try again.";
+    errEl.style.display = "block";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Find my routing";
+  }
+}
+
 async function syncProfileToCloud(){
   if(!cloudConfigured() || !state) return;
   try{
@@ -684,6 +765,15 @@ function renderSetupZone(){
         <button class="cta" id="f-submit">Release routing →</button>
         <div id="f-error" style="display:none;color:var(--coral);font-size:12.5px;margin-top:10px;">Please choose a position, manager and country before releasing.</div>
       </div>
+
+      <div class="resume-wrap">
+        <button class="resume-link" id="resume-toggle">Already started? Resume with your code</button>
+        <div class="resume-box" id="resume-box" style="display:none;">
+          <input type="text" id="resume-code-input" placeholder="Your resume code">
+          <button class="resume-submit" id="resume-submit">Find my routing</button>
+          <div class="resume-error" id="resume-error" style="display:none;">No routing found for that code. Double-check it and try again.</div>
+        </div>
+      </div>
     `;
 
     function addPlaceholder(sel, text){
@@ -738,6 +828,13 @@ function renderSetupZone(){
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
     });
 
+    document.getElementById("resume-toggle").addEventListener("click", ()=>{
+      const box = document.getElementById("resume-box");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+    });
+    document.getElementById("resume-submit").addEventListener("click", resumeFromCode);
+    document.getElementById("resume-code-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") resumeFromCode(); });
+
   } else {
     resetBtn.style.display = "inline";
     if(!state.accessCode){ state.accessCode = genAccessCode(); saveState(); }
@@ -765,9 +862,9 @@ function renderSetupZone(){
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="mgr-code-box">
-        <div class="lbl">Your manager access code</div>
+        <div class="lbl">Your personal resume code</div>
         <div class="code mono">${escapeHtml(state.accessCode || "—")}</div>
-        <div class="hint">Share this with ${escapeHtml(state.manager)} so they can view your progress in Team Manager mode.</div>
+        <div class="hint">Save this somewhere safe. If you accidentally reset or switch devices, use "Resume with your code" to get your progress back — no need to redo anything.</div>
       </div>
     `;
 
@@ -937,7 +1034,7 @@ function renderAll(){
 
 /* ============ ROLE TOGGLE (Joiner / Manager) ============ */
 let currentRole = "joiner";
-let managerView = { verified:false, name:"", rows:[] };
+let managerView = { verified:false, name:"", rows:[], pin:"" };
 
 function initRoleToggle(){
   document.querySelectorAll("#role-toggle-bar button").forEach(btn=>{
@@ -974,17 +1071,12 @@ function renderManagerZone(){
       <div class="mgr-card">
         <div class="setup-eyebrow">Team manager · access</div>
         <h1>View your team's onboarding</h1>
-        <p class="sub">Pick your name and enter the access code from one of your new joiners — you'll then see everyone who selected you as their manager.</p>
+        <p class="sub">Pick your name. First time here, you'll set your own PIN — after that, just enter it to get in. Nobody else, including Tomáš, sets or sees your PIN.</p>
         <div class="field">
           <label>Your name</label>
           <select id="mgr-name-select"></select>
         </div>
-        <div class="field">
-          <label>Access code (from any of your joiners)</label>
-          <input type="text" id="mgr-code-input" placeholder="e.g. A1B2C3" style="text-transform:uppercase;">
-        </div>
-        <button class="cta" id="mgr-submit">View my team →</button>
-        <div class="mgr-error" id="mgr-error">No joiner found under that name with that code. Double-check both fields.</div>
+        <div id="mgr-pin-section"></div>
       </div>
     `;
     const sel = document.getElementById("mgr-name-select");
@@ -993,8 +1085,7 @@ function renderManagerZone(){
     MANAGERS.filter(m=>m!=="Other").forEach(m=>{
       const o = document.createElement("option"); o.value=m; o.textContent=m; sel.appendChild(o);
     });
-    document.getElementById("mgr-submit").addEventListener("click", verifyManagerAccess);
-    document.getElementById("mgr-code-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") verifyManagerAccess(); });
+    sel.addEventListener("change", onManagerNameChosen);
     return;
   }
 
@@ -1007,15 +1098,31 @@ function renderManagerZone(){
   zone.innerHTML = `
     <button class="mgr-back" id="mgr-back-btn">← Back</button>
     <div class="setup-eyebrow">${escapeHtml(managerView.name)}'s team</div>
+    ${managerView.pin ? `
+      <div class="pin-reminder">
+        <span>Your PIN, so you remember it:</span>
+        <span class="pin-value" id="pin-reminder-value">••••</span>
+        <button class="pin-reveal-btn" id="pin-reveal-btn">Show</button>
+      </div>
+    ` : ""}
     <div class="mgr-stats-row">
       <div class="mgr-stat"><div class="num mono">${total}</div><div class="lbl">Your joiners</div></div>
       <div class="mgr-stat"><div class="num mono">${avgPct}%</div><div class="lbl">Average progress</div></div>
       <div class="mgr-stat"><div class="num mono">${behindCount}</div><div class="lbl">Behind schedule</div></div>
     </div>
+    ${renderJoinsChart(rows)}
     <div id="mgr-rows"></div>
   `;
+  if(managerView.pin){
+    let revealed = false;
+    document.getElementById("pin-reveal-btn").addEventListener("click", ()=>{
+      revealed = !revealed;
+      document.getElementById("pin-reminder-value").textContent = revealed ? managerView.pin : "••••";
+      document.getElementById("pin-reveal-btn").textContent = revealed ? "Hide" : "Show";
+    });
+  }
   document.getElementById("mgr-back-btn").addEventListener("click", ()=>{
-    managerView = { verified:false, name:"", rows:[] };
+    managerView = { verified:false, name:"", rows:[], pin:"" };
     renderManagerZone();
   });
 
@@ -1205,6 +1312,39 @@ async function removeProfileFromCloud(id){
   }catch(e){ console.error("remove failed", e); }
 }
 
+function renderJoinsChart(rows){
+  const months = [];
+  const now = new Date();
+  for(let i=5;i>=0;i--){
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push({ key: d.getFullYear()+"-"+d.getMonth(), label: d.toLocaleDateString("en-GB",{month:"short"}), count:0 });
+  }
+  rows.forEach(r=>{
+    if(!r.start_date) return;
+    const d = new Date(r.start_date+"T00:00:00");
+    const key = d.getFullYear()+"-"+d.getMonth();
+    const m = months.find(m=>m.key===key);
+    if(m) m.count++;
+  });
+  const max = Math.max(1, ...months.map(m=>m.count));
+  const bars = months.map(m=>{
+    const heightPct = m.count ? Math.max(8, Math.round((m.count/max)*100)) : 3;
+    return `
+      <div class="mgr-chart-col">
+        <div class="mgr-chart-count">${m.count || ""}</div>
+        <div class="mgr-chart-bar" style="height:${heightPct}%"></div>
+        <div class="mgr-chart-label">${m.label}</div>
+      </div>
+    `;
+  }).join("");
+  return `
+    <div class="mgr-chart-card">
+      <div class="mgr-chart-title">New joiners started · last 6 months</div>
+      <div class="mgr-chart-bars">${bars}</div>
+    </div>
+  `;
+}
+
 function mgrRowStatus(p){
   if(p.pct >= 100) return "done";
   const d = dayNumber(p.start_date);
@@ -1212,34 +1352,134 @@ function mgrRowStatus(p){
   return (expected - p.pct >= 20) ? "behind" : "ontrack";
 }
 
-async function verifyManagerAccess(){
+async function sha256Hex(str){
+  const enc = new TextEncoder().encode(str);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+async function onManagerNameChosen(){
   const name = document.getElementById("mgr-name-select").value;
-  const code = document.getElementById("mgr-code-input").value.trim().toUpperCase();
+  const section = document.getElementById("mgr-pin-section");
+  if(!name){ section.innerHTML = ""; return; }
+  if(!cloudConfigured()){
+    section.innerHTML = `<div class="mgr-error" style="display:block;">Cloud sync isn't configured yet, so manager access isn't available.</div>`;
+    return;
+  }
+  section.innerHTML = `<div class="sub" style="margin:10px 0;">Checking...</div>`;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/managers?select=name&name=eq.${encodeURIComponent(name)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(res.ok && rows.length){
+      renderEnterPinForm(name);
+    } else {
+      renderSetPinForm(name);
+    }
+  }catch(e){
+    section.innerHTML = `<div class="mgr-error" style="display:block;">Couldn't reach the database. Try again.</div>`;
+  }
+}
+
+function renderEnterPinForm(name){
+  const section = document.getElementById("mgr-pin-section");
+  section.innerHTML = `
+    <div class="field">
+      <label>Your PIN</label>
+      <input type="password" id="mgr-pin-input" placeholder="Enter your PIN" inputmode="numeric">
+    </div>
+    <button class="cta" id="mgr-pin-submit">View my team →</button>
+    <div class="mgr-error" id="mgr-error">Incorrect PIN.</div>
+  `;
+  document.getElementById("mgr-pin-submit").addEventListener("click", ()=>submitEnterPin(name));
+  document.getElementById("mgr-pin-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitEnterPin(name); });
+}
+
+function renderSetPinForm(name){
+  const section = document.getElementById("mgr-pin-section");
+  section.innerHTML = `
+    <div class="sub" style="margin:6px 0 14px;">First time as ${escapeHtml(name)} — set a PIN (4+ digits or characters). You'll use this every time you come back.</div>
+    <div class="field">
+      <label>Choose a PIN</label>
+      <input type="password" id="mgr-pin-new" placeholder="New PIN" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label>Confirm PIN</label>
+      <input type="password" id="mgr-pin-confirm" placeholder="Confirm PIN" inputmode="numeric">
+    </div>
+    <button class="cta" id="mgr-pin-set-submit">Set PIN & continue →</button>
+    <div class="mgr-error" id="mgr-error">PINs must match and be at least 4 characters.</div>
+  `;
+  document.getElementById("mgr-pin-set-submit").addEventListener("click", ()=>submitSetPin(name));
+}
+
+async function submitEnterPin(name){
+  const pin = document.getElementById("mgr-pin-input").value.trim();
   const errEl = document.getElementById("mgr-error");
   errEl.style.display = "none";
-  if(!name || !code || !cloudConfigured()){
-    errEl.textContent = cloudConfigured() ? "Please choose your name and enter a code." : "Cloud sync isn't configured yet, so manager access isn't available.";
+  if(!pin){ errEl.style.display = "block"; return; }
+  try{
+    const hash = await sha256Hex(pin);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/managers?select=pin_hash&name=eq.${encodeURIComponent(name)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length || rows[0].pin_hash !== hash){
+      errEl.style.display = "block";
+      return;
+    }
+    await loadManagerTeam(name, pin);
+  }catch(e){
+    errEl.textContent = "Something went wrong. Try again.";
+    errEl.style.display = "block";
+  }
+}
+
+async function submitSetPin(name){
+  const pin1 = document.getElementById("mgr-pin-new").value.trim();
+  const pin2 = document.getElementById("mgr-pin-confirm").value.trim();
+  const errEl = document.getElementById("mgr-error");
+  errEl.style.display = "none";
+  if(!pin1 || pin1.length < 4 || pin1 !== pin2){
     errEl.style.display = "block";
     return;
   }
   try{
-    const checkRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=id&manager=eq.${encodeURIComponent(name)}&access_code=eq.${encodeURIComponent(code)}`, {
-      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    const hash = await sha256Hex(pin1);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/managers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ name, pin_hash: hash })
     });
-    const checkData = await checkRes.json();
-    if(!checkRes.ok || !checkData.length){
+    if(!res.ok){
+      errEl.textContent = "Couldn't save your PIN. Try again.";
       errEl.style.display = "block";
       return;
     }
+    await loadManagerTeam(name, pin1);
+  }catch(e){
+    errEl.textContent = "Something went wrong. Try again.";
+    errEl.style.display = "block";
+  }
+}
+
+async function loadManagerTeam(name, pin){
+  try{
     const teamRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&manager=eq.${encodeURIComponent(name)}&order=updated_at.desc`, {
       headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
     });
     const teamData = await teamRes.json();
-    managerView = { verified:true, name, rows: teamData || [] };
+    managerView = { verified:true, name, rows: teamData || [], pin: pin || "" };
     renderManagerZone();
   }catch(e){
-    errEl.textContent = "Something went wrong reaching the database. Try again.";
-    errEl.style.display = "block";
+    const errEl = document.getElementById("mgr-error");
+    if(errEl){ errEl.textContent = "Something went wrong reaching the database. Try again."; errEl.style.display = "block"; }
   }
 }
 
