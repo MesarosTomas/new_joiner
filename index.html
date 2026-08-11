@@ -228,6 +228,28 @@ body{
 .mgr-remove-confirm{font-size:12px;color:var(--coral);display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
 .mgr-remove-yes{background:var(--coral);color:#fff;border:none;border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
 .mgr-remove-no{background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
+.mgr-add-task-btn{
+  margin-top:6px;margin-right:8px;padding:7px 12px;background:transparent;border:1px solid var(--cyan);color:var(--navy);
+  border-radius:6px;font-size:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;
+}
+.mgr-add-task-form{
+  background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px;margin-bottom:10px;
+}
+.mgr-add-task-form input[type=text],
+.mgr-add-task-form textarea,
+.mgr-add-task-form select{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;
+  font-family:'Inter',sans-serif;margin-bottom:8px;background:var(--card);color:var(--ink);
+}
+.mgr-add-task-form textarea{min-height:50px;resize:vertical;}
+.mgr-newtask-row{display:flex;gap:8px;align-items:center;}
+.mgr-newtask-row select{margin-bottom:0;flex:1;}
+.mgr-newtask-row button{
+  padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12.5px;
+  font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;white-space:nowrap;
+}
+.mgr-newtask-row button:hover{background:var(--cyan);}
+.mgr-newtask-row button:disabled{background:var(--slate);cursor:not-allowed;}
 .section-label{
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-soft);margin:8px 0 12px;font-weight:600;
@@ -513,9 +535,10 @@ async function syncProfileToCloud(){
       pct: total ? Math.round((done/total)*100) : 0,
       tasks: state.tasks,
       notes: state.notes,
+      custom_tasks: state.customTasks || [],
       updated_at: new Date().toISOString()
     };
-    await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -525,6 +548,10 @@ async function syncProfileToCloud(){
       },
       body: JSON.stringify(payload)
     });
+    if(!res.ok){
+      const errText = await res.text();
+      console.error("Cloud sync failed ("+res.status+"): "+errText+" — check that all Supabase SQL setup steps have been run (columns must match the payload).");
+    }
   }catch(e){ console.error("cloud sync failed", e); }
 }
 
@@ -585,6 +612,10 @@ function buildTasks(profile){
       const text = t.text.replace("{manager}", profile.manager);
       list.push({tid, catId:cat.id, day:t.day, text, desc: t.desc||"", role: !!t.role});
     });
+  });
+  const custom = profile.customTasks || profile.custom_tasks || [];
+  custom.forEach(ct=>{
+    list.push({tid: ct.id, catId:"custom", day: ct.day||1, text: ct.text, desc: ct.desc||"", role:false, custom:true});
   });
   return list;
 }
@@ -701,7 +732,7 @@ function renderSetupZone(){
       }
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
       const accessCode = genAccessCode();
-      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{} };
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{}, customTasks:[] };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -825,7 +856,11 @@ function renderStrip(){
 function renderOpList(currentDay){
   const wrap = document.getElementById("op-list");
   wrap.innerHTML = "";
-  getActiveCategories().forEach(cat=>{
+  const renderCats = [...getActiveCategories()];
+  if(taskIndex.some(t=>t.catId==="custom")){
+    renderCats.push({id:"custom", num:"✦", title:"Added by your manager", owner:""});
+  }
+  renderCats.forEach(cat=>{
     const tasks = taskIndex.filter(t=>t.catId===cat.id);
     const doneCount = tasks.filter(t=>state.tasks[t.tid]).length;
     const status = catStatus(cat.id);
@@ -860,6 +895,7 @@ function renderOpList(currentDay){
           <div class="task-tags">
             <span class="tag-day ${overdue?'attention':''}">Day ${t.day}${overdue?' · due':''}</span>
             ${t.role ? `<span class="tag-role">Role-specific</span>` : ""}
+            ${t.custom ? `<span class="tag-role">Added by manager</span>` : ""}
           </div>
           <textarea class="task-note" placeholder="Notes / comments" data-note-tid="${t.tid}">${escapeHtml(state.notes[t.tid]||"")}</textarea>
         </div>
@@ -1029,7 +1065,11 @@ function renderMgrDetail(container, p){
   const tasks = p.tasks || {};
   const notes = p.notes || {};
   const idx = buildTasks(p);
-  const cats = getActiveCategories(p);
+  const cats = [...getActiveCategories(p)];
+  if(idx.some(t=>t.catId==="custom")){
+    cats.push({id:"custom", title:"Added by manager"});
+  }
+  const id = cssEscape(p.id);
 
   const catBlocks = cats.map(cat=>{
     const catTasks = idx.filter(t=>t.catId===cat.id);
@@ -1041,6 +1081,7 @@ function renderMgrDetail(container, p){
           <span class="mgr-detail-check">${isDone ? "✅" : "⬜"}</span>
           <div>
             <div class="mgr-detail-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
+            ${t.desc ? `<div class="mgr-detail-note">${escapeHtml(t.desc)}</div>` : ""}
             ${note ? `<div class="mgr-detail-note">"${escapeHtml(note)}"</div>` : ""}
           </div>
         </div>
@@ -1052,16 +1093,62 @@ function renderMgrDetail(container, p){
   container.innerHTML = `
     <div class="mgr-detail-inner">
       ${catBlocks}
-      <button class="mgr-remove-btn" id="mgr-remove-${escapeHtml(p.id)}">Remove from my view</button>
-      <span class="mgr-remove-confirm" id="mgr-remove-confirm-${escapeHtml(p.id)}" style="display:none;">
+      <button class="mgr-add-task-btn" id="mgr-add-task-${id}">+ Add task</button>
+      <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:none;">
+        <input type="text" id="mgr-newtask-text-${id}" placeholder="Task name">
+        <textarea id="mgr-newtask-desc-${id}" placeholder="Description (optional)"></textarea>
+        <div class="mgr-newtask-row">
+          <select id="mgr-newtask-day-${id}">
+            ${Array.from({length:10},(_,i)=>i+1).map(d=>`<option value="${d}">Day ${d}</option>`).join("")}
+          </select>
+          <button id="mgr-newtask-submit-${id}">Add task</button>
+        </div>
+      </div>
+      <button class="mgr-remove-btn" id="mgr-remove-${id}">Remove from my view</button>
+      <span class="mgr-remove-confirm" id="mgr-remove-confirm-${id}" style="display:none;">
         Remove ${escapeHtml(p.name)} from your dashboard? This only removes them from view, it doesn't affect their routing.
         <button class="mgr-remove-yes" data-id="${escapeHtml(p.id)}">Yes, remove</button>
         <button class="mgr-remove-no">Cancel</button>
       </span>
     </div>
   `;
-  const removeBtn = container.querySelector(`#mgr-remove-${cssEscape(p.id)}`);
-  const confirmEl = container.querySelector(`#mgr-remove-confirm-${cssEscape(p.id)}`);
+
+  const addBtn = container.querySelector(`#mgr-add-task-${id}`);
+  const addForm = container.querySelector(`#mgr-add-task-form-${id}`);
+  addBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    addForm.style.display = addForm.style.display === "none" ? "block" : "none";
+  });
+  container.querySelector(`#mgr-newtask-submit-${id}`).addEventListener("click", async (e)=>{
+    e.stopPropagation();
+    const textInput = container.querySelector(`#mgr-newtask-text-${id}`);
+    const descInput = container.querySelector(`#mgr-newtask-desc-${id}`);
+    const dayInput = container.querySelector(`#mgr-newtask-day-${id}`);
+    const text = textInput.value.trim();
+    if(!text) { textInput.focus(); return; }
+    const newTask = {
+      id: "ct-" + Date.now() + "-" + Math.random().toString(36).slice(2,6),
+      text,
+      desc: descInput.value.trim(),
+      day: parseInt(dayInput.value, 10)
+    };
+    const submitBtn = container.querySelector(`#mgr-newtask-submit-${id}`);
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Adding...";
+    const ok = await addCustomTaskToCloud(p.id, newTask);
+    if(ok){
+      p.custom_tasks = [...(p.custom_tasks||[]), newTask];
+      const rowInList = managerView.rows.find(r=>r.id===p.id);
+      if(rowInList) rowInList.custom_tasks = p.custom_tasks;
+      renderMgrDetail(container, p);
+    } else {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Add task";
+    }
+  });
+
+  const removeBtn = container.querySelector(`#mgr-remove-${id}`);
+  const confirmEl = container.querySelector(`#mgr-remove-confirm-${id}`);
   removeBtn.addEventListener("click", (e)=>{
     e.stopPropagation();
     removeBtn.style.display = "none";
@@ -1078,6 +1165,30 @@ function renderMgrDetail(container, p){
     managerView.rows = managerView.rows.filter(r=>r.id!==p.id);
     renderManagerZone();
   });
+}
+
+async function addCustomTaskToCloud(profileId, newTask){
+  if(!cloudConfigured()) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].custom_tasks) || [];
+    const updated = [...current, newTask];
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ custom_tasks: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("add custom task failed", e); return false; }
 }
 
 function cssEscape(str){
@@ -1195,12 +1306,37 @@ function updateCopyStatusVisibility(){
   if(btn) btn.style.display = state ? "block" : "none";
 }
 
+async function mergeCustomTasksFromCloud(){
+  if(!cloudConfigured() || !state || !state.id) return;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(state.id)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!res.ok) return;
+    const rows = await res.json();
+    if(!rows.length) return;
+    const cloudCustom = rows[0].custom_tasks || [];
+    if(!cloudCustom.length) return;
+    state.customTasks = state.customTasks || [];
+    const existingIds = new Set(state.customTasks.map(t=>t.id));
+    let added = false;
+    cloudCustom.forEach(ct=>{
+      if(!existingIds.has(ct.id)){
+        state.customTasks.push(ct);
+        added = true;
+      }
+    });
+    if(added) await kvSet(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){ console.error("merge custom tasks failed", e); }
+}
+
 (async function init(){
   initMenu();
   initRoleToggle();
   const theme = await loadTheme();
   applyTheme(theme);
   state = await loadState();
+  await mergeCustomTasksFromCloud();
   renderAll();
   updateCopyStatusVisibility();
 })();
