@@ -190,6 +190,44 @@ body{
   transition:width .5s ease;
 }
 
+.role-toggle-bar{display:flex;gap:8px;margin-bottom:22px;}
+.role-toggle-bar button{
+  flex:1;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;color:var(--ink-soft);cursor:pointer;
+}
+.role-toggle-bar button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+.mgr-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 34px;margin-bottom:22px;box-shadow:0 1px 2px rgba(13,36,128,.05);}
+.mgr-card h1{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:0 0 8px;color:var(--navy-ink);}
+.mgr-card p.sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+.mgr-code-box{background:var(--cyan-soft);border:1px dashed var(--cyan);border-radius:8px;padding:12px 16px;margin-top:14px;}
+.mgr-code-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);font-weight:600;margin-bottom:4px;}
+.mgr-code-box .code{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--navy-ink);letter-spacing:.06em;}
+.mgr-code-box .hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+.mgr-error{color:var(--coral);font-size:12.5px;margin-top:10px;display:none;}
+.mgr-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.mgr-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
+.mgr-stat .num{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--navy-ink);}
+.mgr-stat .lbl{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.mgr-row{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.mgr-row .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;flex:1 1 160px;}
+.mgr-row .meta{font-size:11.5px;color:var(--ink-soft);flex:1 1 100%;margin-top:2px;}
+.mgr-row .bar-wrap{flex:1 1 160px;}
+.mgr-row .bar-track{width:100%;height:6px;border-radius:20px;background:var(--slate-soft);overflow:hidden;}
+.mgr-row .bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--cyan),var(--green));}
+.mgr-row .pct-txt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.mgr-back{font-size:12.5px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;}
+.mgr-detail-inner{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:16px 18px;margin-top:-11px;margin-bottom:10px;}
+.mgr-detail-cat{margin-bottom:14px;}
+.mgr-detail-cat-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12.5px;color:var(--navy-ink);margin-bottom:6px;}
+.mgr-detail-task{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:12.5px;}
+.mgr-detail-check{flex:0 0 auto;}
+.mgr-detail-text.done{color:var(--slate);text-decoration:line-through;}
+.mgr-detail-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:2px;}
+.mgr-remove-btn{margin-top:8px;padding:7px 12px;background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:6px;font-size:12px;cursor:pointer;}
+.mgr-remove-confirm{font-size:12px;color:var(--coral);display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.mgr-remove-yes{background:var(--coral);color:#fff;border:none;border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
+.mgr-remove-no{background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
 .section-label{
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-soft);margin:8px 0 12px;font-weight:600;
@@ -339,9 +377,14 @@ body{
       <button id="reset-no" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:4px;padding:3px 8px;font-size:11.5px;cursor:pointer;">Cancel</button>
     </span>
   </div>
+  <div class="role-toggle-bar" id="role-toggle-bar">
+    <button data-role="joiner" class="active">🧑‍💻 New Joiner</button>
+    <button data-role="manager">🧑‍💼 Team Manager</button>
+  </div>
   <div id="setup-zone"></div>
   <div class="section-label">Your routing</div>
   <div id="dashboard-zone"></div>
+  <div id="manager-zone" style="display:none;"></div>
 </div>
 
 <script>
@@ -444,6 +487,13 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 function cloudConfigured(){ return !!SUPABASE_URL && !!SUPABASE_ANON_KEY; }
 
+function genAccessCode(){
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no 0/O/1/I to avoid confusion
+  let out = "";
+  for(let i=0;i<6;i++) out += chars[Math.floor(Math.random()*chars.length)];
+  return out;
+}
+
 async function syncProfileToCloud(){
   if(!cloudConfigured() || !state) return;
   try{
@@ -457,9 +507,12 @@ async function syncProfileToCloud(){
       manager: state.manager,
       country: state.country,
       start_date: state.startDate,
+      access_code: state.accessCode,
       total_tasks: total,
       done_tasks: done,
       pct: total ? Math.round((done/total)*100) : 0,
+      tasks: state.tasks,
+      notes: state.notes,
       updated_at: new Date().toISOString()
     };
     await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles`, {
@@ -510,8 +563,9 @@ async function clearState(){
   state = null;
 }
 
-function getActiveCategories(){
-  if(state && state.country && state.country !== "Slovakia"){
+function getActiveCategories(profile){
+  const p = profile || state;
+  if(p && p.country && p.country !== "Slovakia"){
     return CATEGORIES.filter(c => c.id !== "c2");
   }
   return CATEGORIES;
@@ -520,7 +574,7 @@ function getActiveCategories(){
 function buildTasks(profile){
   const list = [];
   let idc = 0;
-  getActiveCategories().forEach(cat=>{
+  getActiveCategories(profile).forEach(cat=>{
     const catTasks = cat.tasks.map(t=>({...t}));
     if(ROLE_EXTRA[profile.position] && ROLE_EXTRA[profile.position].cat === cat.id){
       catTasks.push({...ROLE_EXTRA[profile.position], role:true});
@@ -646,7 +700,8 @@ function renderSetupZone(){
         manager = other || "your manager";
       }
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
-      state = { id: profileId, name, position, manager, country, startDate, tasks:{}, notes:{} };
+      const accessCode = genAccessCode();
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{} };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -654,6 +709,7 @@ function renderSetupZone(){
 
   } else {
     resetBtn.style.display = "inline";
+    if(!state.accessCode){ state.accessCode = genAccessCode(); saveState(); }
     const currentDay = dayNumber(state.startDate);
     taskIndex = buildTasks(state);
     const total = taskIndex.length;
@@ -676,6 +732,11 @@ function renderSetupZone(){
           <div class="lbl">Confirmed · ${done}/${total} operations</div>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="mgr-code-box">
+        <div class="lbl">Your manager access code</div>
+        <div class="code mono">${escapeHtml(state.accessCode || "—")}</div>
+        <div class="hint">Share this with ${escapeHtml(state.manager)} so they can view your progress in Team Manager mode.</div>
       </div>
     `;
 
@@ -838,6 +899,239 @@ function renderAll(){
   updateCopyStatusVisibility();
 }
 
+/* ============ ROLE TOGGLE (Joiner / Manager) ============ */
+let currentRole = "joiner";
+let managerView = { verified:false, name:"", rows:[] };
+
+function initRoleToggle(){
+  document.querySelectorAll("#role-toggle-bar button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      currentRole = btn.dataset.role;
+      document.querySelectorAll("#role-toggle-bar button").forEach(b=>b.classList.toggle("active", b===btn));
+      applyRoleView();
+    });
+  });
+}
+function applyRoleView(){
+  const setupZone = document.getElementById("setup-zone");
+  const dashZone = document.getElementById("dashboard-zone");
+  const sectionLabel = document.querySelector(".section-label");
+  const mgrZone = document.getElementById("manager-zone");
+  if(currentRole === "manager"){
+    setupZone.style.display = "none";
+    dashZone.style.display = "none";
+    sectionLabel.style.display = "none";
+    mgrZone.style.display = "block";
+    renderManagerZone();
+  } else {
+    setupZone.style.display = "block";
+    dashZone.style.display = "block";
+    sectionLabel.style.display = "block";
+    mgrZone.style.display = "none";
+  }
+}
+
+function renderManagerZone(){
+  const zone = document.getElementById("manager-zone");
+  if(!managerView.verified){
+    zone.innerHTML = `
+      <div class="mgr-card">
+        <div class="setup-eyebrow">Team manager · access</div>
+        <h1>View your team's onboarding</h1>
+        <p class="sub">Pick your name and enter the access code from one of your new joiners — you'll then see everyone who selected you as their manager.</p>
+        <div class="field">
+          <label>Your name</label>
+          <select id="mgr-name-select"></select>
+        </div>
+        <div class="field">
+          <label>Access code (from any of your joiners)</label>
+          <input type="text" id="mgr-code-input" placeholder="e.g. A1B2C3" style="text-transform:uppercase;">
+        </div>
+        <button class="cta" id="mgr-submit">View my team →</button>
+        <div class="mgr-error" id="mgr-error">No joiner found under that name with that code. Double-check both fields.</div>
+      </div>
+    `;
+    const sel = document.getElementById("mgr-name-select");
+    const ph = document.createElement("option"); ph.value=""; ph.textContent="Choose..."; ph.disabled=true; ph.selected=true;
+    sel.appendChild(ph);
+    MANAGERS.filter(m=>m!=="Other").forEach(m=>{
+      const o = document.createElement("option"); o.value=m; o.textContent=m; sel.appendChild(o);
+    });
+    document.getElementById("mgr-submit").addEventListener("click", verifyManagerAccess);
+    document.getElementById("mgr-code-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") verifyManagerAccess(); });
+    return;
+  }
+
+  const rows = managerView.rows;
+  const total = rows.length;
+  const avgPct = total ? Math.round(rows.reduce((s,p)=>s+(p.pct||0),0)/total) : 0;
+  const behindCount = rows.filter(p=>mgrRowStatus(p)==="behind").length;
+  const doneCount = rows.filter(p=>mgrRowStatus(p)==="done").length;
+
+  zone.innerHTML = `
+    <button class="mgr-back" id="mgr-back-btn">← Back</button>
+    <div class="setup-eyebrow">${escapeHtml(managerView.name)}'s team</div>
+    <div class="mgr-stats-row">
+      <div class="mgr-stat"><div class="num mono">${total}</div><div class="lbl">Your joiners</div></div>
+      <div class="mgr-stat"><div class="num mono">${avgPct}%</div><div class="lbl">Average progress</div></div>
+      <div class="mgr-stat"><div class="num mono">${behindCount}</div><div class="lbl">Behind schedule</div></div>
+    </div>
+    <div id="mgr-rows"></div>
+  `;
+  document.getElementById("mgr-back-btn").addEventListener("click", ()=>{
+    managerView = { verified:false, name:"", rows:[] };
+    renderManagerZone();
+  });
+
+  const rowsWrap = document.getElementById("mgr-rows");
+  if(!rows.length){
+    rowsWrap.innerHTML = `<div class="locked-zone">No joiners found under your name yet.</div>`;
+    return;
+  }
+  rowsWrap.innerHTML = rows.map(p=>{
+    const status = mgrRowStatus(p);
+    const statusTxt = status==="done" ? "Completed" : status==="behind" ? "Behind" : "On track";
+    const d = dayNumber(p.start_date);
+    return `
+      <div class="mgr-row-wrap">
+        <div class="mgr-row" data-id="${escapeHtml(p.id)}" style="cursor:pointer;">
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="meta">${escapeHtml(p.position)} · Day ${d}</div>
+          <div class="bar-wrap">
+            <div class="bar-track"><div class="bar-fill" style="width:${p.pct||0}%"></div></div>
+            <div class="pct-txt">${p.done_tasks||0}/${p.total_tasks||0} · ${p.pct||0}% · ${statusTxt}</div>
+          </div>
+          <div class="chev mgr-chev">▾</div>
+        </div>
+        <div class="mgr-detail" id="detail-${escapeHtml(p.id)}" style="display:none;"></div>
+      </div>
+    `;
+  }).join("");
+
+  rowsWrap.querySelectorAll(".mgr-row").forEach(rowEl=>{
+    rowEl.addEventListener("click", ()=>{
+      const id = rowEl.dataset.id;
+      const detailEl = document.getElementById("detail-"+id);
+      const isOpen = detailEl.style.display === "block";
+      rowsWrap.querySelectorAll(".mgr-detail").forEach(d=>d.style.display="none");
+      rowsWrap.querySelectorAll(".mgr-chev").forEach(c=>c.style.transform="");
+      if(!isOpen){
+        const profile = rows.find(r=>r.id===id);
+        renderMgrDetail(detailEl, profile);
+        detailEl.style.display = "block";
+        rowEl.querySelector(".mgr-chev").style.transform = "rotate(180deg)";
+      }
+    });
+  });
+}
+
+function renderMgrDetail(container, p){
+  const tasks = p.tasks || {};
+  const notes = p.notes || {};
+  const idx = buildTasks(p);
+  const cats = getActiveCategories(p);
+
+  const catBlocks = cats.map(cat=>{
+    const catTasks = idx.filter(t=>t.catId===cat.id);
+    const rowsHtml = catTasks.map(t=>{
+      const isDone = !!tasks[t.tid];
+      const note = notes[t.tid];
+      return `
+        <div class="mgr-detail-task">
+          <span class="mgr-detail-check">${isDone ? "✅" : "⬜"}</span>
+          <div>
+            <div class="mgr-detail-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
+            ${note ? `<div class="mgr-detail-note">"${escapeHtml(note)}"</div>` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+    return `<div class="mgr-detail-cat"><div class="mgr-detail-cat-title">${escapeHtml(cat.title)}</div>${rowsHtml}</div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <div class="mgr-detail-inner">
+      ${catBlocks}
+      <button class="mgr-remove-btn" id="mgr-remove-${escapeHtml(p.id)}">Remove from my view</button>
+      <span class="mgr-remove-confirm" id="mgr-remove-confirm-${escapeHtml(p.id)}" style="display:none;">
+        Remove ${escapeHtml(p.name)} from your dashboard? This only removes them from view, it doesn't affect their routing.
+        <button class="mgr-remove-yes" data-id="${escapeHtml(p.id)}">Yes, remove</button>
+        <button class="mgr-remove-no">Cancel</button>
+      </span>
+    </div>
+  `;
+  const removeBtn = container.querySelector(`#mgr-remove-${cssEscape(p.id)}`);
+  const confirmEl = container.querySelector(`#mgr-remove-confirm-${cssEscape(p.id)}`);
+  removeBtn.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    removeBtn.style.display = "none";
+    confirmEl.style.display = "inline";
+  });
+  confirmEl.querySelector(".mgr-remove-no").addEventListener("click", (e)=>{
+    e.stopPropagation();
+    confirmEl.style.display = "none";
+    removeBtn.style.display = "inline-block";
+  });
+  confirmEl.querySelector(".mgr-remove-yes").addEventListener("click", async (e)=>{
+    e.stopPropagation();
+    await removeProfileFromCloud(p.id);
+    managerView.rows = managerView.rows.filter(r=>r.id!==p.id);
+    renderManagerZone();
+  });
+}
+
+function cssEscape(str){
+  return String(str).replace(/[^a-zA-Z0-9_-]/g, "");
+}
+
+async function removeProfileFromCloud(id){
+  if(!cloudConfigured()) return;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+  }catch(e){ console.error("remove failed", e); }
+}
+
+function mgrRowStatus(p){
+  if(p.pct >= 100) return "done";
+  const d = dayNumber(p.start_date);
+  const expected = Math.min(100, Math.round((d/10)*100));
+  return (expected - p.pct >= 20) ? "behind" : "ontrack";
+}
+
+async function verifyManagerAccess(){
+  const name = document.getElementById("mgr-name-select").value;
+  const code = document.getElementById("mgr-code-input").value.trim().toUpperCase();
+  const errEl = document.getElementById("mgr-error");
+  errEl.style.display = "none";
+  if(!name || !code || !cloudConfigured()){
+    errEl.textContent = cloudConfigured() ? "Please choose your name and enter a code." : "Cloud sync isn't configured yet, so manager access isn't available.";
+    errEl.style.display = "block";
+    return;
+  }
+  try{
+    const checkRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=id&manager=eq.${encodeURIComponent(name)}&access_code=eq.${encodeURIComponent(code)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const checkData = await checkRes.json();
+    if(!checkRes.ok || !checkData.length){
+      errEl.style.display = "block";
+      return;
+    }
+    const teamRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&manager=eq.${encodeURIComponent(name)}&order=updated_at.desc`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const teamData = await teamRes.json();
+    managerView = { verified:true, name, rows: teamData || [] };
+    renderManagerZone();
+  }catch(e){
+    errEl.textContent = "Something went wrong reaching the database. Try again.";
+    errEl.style.display = "block";
+  }
+}
+
 /* ============ THEME ============ */
 const THEME_KEY = "onboarding-theme";
 async function loadTheme(){
@@ -903,6 +1197,7 @@ function updateCopyStatusVisibility(){
 
 (async function init(){
   initMenu();
+  initRoleToggle();
   const theme = await loadTheme();
   applyTheme(theme);
   state = await loadState();
