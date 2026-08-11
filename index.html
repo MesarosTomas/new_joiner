@@ -8,6 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
 :root{
+  color-scheme: light;
   --navy:#0D2480;
   --navy-ink:#101C3A;
   --cyan:#00AEEF;
@@ -28,6 +29,7 @@
   --radius:10px;
 }
 html[data-theme="dark"]{
+  color-scheme: dark;
   --navy:#13297A;
   --navy-ink:#EAF1FF;
   --cyan:#3FC4FF;
@@ -281,6 +283,7 @@ body{
 .task-main{flex:1 1 auto;min-width:0;}
 .task-text{font-size:14px;line-height:1.4;}
 .task-text.done{color:var(--slate);text-decoration:line-through;}
+.task-desc{font-size:12px;line-height:1.45;color:var(--ink-soft);margin-top:3px;}
 .task-tags{display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;}
 .tag-day{
   font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:4px;
@@ -293,7 +296,10 @@ body{
 .task-note{
   width:100%;margin-top:8px;padding:6px 9px;font-size:12.5px;border:1px solid var(--line);
   border-radius:5px;font-family:'Inter',sans-serif;resize:vertical;min-height:30px;
+  background:var(--paper);color:var(--ink);
 }
+.task-note::placeholder{color:var(--ink-soft);opacity:.8;}
+.task-note:focus{outline:2px solid var(--cyan);outline-offset:1px;}
 .footer-note{
   text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:30px;line-height:1.6;
 }
@@ -356,72 +362,72 @@ const COUNTRIES = [
 ];
 
 const ROLE_EXTRA = {
-  "Developer": {cat:"c3", day:5, text:"Dev tooling access requested (GitHub, IDE licences, sandbox system)"},
-  "SAP Consultant": {cat:"c5", day:5, text:"SAP Activate / Rollout methodology pages reviewed"},
-  "DM Consultant": {cat:"c5", day:5, text:"DMS Project Template space explored (Discover → Realize phases)"},
-  "Senior Consultant": {cat:"c5", day:4, text:"Assigned account/project context reviewed with manager"},
-  "Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
-  "Senior Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)"},
-  "Solution Architect": {cat:"c5", day:6, text:"Catalogue of the 73 predefined Business Processes reviewed"},
-  "Business Architect": {cat:"c5", day:6, text:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)"},
-  "Change Manager (OCM)": {cat:"c5", day:6, text:"OCM engagement model on DM projects reviewed"},
-  "QA / Test Engineer": {cat:"c4", day:6, text:"Test case / bug tracking conventions in Jira reviewed"}
+  "Developer": {cat:"c3", day:5, text:"Dev tooling access requested (GitHub, IDE licences, sandbox system)", desc:"Extra access on top of standard IT setup, specific to development work."},
+  "SAP Consultant": {cat:"c5", day:5, text:"SAP Activate / Rollout methodology pages reviewed", desc:"The methodology framework behind how Syntax runs client rollouts."},
+  "DM Consultant": {cat:"c5", day:5, text:"DMS Project Template space explored (Discover → Realize phases)", desc:"The core template used across all DM projects, structured by phase."},
+  "Senior Consultant": {cat:"c5", day:4, text:"Assigned account/project context reviewed with manager", desc:"A short walkthrough of the account you'll be working on and its current status."},
+  "Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)", desc:"How project status reporting works depending on project size."},
+  "Senior Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)", desc:"How project status reporting works depending on project size."},
+  "Solution Architect": {cat:"c5", day:6, text:"Catalogue of the 73 predefined Business Processes reviewed", desc:"The full BP catalogue used to scope and configure customer solutions."},
+  "Business Architect": {cat:"c5", day:6, text:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)", desc:"How customer processes get mapped to business processes during selection workshops."},
+  "Change Manager (OCM)": {cat:"c5", day:6, text:"OCM engagement model on DM projects reviewed", desc:"How change management typically integrates into a DM rollout."},
+  "QA / Test Engineer": {cat:"c4", day:6, text:"Test case / bug tracking conventions in Jira reviewed", desc:"Naming, labelling and workflow conventions used for testing tickets."}
 };
 
 const CATEGORIES = [
   {id:"c1", num:"01", title:"SAP SuccessFactors", owner:"Team Lead / HR", tasks:[
-    {day:1, text:"Profile set up — photo and personal info added"},
-    {day:1, text:"Contract details verified"},
-    {day:10, text:"SMART goals discussed / created"},
-    {day:7, text:"Learning Hub explored, mandatory trainings started"}
+    {day:1, text:"Profile set up — photo and personal info added", desc:"Your employee profile is the base for HR records and appears across internal systems."},
+    {day:1, text:"Contract details verified", desc:"Check start date, role, and reporting line are correctly reflected."},
+    {day:10, text:"SMART goals discussed / created", desc:"First goal-setting conversation with your manager — sets the frame for your first review."},
+    {day:7, text:"Learning Hub explored, mandatory trainings started", desc:"Includes compliance and security trainings due within your first weeks."}
   ]},
   {id:"c2", num:"02", title:"eHuman", note:"SK team only", owner:"HR · SK team only", tasks:[
-    {day:1, text:"First login done, password changed (default: 123)"},
-    {day:2, text:"First HomeOffice / Office request submitted"},
-    {day:3, text:"Attendance records checked and correct"}
+    {day:1, text:"First login done, password changed (default: 123)", desc:"Slovak attendance & HR system. Default password must be changed on first login."},
+    {day:2, text:"First HomeOffice / Office request submitted", desc:"Test the request flow you'll use regularly for HomeOffice / office attendance."},
+    {day:3, text:"Attendance records checked and correct", desc:"Confirm your first working days are logged correctly."}
   ]},
   {id:"c3", num:"03", title:"IT Help Desk", owner:"IT Help Desk", tasks:[
-    {day:1, text:"Laptop & equipment received and set up"},
-    {day:7, text:"SAP S/4HANA Login — ticket created / solved"},
-    {day:7, text:"Cisco VPN — ticket created / solved"},
-    {day:7, text:"Single Sign-On (SSO) — ticket created / solved"},
-    {day:7, text:"SIRION access — ticket created / solved"},
-    {day:8, text:"Manage My Timesheet (S/4HANA) — access confirmed, first hours booked"},
-    {day:8, text:"SAP Analytics Cloud (SAC) — access confirmed, resource calendar checked"}
+    {day:1, text:"Laptop & equipment received and set up", desc:"Hardware, chargers, headset — flag anything missing right away."},
+    {day:7, text:"SAP S/4HANA Login — ticket created / solved", desc:"Core ERP access. Needed before any client system work."},
+    {day:7, text:"Cisco VPN — ticket created / solved", desc:"Required for accessing internal and client networks remotely."},
+    {day:7, text:"Single Sign-On (SSO) — ticket created / solved", desc:"Unified login used across most internal tools."},
+    {day:7, text:"SIRION access — ticket created / solved", desc:"Contract and vendor management platform."},
+    {day:8, text:"Manage My Timesheet (S/4HANA) — access confirmed, first hours booked", desc:"Replaces the old CAT2/ECC time entry. This is where you'll log hours going forward."},
+    {day:8, text:"SAP Analytics Cloud (SAC) — access confirmed, resource calendar checked", desc:"Shows your planned staffing/resource allocation across projects."}
   ]},
   {id:"c4", num:"04", title:"Jira", owner:"{manager}", tasks:[
-    {day:5, text:"Jira licence requested from {manager}"},
-    {day:7, text:"Logged in and explored DM dashboard"},
-    {day:10, text:"Familiar with Task / Story / Bug / Epic types"}
+    {day:5, text:"Jira licence requested from {manager}", desc:"Needed to see and work on project tasks."},
+    {day:7, text:"Logged in and explored DM dashboard", desc:"Get familiar with how your project's board and backlog are structured."},
+    {day:10, text:"Familiar with Task / Story / Bug / Epic types", desc:"Know which issue type to use when creating or updating tickets."}
   ]},
   {id:"c5", num:"05", title:"Confluence", owner:"Self-guided", tasks:[
-    {day:3, text:"DMS space and main sections explored"},
-    {day:4, text:"PL Handbook read (Project Leads section)"},
-    {day:5, text:"Lessons Learned page reviewed"}
+    {day:3, text:"DMS space and main sections explored", desc:"Internal knowledge base — templates, processes, project documentation."},
+    {day:4, text:"PL Handbook read (Project Leads section)", desc:"Single source of truth for how Project Leads work day-to-day."},
+    {day:5, text:"Lessons Learned page reviewed", desc:"Real examples of what worked (and didn't) on past rollouts."}
   ]},
   {id:"c6", num:"06", title:"Cisco VPN", owner:"IT Help Desk", tasks:[
-    {day:3, text:"VPN access ticket submitted via IT Help Desk"},
-    {day:5, text:"Cisco Secure Client installed"},
-    {day:5, text:"VPN tested — login with company email works"}
+    {day:3, text:"VPN access ticket submitted via IT Help Desk", desc:"Same ticket as under IT Help Desk — tracked here for visibility."},
+    {day:5, text:"Cisco Secure Client installed", desc:"Client software needed to actually connect."},
+    {day:5, text:"VPN tested — login with company email works", desc:"Confirm you can connect before you need it for client work."}
   ]},
   {id:"c7", num:"07", title:"Mural", owner:"{manager}", tasks:[
-    {day:4, text:"Access to all relevant Mural boards requested from {manager} (team meetings, demos, project boards)"},
-    {day:10, text:"Key Mural boards explored (retros, workshops, demo boards)"}
+    {day:4, text:"Access to all relevant Mural boards requested from {manager} (team meetings, demos, project boards)", desc:"Covers boards used for team meetings, workshops, demos and project planning."},
+    {day:10, text:"Key Mural boards explored (retros, workshops, demo boards)", desc:"Get a feel for how the team runs retros and workshop sessions."}
   ]},
   {id:"c8", num:"08", title:"Sirion", owner:"IT Help Desk", tasks:[
-    {day:2, text:"Sirion access ticket created via IT Help Desk"},
-    {day:5, text:"First login and contract repository explored"}
+    {day:2, text:"Sirion access ticket created via IT Help Desk", desc:"Same request flow as other IT Help Desk tickets."},
+    {day:5, text:"First login and contract repository explored", desc:"Where client contracts and vendor documents are stored."}
   ]},
   {id:"c9", num:"09", title:"Smartsheets", owner:"Toni Schmidt", tasks:[
-    {day:3, text:"Access requested from Toni Schmidt"},
-    {day:7, text:"Monthly forecasting process understood"},
-    {day:10, text:"KPI fields familiar: Budget, AC, Status indicators"}
+    {day:3, text:"Access requested from Toni Schmidt", desc:"Used for project forecasting and budget controlling."},
+    {day:7, text:"Monthly forecasting process understood", desc:"Recurring update of current + next 2 months, then moved to 'ready for controlling'."},
+    {day:10, text:"KPI fields familiar: Budget, AC, Status indicators", desc:"Core metrics used to report project health in controlling calls."}
   ]},
   {id:"c10", num:"10", title:"Teams & SharePoint", owner:"{manager}", tasks:[
-    {day:7, text:"Added to project Teams channel by {manager}"},
-    {day:4, text:"Added to all relevant Teams groups and chats (team, project, general DM channels)"},
-    {day:5, text:"SharePoint / OneDrive access received from {manager}"},
-    {day:7, text:"All key links saved as browser bookmarks"}
+    {day:7, text:"Added to project Teams channel by {manager}", desc:"Where day-to-day project communication happens."},
+    {day:4, text:"Added to all relevant Teams groups and chats (team, project, general DM channels)", desc:"Covers your team channel, project channel(s), and general DM community chats."},
+    {day:5, text:"SharePoint / OneDrive access received from {manager}", desc:"Shared project files, templates, and working documents."},
+    {day:7, text:"All key links saved as browser bookmarks", desc:"Small habit that saves real time later — Jira, Confluence, SAC, Smartsheets, etc."}
   ]}
 ];
 
@@ -429,18 +435,78 @@ const STORAGE_KEY = "onboarding-profile";
 let state = null;
 let taskIndex = [];
 
-async function loadState(){
+/* ============ CLOUD SYNC (Supabase) ============
+   Paste your project's values here — see Settings → API in Supabase.
+   Until filled in, the app still works fully on localStorage,
+   it just won't sync to the Manager Dashboard. */
+const SUPABASE_URL = "https://yhyjmqntyckdqutpqjhq.supabase.co";       // e.g. "https://xxxxx.supabase.co"
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloeWptcW50eWNrZHF1dHBxamhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0NDg1NTksImV4cCI6MjEwMjAyNDU1OX0._LRdlp3C5qs4I_lOROMpVduHGK9YotFkikyllbvZeVg";  // the public "anon" key (safe to expose client-side)
+
+function cloudConfigured(){ return !!SUPABASE_URL && !!SUPABASE_ANON_KEY; }
+
+async function syncProfileToCloud(){
+  if(!cloudConfigured() || !state) return;
   try{
-    const r = await window.storage.get(STORAGE_KEY, false);
-    return r ? JSON.parse(r.value) : null;
-  }catch(e){ return null; }
+    const idx = buildTasks(state);
+    const total = idx.length;
+    const done = idx.filter(t=>state.tasks[t.tid]).length;
+    const payload = {
+      id: state.id,
+      name: state.name,
+      position: state.position,
+      manager: state.manager,
+      country: state.country,
+      start_date: state.startDate,
+      total_tasks: total,
+      done_tasks: done,
+      pct: total ? Math.round((done/total)*100) : 0,
+      updated_at: new Date().toISOString()
+    };
+    await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "resolution=merge-duplicates"
+      },
+      body: JSON.stringify(payload)
+    });
+  }catch(e){ console.error("cloud sync failed", e); }
+}
+
+/* Works inside Claude.ai artifacts (window.storage) AND on a standalone
+   deployment like Vercel (falls back to localStorage there automatically). */
+async function kvGet(key){
+  if(typeof window.storage !== "undefined"){
+    try{ const r = await window.storage.get(key, false); return r ? r.value : null; }
+    catch(e){ return null; }
+  }
+  try{ return localStorage.getItem(key); }catch(e){ return null; }
+}
+async function kvSet(key, value){
+  if(typeof window.storage !== "undefined"){
+    try{ await window.storage.set(key, value, false); return; }catch(e){}
+  }
+  try{ localStorage.setItem(key, value); }catch(e){}
+}
+async function kvDelete(key){
+  if(typeof window.storage !== "undefined"){
+    try{ await window.storage.delete(key, false); return; }catch(e){}
+  }
+  try{ localStorage.removeItem(key); }catch(e){}
+}
+
+async function loadState(){
+  const v = await kvGet(STORAGE_KEY);
+  return v ? JSON.parse(v) : null;
 }
 async function saveState(){
-  try{ await window.storage.set(STORAGE_KEY, JSON.stringify(state), false); }
-  catch(e){ console.error("save failed", e); }
+  await kvSet(STORAGE_KEY, JSON.stringify(state));
+  await syncProfileToCloud();
 }
 async function clearState(){
-  try{ await window.storage.delete(STORAGE_KEY, false); }catch(e){}
+  await kvDelete(STORAGE_KEY);
   state = null;
 }
 
@@ -463,7 +529,7 @@ function buildTasks(profile){
       idc++;
       const tid = "t"+idc;
       const text = t.text.replace("{manager}", profile.manager);
-      list.push({tid, catId:cat.id, day:t.day, text, role: !!t.role});
+      list.push({tid, catId:cat.id, day:t.day, text, desc: t.desc||"", role: !!t.role});
     });
   });
   return list;
@@ -579,7 +645,8 @@ function renderSetupZone(){
         const other = document.getElementById("f-manager-other").value.trim();
         manager = other || "your manager";
       }
-      state = { name, position, manager, country, startDate, tasks:{}, notes:{} };
+      const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
+      state = { id: profileId, name, position, manager, country, startDate, tasks:{}, notes:{} };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -728,6 +795,7 @@ function renderOpList(currentDay){
         <input type="checkbox" ${isDone ? "checked":""} data-tid="${t.tid}">
         <div class="task-main">
           <div class="task-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
+          ${t.desc ? `<div class="task-desc">${escapeHtml(t.desc)}</div>` : ""}
           <div class="task-tags">
             <span class="tag-day ${overdue?'attention':''}">Day ${t.day}${overdue?' · due':''}</span>
             ${t.role ? `<span class="tag-role">Role-specific</span>` : ""}
@@ -773,13 +841,11 @@ function renderAll(){
 /* ============ THEME ============ */
 const THEME_KEY = "onboarding-theme";
 async function loadTheme(){
-  try{
-    const r = await window.storage.get(THEME_KEY, false);
-    return r ? r.value : "light";
-  }catch(e){ return "light"; }
+  const v = await kvGet(THEME_KEY);
+  return v || "light";
 }
 async function saveTheme(t){
-  try{ await window.storage.set(THEME_KEY, t, false); }catch(e){}
+  await kvSet(THEME_KEY, t);
 }
 function applyTheme(t){
   if(t === "dark"){ document.documentElement.setAttribute("data-theme","dark"); }
