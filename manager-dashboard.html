@@ -172,7 +172,8 @@ async function fetchProfiles(){
 function computeStatus(p){
   if(p.pct >= 100) return "done";
   const currentDay = dayNumber(p.start_date);
-  const expectedPct = Math.min(100, Math.round((currentDay/10)*100));
+  const target = p.target_days || 10;
+  const expectedPct = Math.min(100, Math.round((currentDay/target)*100));
   return (expectedPct - p.pct >= 20) ? "behind" : "ontrack";
 }
 
