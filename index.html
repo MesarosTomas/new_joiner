@@ -257,6 +257,27 @@ body{
 .mgr-chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-bottom:4px;min-height:14px;}
 .mgr-chart-bar{width:100%;max-width:34px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--cyan),var(--navy));transition:height .3s ease;}
 .mgr-chart-label{font-size:10.5px;color:var(--ink-soft);margin-top:6px;}
+.mgr-list-controls{display:flex;gap:10px;margin-bottom:14px;}
+.mgr-list-controls input, .mgr-list-controls select{
+  padding:9px 12px;border:1px solid var(--line);border-radius:7px;font-size:13px;background:var(--card);color:var(--ink);
+  font-family:'Inter',sans-serif;
+}
+.mgr-list-controls input{flex:1;}
+.compare-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
+.compare-name{flex:0 0 110px;font-size:12px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.compare-track{flex:1;height:8px;border-radius:20px;background:var(--slate-soft);overflow:hidden;}
+.compare-fill{height:100%;border-radius:20px;transition:width .3s ease;}
+.compare-pct{flex:0 0 38px;text-align:right;font-size:11px;color:var(--ink-soft);}
+.mgr-target-days{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--cyan-soft);border-radius:8px;
+  padding:10px 14px;margin-bottom:16px;
+}
+.mgr-target-label{font-size:12px;font-weight:600;color:var(--navy-ink);}
+.mgr-target-days select{
+  padding:6px 10px;border:1px solid var(--cyan);border-radius:6px;font-size:12.5px;background:var(--card);color:var(--ink);
+  font-family:'Inter',sans-serif;
+}
+.mgr-target-hint{font-size:11px;color:var(--ink-soft);}
 .pin-reminder{
   display:flex;align-items:center;gap:10px;background:var(--cyan-soft);border:1px dashed var(--cyan);
   border-radius:8px;padding:9px 14px;margin-bottom:16px;font-size:12.5px;color:var(--navy-ink);
@@ -605,7 +626,8 @@ async function resumeFromCode(){
     state = {
       id: r.id, name: r.name, position: r.position, manager: r.manager,
       country: r.country, startDate: r.start_date, accessCode: r.access_code,
-      tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || []
+      tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || [],
+      targetDays: r.target_days || 10
     };
     await kvSet(STORAGE_KEY, JSON.stringify(state));
     renderAll();
@@ -638,6 +660,7 @@ async function syncProfileToCloud(){
       tasks: state.tasks,
       notes: state.notes,
       custom_tasks: state.customTasks || [],
+      target_days: state.targetDays || 10,
       updated_at: new Date().toISOString()
     };
     const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles`, {
@@ -843,7 +866,7 @@ function renderSetupZone(){
       }
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
       const accessCode = genAccessCode();
-      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{}, customTasks:[] };
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10 };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -873,7 +896,7 @@ function renderSetupZone(){
             <span><b>${escapeHtml(state.position)}</b></span>
             <span>${escapeHtml(state.country||"")}</span>
             <span>Manager: <b>${escapeHtml(state.manager)}</b></span>
-            <span>Day <b>${currentDay}</b> of routing · started ${formatDate(state.startDate)}</span>
+            <span>Day <b>${currentDay}</b> of ${state.targetDays || 10} · started ${formatDate(state.startDate)}</span>
           </div>
         </div>
         <div class="pct">
@@ -1132,6 +1155,15 @@ function renderManagerZone(){
       <div class="mgr-stat"><div class="num mono">${behindCount}</div><div class="lbl">Behind schedule</div></div>
     </div>
     ${renderJoinsChart(rows)}
+    ${renderTeamCompareChart(rows)}
+    <div class="mgr-list-controls">
+      <input type="text" id="mgr-search" placeholder="Search by name...">
+      <select id="mgr-sort">
+        <option value="behind">Sort: most behind first</option>
+        <option value="recent">Sort: recently updated</option>
+        <option value="name">Sort: name (A–Z)</option>
+      </select>
+    </div>
     <div id="mgr-rows"></div>
   `;
   if(managerView.pin){
@@ -1147,12 +1179,31 @@ function renderManagerZone(){
     renderManagerZone();
   });
 
+  document.getElementById("mgr-search").addEventListener("input", renderMgrRows);
+  document.getElementById("mgr-sort").addEventListener("change", renderMgrRows);
+  renderMgrRows();
+}
+
+function renderMgrRows(){
+  const rows = managerView.rows;
   const rowsWrap = document.getElementById("mgr-rows");
   if(!rows.length){
     rowsWrap.innerHTML = `<div class="locked-zone">No joiners found under your name yet.</div>`;
     return;
   }
-  rowsWrap.innerHTML = rows.map(p=>{
+  const search = (document.getElementById("mgr-search").value || "").toLowerCase();
+  const sort = document.getElementById("mgr-sort").value;
+  let list = rows.filter(p=> !search || (p.name||"").toLowerCase().includes(search));
+  if(sort === "behind") list.sort((a,b)=>(a.pct||0)-(b.pct||0));
+  else if(sort === "recent") list.sort((a,b)=> new Date(b.updated_at) - new Date(a.updated_at));
+  else list.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+
+  if(!list.length){
+    rowsWrap.innerHTML = `<div class="locked-zone">No one matches that search.</div>`;
+    return;
+  }
+
+  rowsWrap.innerHTML = list.map(p=>{
     const status = mgrRowStatus(p);
     const statusTxt = status==="done" ? "Completed" : status==="behind" ? "Behind" : "On track";
     const d = dayNumber(p.start_date);
@@ -1160,7 +1211,7 @@ function renderManagerZone(){
       <div class="mgr-row-wrap">
         <div class="mgr-row" data-id="${escapeHtml(p.id)}" style="cursor:pointer;">
           <div class="name">${escapeHtml(p.name)}</div>
-          <div class="meta">${escapeHtml(p.position)} · Day ${d}</div>
+          <div class="meta">${escapeHtml(p.position)} · Day ${d} of ${p.target_days||10}</div>
           <div class="bar-wrap">
             <div class="bar-track"><div class="bar-fill" style="width:${p.pct||0}%"></div></div>
             <div class="pct-txt">${p.done_tasks||0}/${p.total_tasks||0} · ${p.pct||0}% · ${statusTxt}</div>
@@ -1188,6 +1239,29 @@ function renderManagerZone(){
     });
   });
 }
+
+function renderTeamCompareChart(rows){
+  if(!rows.length) return "";
+  const sorted = [...rows].sort((a,b)=>(a.pct||0)-(b.pct||0));
+  const barsHtml = sorted.map(p=>{
+    const status = mgrRowStatus(p);
+    const colorVar = status==="done" ? "var(--green)" : status==="behind" ? "var(--coral)" : "var(--cyan)";
+    return `
+      <div class="compare-row">
+        <div class="compare-name">${escapeHtml(p.name)}</div>
+        <div class="compare-track"><div class="compare-fill" style="width:${p.pct||0}%;background:${colorVar};"></div></div>
+        <div class="compare-pct mono">${p.pct||0}%</div>
+      </div>
+    `;
+  }).join("");
+  return `
+    <div class="mgr-chart-card">
+      <div class="mgr-chart-title">Team progress · lowest first</div>
+      ${barsHtml}
+    </div>
+  `;
+}
+
 
 function renderMgrDetail(container, p){
   const tasks = p.tasks || {};
@@ -1220,6 +1294,13 @@ function renderMgrDetail(container, p){
 
   container.innerHTML = `
     <div class="mgr-detail-inner">
+      <div class="mgr-target-days">
+        <span class="mgr-target-label">Target onboarding length:</span>
+        <select id="mgr-target-days-${id}">
+          ${[5,7,10,15,20,30].map(n=>`<option value="${n}" ${n===(p.target_days||10)?'selected':''}>${n} days</option>`).join("")}
+        </select>
+        <span class="mgr-target-hint">Adjusts what counts as "on track" for this person only.</span>
+      </div>
       ${catBlocks}
       <button class="mgr-add-task-btn" id="mgr-add-task-${id}">+ Add task</button>
       <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:none;">
@@ -1240,6 +1321,19 @@ function renderMgrDetail(container, p){
       </span>
     </div>
   `;
+
+  container.querySelector(`#mgr-target-days-${id}`).addEventListener("change", async (e)=>{
+    const newDays = parseInt(e.target.value, 10);
+    e.target.disabled = true;
+    const ok = await updateTargetDaysInCloud(p.id, newDays);
+    if(ok){
+      p.target_days = newDays;
+      const rowInList = managerView.rows.find(r=>r.id===p.id);
+      if(rowInList) rowInList.target_days = newDays;
+      renderManagerZone();
+    }
+    e.target.disabled = false;
+  });
 
   const addBtn = container.querySelector(`#mgr-add-task-${id}`);
   const addForm = container.querySelector(`#mgr-add-task-form-${id}`);
@@ -1293,6 +1387,23 @@ function renderMgrDetail(container, p){
     managerView.rows = managerView.rows.filter(r=>r.id!==p.id);
     renderManagerZone();
   });
+}
+
+async function updateTargetDaysInCloud(profileId, targetDays){
+  if(!cloudConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ target_days: targetDays })
+    });
+    return res.ok;
+  }catch(e){ console.error("update target days failed", e); return false; }
 }
 
 async function addCustomTaskToCloud(profileId, newTask){
@@ -1369,7 +1480,8 @@ function renderJoinsChart(rows){
 function mgrRowStatus(p){
   if(p.pct >= 100) return "done";
   const d = dayNumber(p.start_date);
-  const expected = Math.min(100, Math.round((d/10)*100));
+  const target = p.target_days || 10;
+  const expected = Math.min(100, Math.round((d/target)*100));
   return (expected - p.pct >= 20) ? "behind" : "ontrack";
 }
 
@@ -1580,25 +1692,30 @@ function updateCopyStatusVisibility(){
 async function mergeCustomTasksFromCloud(){
   if(!cloudConfigured() || !state || !state.id) return;
   try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(state.id)}`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks,target_days&id=eq.${encodeURIComponent(state.id)}`, {
       headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
     });
     if(!res.ok) return;
     const rows = await res.json();
     if(!rows.length) return;
     const cloudCustom = rows[0].custom_tasks || [];
-    if(!cloudCustom.length) return;
-    state.customTasks = state.customTasks || [];
-    const existingIds = new Set(state.customTasks.map(t=>t.id));
-    let added = false;
-    cloudCustom.forEach(ct=>{
-      if(!existingIds.has(ct.id)){
-        state.customTasks.push(ct);
-        added = true;
-      }
-    });
-    if(added) await kvSet(STORAGE_KEY, JSON.stringify(state));
-  }catch(e){ console.error("merge custom tasks failed", e); }
+    let changed = false;
+    if(cloudCustom.length){
+      state.customTasks = state.customTasks || [];
+      const existingIds = new Set(state.customTasks.map(t=>t.id));
+      cloudCustom.forEach(ct=>{
+        if(!existingIds.has(ct.id)){
+          state.customTasks.push(ct);
+          changed = true;
+        }
+      });
+    }
+    if(rows[0].target_days && rows[0].target_days !== state.targetDays){
+      state.targetDays = rows[0].target_days;
+      changed = true;
+    }
+    if(changed) await kvSet(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){ console.error("merge from cloud failed", e); }
 }
 
 (async function init(){
