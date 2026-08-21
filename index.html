@@ -5,27 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syntax · Onboarding Routing</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
 :root{
   color-scheme: light;
   --navy:#0D2480;
-  --navy-ink:#101C3A;
+  --navy-ink:#0A1B4D;
   --cyan:#00AEEF;
-  --cyan-soft:#DDF2FC;
+  --cyan-soft:#E8F6FD;
   --green:#5BAE3E;
-  --green-soft:#E3F3DC;
-  --ink:#141C2E;
-  --ink-soft:#4A5568;
-  --paper:#EEF1F6;
+  --green-soft:#EAF6E5;
+  --ink:#1D2733;
+  --ink-soft:#5B6B7C;
+  --paper:#F5F6F8;
   --card:#FFFFFF;
-  --line:#DBE2EE;
-  --amber:#A8791F;
-  --amber-soft:#F3E7C9;
-  --slate:#8B93A0;
-  --slate-soft:#E7E9EC;
-  --coral:#B94A38;
-  --coral-soft:#F5DAD2;
+  --line:#E4E8ED;
+  --amber:#9C6A1E;
+  --amber-soft:#FBF1DD;
+  --slate:#8A94A0;
+  --slate-soft:#EEF0F3;
+  --coral:#B3402E;
+  --coral-soft:#FBE7E2;
   --radius:10px;
 }
 html[data-theme="dark"]{
@@ -59,23 +59,24 @@ body{
   min-height:100vh;
 }
 .mono{font-family:'IBM Plex Mono',monospace;}
-.display{font-family:'Space Grotesk',sans-serif;}
+.display{font-family:'Inter',sans-serif;}
 
 #app{max-width:900px;margin:0 auto;padding:32px 20px 80px;}
 
 .wordmark{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;
+  margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--line);
 }
 .wordmark .brand{
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:12px;
 }
-.wordmark .brand img{height:22px;width:auto;display:block;}
-.wordmark .brand .divider{color:var(--line);font-size:14px;}
+.wordmark .brand img{height:26px;width:auto;display:block;}
+.wordmark .brand .divider{display:none;}
 .wordmark .brand .label{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-soft);
+  font-family:'Inter',sans-serif;font-weight:600;
+  font-size:12.5px;letter-spacing:.01em;text-transform:none;
+  color:var(--navy);background:var(--card);border:1.5px solid var(--cyan);
+  border-radius:20px;padding:4px 12px;
 }
 .wordmark .reset-link{
   font-size:12px;color:var(--ink-soft);background:none;border:none;
@@ -92,12 +93,12 @@ body{
 .menu-trigger:hover{border-color:var(--cyan);color:var(--navy);}
 .menu-dropdown{
   display:none;position:absolute;right:0;top:38px;background:var(--card);border:1px solid var(--line);
-  border-radius:10px;box-shadow:0 6px 18px rgba(13,36,128,.14);padding:12px;min-width:220px;z-index:20;
+  border-radius:8px;box-shadow:0 6px 18px rgba(13,36,128,.14);padding:12px;min-width:220px;z-index:20;
 }
 .menu-dropdown.open{display:block;}
 .menu-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line);}
 .menu-row span{font-size:12.5px;color:var(--ink-soft);font-weight:600;}
-.theme-toggle{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+.theme-toggle{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
 .theme-toggle button{
   padding:5px 9px;background:var(--card);border:none;cursor:pointer;font-size:11.5px;color:var(--ink-soft);
   border-right:1px solid var(--line);
@@ -105,10 +106,65 @@ body{
 .theme-toggle button:last-child{border-right:none;}
 .theme-toggle button.active{background:var(--navy);color:#fff;font-weight:600;}
 .menu-action{
-  width:100%;text-align:left;padding:8px 10px;background:transparent;border:1px solid var(--line);border-radius:6px;
+  width:100%;text-align:left;padding:8px 10px;background:transparent;border:1px solid var(--line);border-radius:8px;
   font-size:12.5px;color:var(--ink);cursor:pointer;font-family:'Inter',sans-serif;
 }
 .menu-action:hover{border-color:var(--cyan);}
+
+.lang-toggle{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.lang-toggle button{
+  padding:5px 9px;background:var(--card);border:none;cursor:pointer;font-size:14px;
+  border-right:1px solid var(--line);
+}
+.lang-toggle button:last-child{border-right:none;}
+.lang-toggle button.active{background:var(--cyan-soft);}
+
+.page-loader{
+  position:fixed;inset:0;background:var(--paper);z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .25s ease;
+}
+.page-loader.hidden{opacity:0;pointer-events:none;}
+.page-loader-spinner{
+  width:34px;height:34px;border-radius:50%;border:3px solid var(--line);
+  border-top-color:var(--navy);animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.congrats-banner{
+  background:linear-gradient(135deg,var(--green),#3f8f2c);color:#fff;border-radius:12px;
+  padding:22px 26px;margin-bottom:20px;text-align:center;
+}
+.congrats-banner .emoji{font-size:32px;margin-bottom:6px;}
+.congrats-banner h3{font-size:18px;margin:0 0 4px;}
+.congrats-banner p{font-size:13px;margin:0;opacity:.92;}
+.congrats-banner button{
+  margin-top:14px;padding:9px 18px;background:#fff;color:var(--green);border:none;border-radius:8px;
+  font-weight:600;font-size:13px;cursor:pointer;
+}
+
+.feedback-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:14px;}
+.feedback-box textarea{
+  width:100%;min-height:80px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);background:var(--card);resize:vertical;margin-bottom:10px;
+}
+.feedback-thanks{color:var(--green);font-size:13px;font-weight:600;}
+
+.admin-section{margin-bottom:24px;}
+.admin-section h3{font-size:14px;margin:0 0 10px;color:var(--navy-ink);}
+.audit-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;align-items:baseline;flex-wrap:wrap;}
+.audit-row:last-child{border-bottom:none;}
+.audit-time{color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:10.5px;flex:0 0 auto;}
+.audit-text{flex:1 1 200px;}
+.feedback-row{padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px;}
+.feedback-row:last-child{border-bottom:none;}
+.feedback-row .who{font-weight:600;color:var(--navy-ink);}
+.feedback-row .msg{margin-top:3px;color:var(--ink);}
+.template-row{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.template-row input, .template-row select{
+  padding:6px 9px;border:1px solid var(--line);border-radius:6px;font-size:12px;background:var(--card);color:var(--ink);
+}
+.template-row input[type=text]{flex:1;min-width:140px;}
 
 .setup-card{
   background:var(--card);
@@ -123,7 +179,7 @@ body{
   text-transform:uppercase;color:var(--cyan);margin-bottom:10px;font-weight:600;
 }
 .setup-card h1{
-  font-family:'Space Grotesk',sans-serif;font-size:25px;font-weight:600;
+  font-family:'Inter',sans-serif;font-size:25px;font-weight:600;
   margin:0 0 8px;line-height:1.25;color:var(--navy-ink);
 }
 .setup-card p.sub{
@@ -138,12 +194,12 @@ body{
 .field input[type=text],
 .field input[type=date],
 .field select{
-  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:7px;
+  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
   font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);
   background:var(--card);
 }
 .field input:focus,.field select:focus{outline:2px solid var(--cyan);outline-offset:1px;}
-.segmented{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.segmented{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
 .segmented button{
   flex:1;padding:10px 10px;background:var(--card);border:none;cursor:pointer;
   font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink-soft);
@@ -165,33 +221,38 @@ body{
   padding:16px;text-align:left;
 }
 .resume-box input{
-  width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:6px;font-size:13.5px;
+  width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;
   margin-bottom:10px;background:var(--card);color:var(--ink);font-family:'IBM Plex Mono',monospace;
   text-transform:uppercase;
 }
 .resume-submit{
-  width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:6px;
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;
+  width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:8px;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;
 }
 .resume-submit:hover{background:var(--cyan);}
 .resume-submit:disabled{background:var(--slate);cursor:not-allowed;}
 .resume-error{color:var(--coral);font-size:12px;margin-top:8px;}
 .cta{
-  padding:13px 22px;background:var(--navy);color:#fff;border:none;
-  border-radius:7px;font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;
-  cursor:pointer;margin-top:6px;letter-spacing:.01em;
+  padding:11px 22px;background:var(--navy);color:#fff;border:1px solid var(--navy);
+  border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;margin-top:6px;letter-spacing:normal;text-transform:none;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:background .12s ease, color .12s ease, box-shadow .12s ease;
+  box-shadow:0 1px 2px rgba(13,36,128,.12);
 }
-.cta:hover{background:var(--cyan);}
-.cta:disabled{background:var(--slate);cursor:not-allowed;}
+.cta:hover{background:#0a1c66;border-color:#0a1c66;}
+.cta:disabled{background:var(--slate);border-color:var(--slate);cursor:not-allowed;box-shadow:none;}
 
 .summary-bar{
-  background:var(--navy);color:#fff;border-radius:var(--radius);
-  padding:20px 26px;margin-bottom:22px;
+  background:var(--navy);
+  color:#fff;border-radius:12px;
+  padding:22px 30px;margin-bottom:22px;
+  box-shadow:0 2px 8px rgba(13,36,128,.18);
   display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px;
 }
+.summary-bar .corner{display:none;}
 .summary-bar .who h2{
-  font-family:'Space Grotesk',sans-serif;font-size:19px;margin:0 0 5px;font-weight:600;
+  font-family:'Inter',sans-serif;font-size:19px;margin:0 0 5px;font-weight:600;
 }
 .summary-bar .who .meta{
   font-size:12.5px;color:#B9C6EE;display:flex;gap:14px;flex-wrap:wrap;
@@ -204,11 +265,11 @@ body{
 .summary-bar .pct .lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9AAAD8;margin-top:2px;}
 
 .progress-track{
-  width:100%;height:8px;border-radius:20px;background:rgba(255,255,255,.16);
+  width:100%;height:8px;border-radius:8px;background:rgba(255,255,255,.16);
   overflow:hidden;margin-top:18px;
 }
 .progress-fill{
-  height:100%;border-radius:20px;
+  height:100%;border-radius:8px;
   background:linear-gradient(90deg, var(--cyan), var(--green));
   transition:width .5s ease;
 }
@@ -216,12 +277,18 @@ body{
 .role-toggle-bar{display:flex;gap:8px;margin-bottom:22px;}
 .role-toggle-bar button{
   flex:1;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;color:var(--ink-soft);cursor:pointer;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;color:var(--ink-soft);cursor:pointer;
 }
 .role-toggle-bar button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
 .mgr-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 34px;margin-bottom:22px;box-shadow:0 1px 2px rgba(13,36,128,.05);}
-.mgr-card h1{font-family:'Space Grotesk',sans-serif;font-size:22px;margin:0 0 8px;color:var(--navy-ink);}
+.admin-link-wrap{text-align:center;}
+.admin-link{
+  background:none;border:none;color:var(--ink-soft);font-size:12px;cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px;font-family:'Inter',sans-serif;
+}
+.admin-link:hover{color:var(--navy);}
+.mgr-card h1{font-family:'Inter',sans-serif;font-size:22px;margin:0 0 8px;color:var(--navy-ink);}
 .mgr-card p.sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
 .mgr-code-box{background:var(--cyan-soft);border:1px dashed var(--cyan);border-radius:8px;padding:12px 16px;margin-top:14px;}
 .mgr-code-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);font-weight:600;margin-bottom:4px;}
@@ -238,7 +305,7 @@ body{
   display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:17px;
   box-shadow:0 1px 3px rgba(13,36,128,.12);
 }
-.pin-box-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;color:var(--navy-ink);margin-bottom:6px;}
+.pin-box-title{font-family:'Inter',sans-serif;font-weight:600;font-size:16px;color:var(--navy-ink);margin-bottom:6px;}
 .pin-box-sub{font-size:12.5px;color:var(--ink-soft);line-height:1.5;max-width:340px;margin:0 auto 18px;}
 .pin-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;text-align:left;}
 .pin-label{display:block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;}
@@ -255,18 +322,18 @@ body{
 .mgr-chart-bars{display:flex;align-items:flex-end;gap:12px;height:110px;}
 .mgr-chart-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;}
 .mgr-chart-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-bottom:4px;min-height:14px;}
-.mgr-chart-bar{width:100%;max-width:34px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,var(--cyan),var(--navy));transition:height .3s ease;}
+.mgr-chart-bar{width:100%;max-width:34px;border-radius:8px 5px 0 0;background:linear-gradient(180deg,var(--cyan),var(--navy));transition:height .3s ease;}
 .mgr-chart-label{font-size:10.5px;color:var(--ink-soft);margin-top:6px;}
 .mgr-list-controls{display:flex;gap:10px;margin-bottom:14px;}
 .mgr-list-controls input, .mgr-list-controls select{
-  padding:9px 12px;border:1px solid var(--line);border-radius:7px;font-size:13px;background:var(--card);color:var(--ink);
+  padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:var(--card);color:var(--ink);
   font-family:'Inter',sans-serif;
 }
 .mgr-list-controls input{flex:1;}
 .compare-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
 .compare-name{flex:0 0 110px;font-size:12px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.compare-track{flex:1;height:8px;border-radius:20px;background:var(--slate-soft);overflow:hidden;}
-.compare-fill{height:100%;border-radius:20px;transition:width .3s ease;}
+.compare-track{flex:1;height:8px;border-radius:8px;background:var(--slate-soft);overflow:hidden;}
+.compare-fill{height:100%;border-radius:8px;transition:width .3s ease;}
 .compare-pct{flex:0 0 38px;text-align:right;font-size:11px;color:var(--ink-soft);}
 .mgr-target-days{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--cyan-soft);border-radius:8px;
@@ -274,7 +341,7 @@ body{
 }
 .mgr-target-label{font-size:12px;font-weight:600;color:var(--navy-ink);}
 .mgr-target-days select{
-  padding:6px 10px;border:1px solid var(--cyan);border-radius:6px;font-size:12.5px;background:var(--card);color:var(--ink);
+  padding:6px 10px;border:1px solid var(--cyan);border-radius:8px;font-size:12.5px;background:var(--card);color:var(--ink);
   font-family:'Inter',sans-serif;
 }
 .mgr-target-hint{font-size:11px;color:var(--ink-soft);}
@@ -284,34 +351,58 @@ body{
 }
 .pin-reminder .pin-value{font-family:'IBM Plex Mono',monospace;font-weight:600;letter-spacing:.08em;}
 .pin-reveal-btn{
-  margin-left:auto;background:none;border:1px solid var(--navy);color:var(--navy);border-radius:5px;
+  margin-left:auto;background:none;border:1px solid var(--navy);color:var(--navy);border-radius:8px;
   padding:3px 10px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;
 }
 .mgr-stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;}
-.mgr-stat .num{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--navy-ink);}
+.mgr-stat .num{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:var(--navy-ink);}
 .mgr-stat .lbl{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
 .mgr-row{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.mgr-row .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;flex:1 1 160px;}
+.mgr-row .name{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;flex:1 1 160px;}
 .mgr-row .meta{font-size:11.5px;color:var(--ink-soft);flex:1 1 100%;margin-top:2px;}
 .mgr-row .bar-wrap{flex:1 1 160px;}
-.mgr-row .bar-track{width:100%;height:6px;border-radius:20px;background:var(--slate-soft);overflow:hidden;}
-.mgr-row .bar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--cyan),var(--green));}
+.mgr-row .bar-track{width:100%;height:6px;border-radius:8px;background:var(--slate-soft);overflow:hidden;}
+.mgr-row .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--cyan),var(--green));}
 .mgr-row .pct-txt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
 .mgr-back{font-size:12.5px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;}
 .mgr-detail-inner{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:16px 18px;margin-top:-11px;margin-bottom:10px;}
 .mgr-detail-cat{margin-bottom:14px;}
-.mgr-detail-cat-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12.5px;color:var(--navy-ink);margin-bottom:6px;}
+.mgr-detail-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--navy-ink);margin-bottom:6px;}
 .mgr-detail-task{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:12.5px;}
 .mgr-detail-check{flex:0 0 auto;}
 .mgr-detail-text.done{color:var(--slate);text-decoration:line-through;}
 .mgr-detail-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:2px;}
-.mgr-remove-btn{margin-top:8px;padding:7px 12px;background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:6px;font-size:12px;cursor:pointer;}
+.mgr-section-label{
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
+  margin:16px 0 8px;
+}
+.mgr-section-label.rec-label{color:var(--navy);}
+.mgr-empty-note{font-size:12.5px;color:var(--ink-soft);font-style:italic;padding:6px 0 4px;}
+.rec-wrap{background:var(--paper);border-radius:8px;padding:4px 10px;}
+.rec-task{
+  display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
+}
+.rec-task:last-child{border-bottom:none;}
+.rec-task-main{flex:1 1 200px;min-width:150px;}
+.rec-task-text{font-size:12.5px;color:var(--ink);}
+.rec-task-desc{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+.rec-task-day{
+  padding:5px 8px;border:1px solid var(--line);border-radius:8px;font-size:11.5px;background:var(--card);color:var(--ink);
+  flex:0 0 auto;
+}
+.rec-task-add{
+  padding:5px 12px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:11.5px;
+  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;flex:0 0 auto;white-space:nowrap;
+}
+.rec-task-add:hover{background:var(--cyan);}
+.rec-task-add:disabled{background:var(--slate);cursor:not-allowed;}
+.mgr-remove-btn{margin-top:8px;padding:7px 12px;background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:8px;font-size:12px;cursor:pointer;}
 .mgr-remove-confirm{font-size:12px;color:var(--coral);display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
-.mgr-remove-yes{background:var(--coral);color:#fff;border:none;border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
-.mgr-remove-no{background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:4px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
+.mgr-remove-yes{background:var(--coral);color:#fff;border:none;border-radius:8px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
+.mgr-remove-no{background:transparent;border:1px solid var(--coral);color:var(--coral);border-radius:8px;padding:4px 9px;font-size:11.5px;cursor:pointer;}
 .mgr-add-task-btn{
   margin-top:6px;margin-right:8px;padding:7px 12px;background:transparent;border:1px solid var(--cyan);color:var(--navy);
-  border-radius:6px;font-size:12px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-weight:600;
+  border-radius:8px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;
 }
 .mgr-add-task-form{
   background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px;margin-bottom:10px;
@@ -319,15 +410,15 @@ body{
 .mgr-add-task-form input[type=text],
 .mgr-add-task-form textarea,
 .mgr-add-task-form select{
-  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;
   font-family:'Inter',sans-serif;margin-bottom:8px;background:var(--card);color:var(--ink);
 }
 .mgr-add-task-form textarea{min-height:50px;resize:vertical;}
 .mgr-newtask-row{display:flex;gap:8px;align-items:center;}
 .mgr-newtask-row select{margin-bottom:0;flex:1;}
 .mgr-newtask-row button{
-  padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12.5px;
-  font-weight:600;cursor:pointer;font-family:'Space Grotesk',sans-serif;white-space:nowrap;
+  padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12.5px;
+  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;
 }
 .mgr-newtask-row button:hover{background:var(--cyan);}
 .mgr-newtask-row button:disabled{background:var(--slate);cursor:not-allowed;}
@@ -345,14 +436,14 @@ body{
   display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:16px;
 }
 .locked-zone .lock-title{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--navy-ink);margin-bottom:6px;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:15px;color:var(--navy-ink);margin-bottom:6px;
 }
 .locked-zone .lock-sub{font-size:13px;line-height:1.5;max-width:380px;margin:0 auto;}
 .locked-preview{
   display:flex;gap:8px;justify-content:center;margin-top:26px;opacity:.45;flex-wrap:wrap;
 }
 .locked-preview .ghost{
-  width:64px;height:34px;border-radius:6px;background:var(--slate-soft);
+  width:64px;height:34px;border-radius:8px;background:var(--slate-soft);
 }
 
 .routing-strip{
@@ -388,12 +479,12 @@ body{
   display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;
 }
 .op-head .op-num{
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--navy);
-  background:var(--cyan-soft);border-radius:50%;width:26px;height:26px;
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;color:var(--navy);
+  background:var(--cyan-soft);border:none;border-radius:20px;min-width:26px;height:22px;padding:0 9px;
   display:flex;align-items:center;justify-content:center;flex:0 0 auto;
 }
 .op-head .op-title{
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15.5px;flex:1 1 auto;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:15.5px;flex:1 1 auto;
 }
 .op-head .op-owner{
   font-size:12px;color:var(--ink-soft);flex:0 0 auto;display:none;
@@ -427,16 +518,16 @@ body{
 .task-desc{font-size:12px;line-height:1.45;color:var(--ink-soft);margin-top:3px;}
 .task-tags{display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;}
 .tag-day{
-  font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:4px;
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 7px;border-radius:8px;
   background:var(--slate-soft);color:var(--ink-soft);
 }
 .tag-day.attention{background:var(--coral-soft);color:var(--coral);}
 .tag-role{
-  font-size:10.5px;padding:2px 7px;border-radius:4px;background:var(--cyan-soft);color:var(--navy);
+  font-size:10.5px;padding:2px 7px;border-radius:8px;background:var(--cyan-soft);color:var(--navy);
 }
 .task-note{
   width:100%;margin-top:8px;padding:6px 9px;font-size:12.5px;border:1px solid var(--line);
-  border-radius:5px;font-family:'Inter',sans-serif;resize:vertical;min-height:30px;
+  border-radius:8px;font-family:'Inter',sans-serif;resize:vertical;min-height:30px;
   background:var(--paper);color:var(--ink);
 }
 .task-note::placeholder{color:var(--ink-soft);opacity:.8;}
@@ -464,7 +555,15 @@ body{
       <button class="menu-trigger" id="menu-trigger" aria-label="Settings">⚙</button>
       <div class="menu-dropdown" id="menu-dropdown">
         <div class="menu-row">
-          <span>Theme</span>
+          <span data-i18n="menu_language">Language</span>
+          <div class="lang-toggle" id="lang-toggle">
+            <button data-lang="en" class="active" title="English">🇬🇧</button>
+            <button data-lang="de" title="Deutsch">🇩🇪</button>
+            <button data-lang="sk" title="Slovenčina">🇸🇰</button>
+          </div>
+        </div>
+        <div class="menu-row">
+          <span data-i18n="menu_theme">Theme</span>
           <div class="theme-toggle" id="theme-toggle">
             <button data-theme="light" class="active">☀ Light</button>
             <button data-theme="dark">☾ Dark</button>
@@ -474,23 +573,206 @@ body{
       </div>
     </div>
     <button class="reset-link" id="reset-btn" style="display:none;">Start a new routing</button>
-    <span id="reset-confirm" style="display:none;font-size:12px;color:#fff;background:var(--coral);padding:5px 10px;border-radius:6px;align-items:center;gap:8px;">
+    <span id="reset-confirm" style="display:none;font-size:12px;color:#fff;background:var(--coral);padding:5px 10px;border-radius:8px;align-items:center;gap:8px;">
       Clear progress and start over?
-      <button id="reset-yes" style="background:#fff;color:var(--coral);border:none;border-radius:4px;padding:3px 8px;font-size:11.5px;font-weight:600;cursor:pointer;">Yes, reset</button>
-      <button id="reset-no" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:4px;padding:3px 8px;font-size:11.5px;cursor:pointer;">Cancel</button>
+      <button id="reset-yes" style="background:#fff;color:var(--coral);border:none;border-radius:8px;padding:3px 8px;font-size:11.5px;font-weight:600;cursor:pointer;">Yes, reset</button>
+      <button id="reset-no" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:8px;padding:3px 8px;font-size:11.5px;cursor:pointer;">Cancel</button>
     </span>
   </div>
   <div class="role-toggle-bar" id="role-toggle-bar">
-    <button data-role="joiner" class="active">🧑‍💻 New Joiner</button>
-    <button data-role="manager">🧑‍💼 Team Manager</button>
+    <button data-role="joiner" class="active" data-i18n="role_joiner">🧑‍💻 New Joiner</button>
+    <button data-role="manager" data-i18n="role_manager">🧑‍💼 Team Manager</button>
+    <button data-role="buddy" data-i18n="role_buddy">🤝 Buddy</button>
   </div>
   <div id="setup-zone"></div>
-  <div class="section-label">Your routing</div>
+  <div class="section-label" data-i18n="section_your_routing">Your routing</div>
   <div id="dashboard-zone"></div>
   <div id="manager-zone" style="display:none;"></div>
+  <div id="buddy-zone" style="display:none;"></div>
+  <div id="admin-zone" style="display:none;"></div>
 </div>
+<div id="page-loader" class="page-loader"><div class="page-loader-spinner"></div></div>
 
 <script>
+/* ============ TRANSLATIONS (EN / DE / SK) ============ */
+let currentLang = "en";
+const LANG_KEY = "onboarding-lang";
+
+const TRANSLATIONS = {
+  en: {
+    role_joiner:"🧑‍💻 New Joiner", role_manager:"🧑‍💼 Team Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    section_your_routing:"Your routing", menu_language:"Language", menu_theme:"Theme",
+    cat_role_specific:"Role-specific",
+    setup_eyebrow:"Routing header · create", setup_h1:"Let's set up your routing.",
+    setup_sub:"A few details, and you'll get your resume code — your manager or buddy will then assign your first tasks from the recommended list.",
+    label_name:"Your name", placeholder_name:"First name Surname",
+    label_start_date:"Start date", label_position:"Position", label_manager:"Team manager",
+    label_country:"Country / Region", placeholder_choose:"Choose...", placeholder_manager_other:"Manager name",
+    button_release:"Release routing →", error_choose_all:"Please choose a position, manager and country before releasing.",
+    resume_toggle:"Already started? Resume with your code", resume_placeholder:"Your resume code",
+    resume_button:"Find my routing", resume_error:"No routing found for that code. Double-check it and try again.",
+    locked_title:"Waiting for routing release",
+    locked_sub:"Fill in the details above and press <b>Release routing</b> to get your code — your manager or buddy will assign your first tasks shortly after.",
+    empty_tasks_title:"No tasks assigned yet",
+    empty_tasks_sub:"Your manager or buddy hasn't assigned your first tasks yet. Share your resume code with them if you haven't already — they'll pick your tasks from the recommended list shortly.",
+    footer_note:"Welcome to the team! Questions about any operation? <b>Ask your buddy or manager.</b>",
+    strip_title:"Routing overview",
+    reset_link:"Start a new routing", reset_confirm_text:"Clear progress and start over?", reset_yes:"Yes, reset", reset_no:"Cancel",
+    copy_status:"📋 Copy status update",
+    op_completed:"Completed", op_inprocess:"In process", op_notstarted:"Not started",
+    day_word:"Day", of_word:"of", started_word:"started", confirmed_word:"Confirmed",
+    resume_code_label:"Your personal resume code",
+    resume_code_hint:"Save this somewhere safe. If you accidentally reset or switch devices, use \"Resume with your code\" to get your progress back — no need to redo anything.",
+    manager_eyebrow:"Team manager · access", manager_h1:"View your team's onboarding",
+    manager_sub:"Pick your name. First time here, you'll set your own PIN — after that, just enter it to get in. Nobody else, including Tomáš, sets or sees your PIN.",
+    label_your_name:"Your name",
+    pin_welcome_back:"Welcome back", pin_enter_sub:"Enter your PIN to open your team's dashboard.",
+    pin_first_time:"First time as", pin_set_sub:"Set a PIN (4+ characters) — you'll use this every time you come back. Nobody else will see it.",
+    pin_new:"New PIN", pin_confirm:"Confirm", button_set_pin:"Set PIN & continue →", button_view_team:"View my team →",
+    pin_error_wrong:"Incorrect PIN.", pin_error_mismatch:"PINs must match and be at least 4 characters.",
+    target_days_label:"Target onboarding length:", target_days_hint:"Adjusts what counts as \"on track\" for this person only.",
+    section_assigned:"Assigned tasks", section_recommended:"Recommended",
+    empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
+    empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
+    add_own_task:"+ Add your own task", task_name_ph:"Task name", task_desc_ph:"Description (optional)", button_add_task:"Add task",
+    remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
+    remove_yes:"Yes, remove", remove_no:"Cancel",
+    your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule",
+    search_by_name:"Search by name...", sort_behind:"Sort: most behind first", sort_recent:"Sort: recently updated", sort_name:"Sort: name (A–Z)",
+    back_link:"← Back",
+    buddy_eyebrow:"Buddy · access", buddy_h1:"Check in on your new joiner",
+    buddy_sub:"Enter the resume code they shared with you — you'll see their progress right away, and can assign their first tasks from the recommended list.",
+    label_their_code:"Their resume code", button_open_routing:"Open their routing →",
+    buddy_error:"No joiner found with that code. Double-check it and try again.",
+    admin_eyebrow:"Admin · access", admin_h1:"Manage the onboarding tool",
+    admin_sub:"Set your admin PIN the first time, then log in with it going forward.",
+    admin_pin_new:"New admin PIN", admin_pin_confirm:"Confirm admin PIN", admin_pin_enter:"Admin PIN",
+    admin_audit_title:"Recent activity", admin_feedback_title:"Feedback from new joiners", admin_templates_title:"Extra recommended tasks",
+    congrats_title:"🎉 Fully onboarded!", congrats_sub:"Every assigned task is complete. Nicely done.",
+    feedback_prompt:"What could be improved? Anything missing?", feedback_placeholder:"Your honest feedback helps make this better for the next person...",
+    feedback_submit:"Send feedback", feedback_thanks:"Thanks — your feedback was sent.",
+    status_on_track:"On track", status_behind:"Behind", status_done:"Completed"
+  },
+  de: {
+    role_joiner:"🧑‍💻 Neuer Mitarbeiter", role_manager:"🧑‍💼 Team-Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    section_your_routing:"Dein Routing", menu_language:"Sprache", menu_theme:"Design",
+    cat_role_specific:"Rollenspezifisch",
+    setup_eyebrow:"Routing-Kopf · erstellen", setup_h1:"Richten wir dein Routing ein.",
+    setup_sub:"Ein paar Angaben, und du erhältst deinen Wiederherstellungscode — dein Manager oder Buddy weist dir dann deine ersten Aufgaben aus der Empfehlungsliste zu.",
+    label_name:"Dein Name", placeholder_name:"Vorname Nachname",
+    label_start_date:"Startdatum", label_position:"Position", label_manager:"Team-Manager",
+    label_country:"Land / Region", placeholder_choose:"Auswählen...", placeholder_manager_other:"Name des Managers",
+    button_release:"Routing freigeben →", error_choose_all:"Bitte wähle Position, Manager und Land, bevor du freigibst.",
+    resume_toggle:"Schon gestartet? Mit deinem Code fortsetzen", resume_placeholder:"Dein Wiederherstellungscode",
+    resume_button:"Mein Routing finden", resume_error:"Kein Routing mit diesem Code gefunden. Bitte überprüfen und erneut versuchen.",
+    locked_title:"Warten auf Routing-Freigabe",
+    locked_sub:"Fülle die Angaben oben aus und klicke auf <b>Routing freigeben</b>, um deinen Code zu erhalten — dein Manager oder Buddy weist dir bald deine ersten Aufgaben zu.",
+    empty_tasks_title:"Noch keine Aufgaben zugewiesen",
+    empty_tasks_sub:"Dein Manager oder Buddy hat dir noch keine Aufgaben zugewiesen. Teile deinen Code, falls noch nicht geschehen — die ersten Aufgaben werden bald aus der Empfehlungsliste ausgewählt.",
+    footer_note:"Willkommen im Team! Fragen zu einer Aufgabe? <b>Frag deinen Buddy oder Manager.</b>",
+    strip_title:"Routing-Übersicht",
+    reset_link:"Neues Routing starten", reset_confirm_text:"Fortschritt löschen und neu starten?", reset_yes:"Ja, zurücksetzen", reset_no:"Abbrechen",
+    copy_status:"📋 Status kopieren",
+    op_completed:"Abgeschlossen", op_inprocess:"In Bearbeitung", op_notstarted:"Nicht begonnen",
+    day_word:"Tag", of_word:"von", started_word:"gestartet", confirmed_word:"Bestätigt",
+    resume_code_label:"Dein persönlicher Wiederherstellungscode",
+    resume_code_hint:"Bewahre diesen sicher auf. Falls du versehentlich zurücksetzt oder das Gerät wechselst, nutze \"Mit Code fortsetzen\", um deinen Fortschritt zurückzuholen.",
+    manager_eyebrow:"Team-Manager · Zugang", manager_h1:"Onboarding deines Teams ansehen",
+    manager_sub:"Wähle deinen Namen. Beim ersten Mal legst du deine eigene PIN fest — danach genügt die Eingabe. Niemand sonst, auch nicht Tomáš, legt deine PIN fest oder sieht sie.",
+    label_your_name:"Dein Name",
+    pin_welcome_back:"Willkommen zurück", pin_enter_sub:"Gib deine PIN ein, um das Dashboard deines Teams zu öffnen.",
+    pin_first_time:"Zum ersten Mal als", pin_set_sub:"Lege eine PIN fest (mind. 4 Zeichen) — du nutzt sie ab jetzt bei jeder Anmeldung. Niemand sonst sieht sie.",
+    pin_new:"Neue PIN", pin_confirm:"Bestätigen", button_set_pin:"PIN festlegen & weiter →", button_view_team:"Mein Team ansehen →",
+    pin_error_wrong:"Falsche PIN.", pin_error_mismatch:"Die PINs müssen übereinstimmen und mindestens 4 Zeichen lang sein.",
+    target_days_label:"Ziel-Onboarding-Dauer:", target_days_hint:"Beeinflusst nur für diese Person, was als \"im Zeitplan\" gilt.",
+    section_assigned:"Zugewiesene Aufgaben", section_recommended:"Empfohlen",
+    empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
+    empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", button_add_task:"Aufgabe hinzufügen",
+    remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
+    remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
+    your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand",
+    search_by_name:"Nach Name suchen...", sort_behind:"Sortieren: größter Rückstand zuerst", sort_recent:"Sortieren: zuletzt aktualisiert", sort_name:"Sortieren: Name (A–Z)",
+    back_link:"← Zurück",
+    buddy_eyebrow:"Buddy · Zugang", buddy_h1:"Fortschritt deines neuen Kollegen ansehen",
+    buddy_sub:"Gib den Code ein, den sie/er dir gegeben hat — du siehst sofort den Fortschritt und kannst erste Aufgaben aus der Empfehlungsliste zuweisen.",
+    label_their_code:"Ihr/sein Wiederherstellungscode", button_open_routing:"Routing öffnen →",
+    buddy_error:"Kein Mitarbeiter mit diesem Code gefunden. Bitte überprüfen und erneut versuchen.",
+    admin_eyebrow:"Admin · Zugang", admin_h1:"Onboarding-Tool verwalten",
+    admin_sub:"Lege beim ersten Mal deine Admin-PIN fest, danach meldest du dich damit an.",
+    admin_pin_new:"Neue Admin-PIN", admin_pin_confirm:"Admin-PIN bestätigen", admin_pin_enter:"Admin-PIN",
+    admin_audit_title:"Letzte Aktivitäten", admin_feedback_title:"Feedback von neuen Mitarbeitern", admin_templates_title:"Zusätzliche empfohlene Aufgaben",
+    congrats_title:"🎉 Vollständig onboardet!", congrats_sub:"Alle zugewiesenen Aufgaben sind abgeschlossen. Gut gemacht.",
+    feedback_prompt:"Was könnte besser sein? Hat etwas gefehlt?", feedback_placeholder:"Dein ehrliches Feedback hilft, das Ganze für die nächste Person zu verbessern...",
+    feedback_submit:"Feedback senden", feedback_thanks:"Danke — dein Feedback wurde gesendet.",
+    status_on_track:"Im Zeitplan", status_behind:"Im Rückstand", status_done:"Abgeschlossen"
+  },
+  sk: {
+    role_joiner:"🧑‍💻 Nový kolega", role_manager:"🧑‍💼 Team manažér", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    section_your_routing:"Tvoj routing", menu_language:"Jazyk", menu_theme:"Téma",
+    cat_role_specific:"Podľa role",
+    setup_eyebrow:"Hlavička routingu · vytvoriť", setup_h1:"Nastavme si tvoj routing.",
+    setup_sub:"Pár údajov a dostaneš svoj obnovovací kód — manažér alebo buddy ti potom priradí prvé úlohy zo zoznamu odporúčaní.",
+    label_name:"Tvoje meno", placeholder_name:"Meno Priezvisko",
+    label_start_date:"Dátum nástupu", label_position:"Pozícia", label_manager:"Team manažér",
+    label_country:"Krajina / Región", placeholder_choose:"Vyber...", placeholder_manager_other:"Meno manažéra",
+    button_release:"Spustiť routing →", error_choose_all:"Pred spustením prosím vyber pozíciu, manažéra a krajinu.",
+    resume_toggle:"Už si začal? Pokračuj so svojím kódom", resume_placeholder:"Tvoj obnovovací kód",
+    resume_button:"Nájsť môj routing", resume_error:"Pre tento kód sa nenašiel žiadny routing. Skontroluj ho a skús znova.",
+    locked_title:"Čaká sa na spustenie routingu",
+    locked_sub:"Vyplň údaje vyššie a klikni na <b>Spustiť routing</b>, aby si dostal svoj kód — manažér alebo buddy ti čoskoro priradí prvé úlohy.",
+    empty_tasks_title:"Zatiaľ žiadne pridelené úlohy",
+    empty_tasks_sub:"Tvoj manažér alebo buddy ti ešte nepridelil žiadne úlohy. Ak si tak ešte neurobil, zdieľaj s nimi svoj kód — čoskoro ti vyberú úlohy zo zoznamu odporúčaní.",
+    footer_note:"Vitaj v tíme! Otázky k niektorej úlohe? <b>Opýtaj sa svojho buddyho alebo manažéra.</b>",
+    strip_title:"Prehľad routingu",
+    reset_link:"Spustiť nový routing", reset_confirm_text:"Vymazať progress a začať odznova?", reset_yes:"Áno, resetovať", reset_no:"Zrušiť",
+    copy_status:"📋 Skopírovať status",
+    op_completed:"Dokončené", op_inprocess:"Prebieha", op_notstarted:"Nezačaté",
+    day_word:"Deň", of_word:"z", started_word:"začalo", confirmed_word:"Potvrdené",
+    resume_code_label:"Tvoj osobný obnovovací kód",
+    resume_code_hint:"Ulož si ho na bezpečné miesto. Ak omylom resetuješ alebo zmeníš zariadenie, použi \"Pokračuj so svojím kódom\" a dostaneš svoj progress späť.",
+    manager_eyebrow:"Team manažér · prístup", manager_h1:"Pozri si onboarding svojho tímu",
+    manager_sub:"Vyber svoje meno. Prvýkrát si nastavíš vlastný PIN — potom ho už len zadáš. Nikto iný, ani Tomáš, tvoj PIN nenastavuje ani nevidí.",
+    label_your_name:"Tvoje meno",
+    pin_welcome_back:"Vitaj späť", pin_enter_sub:"Zadaj svoj PIN, aby si otvoril dashboard svojho tímu.",
+    pin_first_time:"Prvýkrát ako", pin_set_sub:"Nastav si PIN (min. 4 znaky) — použiješ ho pri každom ďalšom prihlásení. Nikto iný ho neuvidí.",
+    pin_new:"Nový PIN", pin_confirm:"Potvrdiť", button_set_pin:"Nastaviť PIN a pokračovať →", button_view_team:"Zobraziť môj tím →",
+    pin_error_wrong:"Nesprávny PIN.", pin_error_mismatch:"PINy sa musia zhodovať a mať aspoň 4 znaky.",
+    target_days_label:"Cieľová dĺžka onboardingu:", target_days_hint:"Ovplyvňuje, čo sa počíta ako \"v poriadku\" len pre túto osobu.",
+    section_assigned:"Pridelené úlohy", section_recommended:"Odporúčané",
+    empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
+    empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
+    add_own_task:"+ Pridať vlastnú úlohu", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", button_add_task:"Pridať úlohu",
+    remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
+    remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
+    your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú",
+    search_by_name:"Hľadať podľa mena...", sort_behind:"Triediť: najviac pozadu", sort_recent:"Triediť: naposledy aktualizované", sort_name:"Triediť: meno (A–Z)",
+    back_link:"← Späť",
+    buddy_eyebrow:"Buddy · prístup", buddy_h1:"Pozri sa na svojho nového kolegu",
+    buddy_sub:"Zadaj kód, ktorý ti poslal — hneď uvidíš jeho progress a môžeš mu prideliť prvé úlohy zo zoznamu odporúčaní.",
+    label_their_code:"Jeho/jej obnovovací kód", button_open_routing:"Otvoriť routing →",
+    buddy_error:"Pre tento kód sa nenašiel žiadny kolega. Skontroluj ho a skús znova.",
+    admin_eyebrow:"Admin · prístup", admin_h1:"Správa onboarding nástroja",
+    admin_sub:"Prvýkrát si nastav admin PIN, potom sa ním prihlasuj.",
+    admin_pin_new:"Nový admin PIN", admin_pin_confirm:"Potvrdiť admin PIN", admin_pin_enter:"Admin PIN",
+    admin_audit_title:"Nedávna aktivita", admin_feedback_title:"Spätná väzba od nových kolegov", admin_templates_title:"Ďalšie odporúčané úlohy",
+    congrats_title:"🎉 Onboarding dokončený!", congrats_sub:"Všetky pridelené úlohy sú hotové. Skvelá práca.",
+    feedback_prompt:"Čo by sa dalo zlepšiť? Niečo chýbalo?", feedback_placeholder:"Tvoja úprimná spätná väzba pomôže vylepšiť to pre ďalšieho kolegu...",
+    feedback_submit:"Odoslať spätnú väzbu", feedback_thanks:"Ďakujeme — tvoja spätná väzba bola odoslaná.",
+    status_on_track:"V poriadku", status_behind:"Mešká", status_done:"Dokončené"
+  }
+};
+
+function t(key){
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || TRANSLATIONS.en[key] || key;
+}
+
+function applyStaticTranslations(){
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    el.textContent = t(el.dataset.i18n);
+  });
+}
+
 const POSITIONS = [
   "Developer","SAP Consultant","DM Consultant","Senior Consultant","Project Manager",
   "Senior Project Manager","Solution Architect","Business Architect",
@@ -508,72 +790,92 @@ const COUNTRIES = [
 ];
 
 const ROLE_EXTRA = {
-  "Developer": {cat:"c3", day:5, text:"Dev tooling access requested (GitHub, IDE licences, sandbox system)", desc:"Extra access on top of standard IT setup, specific to development work."},
-  "SAP Consultant": {cat:"c5", day:5, text:"SAP Activate / Rollout methodology pages reviewed", desc:"The methodology framework behind how Syntax runs client rollouts."},
-  "DM Consultant": {cat:"c5", day:5, text:"DMS Project Template space explored (Discover → Realize phases)", desc:"The core template used across all DM projects, structured by phase."},
-  "Senior Consultant": {cat:"c5", day:4, text:"Assigned account/project context reviewed with manager", desc:"A short walkthrough of the account you'll be working on and its current status."},
-  "Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)", desc:"How project status reporting works depending on project size."},
-  "Senior Project Manager": {cat:"c9", day:8, text:"Introduced to project reporting cadence (L / M / S call structure)", desc:"How project status reporting works depending on project size."},
-  "Solution Architect": {cat:"c5", day:6, text:"Catalogue of the 73 predefined Business Processes reviewed", desc:"The full BP catalogue used to scope and configure customer solutions."},
-  "Business Architect": {cat:"c5", day:6, text:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)", desc:"How customer processes get mapped to business processes during selection workshops."},
-  "Change Manager (OCM)": {cat:"c5", day:6, text:"OCM engagement model on DM projects reviewed", desc:"How change management typically integrates into a DM rollout."},
-  "QA / Test Engineer": {cat:"c4", day:6, text:"Test case / bug tracking conventions in Jira reviewed", desc:"Naming, labelling and workflow conventions used for testing tickets."}
+  "Developer": {cat:"c3", day:5,
+    text:{en:"Dev tooling access requested (GitHub, IDE licences, sandbox system)", de:"Dev-Tooling-Zugriff angefragt (GitHub, IDE-Lizenzen, Sandbox-System)", sk:"Vyžiadaný prístup k dev nástrojom (GitHub, IDE licencie, sandbox systém)"},
+    desc:{en:"Extra access on top of standard IT setup, specific to development work.", de:"Zusätzlicher Zugriff über das Standard-IT-Setup hinaus, spezifisch für die Entwicklungsarbeit.", sk:"Doplnkový prístup nad rámec štandardného IT setupu, špecifický pre vývojársku prácu."}},
+  "SAP Consultant": {cat:"c5", day:5,
+    text:{en:"SAP Activate / Rollout methodology pages reviewed", de:"SAP Activate / Rollout-Methodik-Seiten durchgesehen", sk:"Preštudované stránky SAP Activate / Rollout metodiky"},
+    desc:{en:"The methodology framework behind how Syntax runs client rollouts.", de:"Das methodische Rahmenwerk, nach dem Syntax Kunden-Rollouts durchführt.", sk:"Metodický rámec, podľa ktorého Syntax realizuje zákaznícke rollouty."}},
+  "DM Consultant": {cat:"c5", day:5,
+    text:{en:"DMS Project Template space explored (Discover → Realize phases)", de:"DMS Project Template Space erkundet (Phasen Discover → Realize)", sk:"Preskúmaný DMS Project Template priestor (fázy Discover → Realize)"},
+    desc:{en:"The core template used across all DM projects, structured by phase.", de:"Die zentrale Vorlage für alle DM-Projekte, gegliedert nach Phasen.", sk:"Základná šablóna používaná vo všetkých DM projektoch, štruktúrovaná podľa fáz."}},
+  "Senior Consultant": {cat:"c5", day:4,
+    text:{en:"Assigned account/project context reviewed with manager", de:"Zugewiesenen Account-/Projektkontext mit dem Manager besprochen", sk:"S manažérom prebratý kontext prideleného accountu/projektu"},
+    desc:{en:"A short walkthrough of the account you'll be working on and its current status.", de:"Ein kurzer Überblick über den Account, an dem du arbeiten wirst, und dessen aktuellen Status.", sk:"Krátke oboznámenie s accountom, na ktorom budeš pracovať, a jeho aktuálnym stavom."}},
+  "Project Manager": {cat:"c9", day:8,
+    text:{en:"Introduced to project reporting cadence (L / M / S call structure)", de:"Einführung in den Projekt-Reporting-Rhythmus (L / M / S Call-Struktur)", sk:"Predstavený rytmus projektového reportingu (štruktúra L / M / S callov)"},
+    desc:{en:"How project status reporting works depending on project size.", de:"Wie das Projektstatus-Reporting abhängig von der Projektgröße abläuft.", sk:"Ako funguje reportovanie stavu projektu v závislosti od veľkosti projektu."}},
+  "Senior Project Manager": {cat:"c9", day:8,
+    text:{en:"Introduced to project reporting cadence (L / M / S call structure)", de:"Einführung in den Projekt-Reporting-Rhythmus (L / M / S Call-Struktur)", sk:"Predstavený rytmus projektového reportingu (štruktúra L / M / S callov)"},
+    desc:{en:"How project status reporting works depending on project size.", de:"Wie das Projektstatus-Reporting abhängig von der Projektgröße abläuft.", sk:"Ako funguje reportovanie stavu projektu v závislosti od veľkosti projektu."}},
+  "Solution Architect": {cat:"c5", day:6,
+    text:{en:"Catalogue of the 73 predefined Business Processes reviewed", de:"Katalog der 73 vordefinierten Business Processes durchgesehen", sk:"Preštudovaný katalóg 73 preddefinovaných Business Processes"},
+    desc:{en:"The full BP catalogue used to scope and configure customer solutions.", de:"Der vollständige BP-Katalog zur Abgrenzung und Konfiguration von Kundenlösungen.", sk:"Kompletný katalóg BP používaný na vymedzenie a konfiguráciu zákazníckych riešení."}},
+  "Business Architect": {cat:"c5", day:6,
+    text:{en:"Template Build Workshop method reviewed (swim lanes: ERP / DM / POD / Orchestra)", de:"Template Build Workshop-Methode durchgesehen (Swimlanes: ERP / DM / POD / Orchestra)", sk:"Preštudovaná metóda Template Build Workshop (swim lanes: ERP / DM / POD / Orchestra)"},
+    desc:{en:"How customer processes get mapped to business processes during selection workshops.", de:"Wie Kundenprozesse in Auswahl-Workshops auf Business Processes gemappt werden.", sk:"Ako sa zákaznícke procesy mapujú na business processy počas selection workshopov."}},
+  "Change Manager (OCM)": {cat:"c5", day:6,
+    text:{en:"OCM engagement model on DM projects reviewed", de:"OCM-Einsatzmodell in DM-Projekten durchgesehen", sk:"Preštudovaný OCM engagement model v DM projektoch"},
+    desc:{en:"How change management typically integrates into a DM rollout.", de:"Wie Change Management typischerweise in einen DM-Rollout eingebunden wird.", sk:"Ako sa change management zvyčajne začleňuje do DM rolloutu."}},
+  "QA / Test Engineer": {cat:"c4", day:6,
+    text:{en:"Test case / bug tracking conventions in Jira reviewed", de:"Testfall-/Bugtracking-Konventionen in Jira durchgesehen", sk:"Preštudované konvencie pre test case / bug tracking v Jira"},
+    desc:{en:"Naming, labelling and workflow conventions used for testing tickets.", de:"Namens-, Label- und Workflow-Konventionen für Test-Tickets.", sk:"Konvencie pomenovávania, štítkov a workflow pre testovacie tickety."}}
 };
 
 const CATEGORIES = [
-  {id:"c1", num:"01", title:"SAP SuccessFactors", owner:"Team Lead / HR", tasks:[
-    {day:1, text:"Profile set up — photo and personal info added", desc:"Your employee profile is the base for HR records and appears across internal systems."},
-    {day:1, text:"Contract details verified", desc:"Check start date, role, and reporting line are correctly reflected."},
-    {day:10, text:"SMART goals discussed / created", desc:"First goal-setting conversation with your manager — sets the frame for your first review."},
-    {day:7, text:"Learning Hub explored, mandatory trainings started", desc:"Includes compliance and security trainings due within your first weeks."}
+  {id:"c1", num:"01", title:{en:"SAP SuccessFactors", de:"SAP SuccessFactors", sk:"SAP SuccessFactors"}, owner:"Team Lead / HR", tasks:[
+    {day:1, text:{en:"Profile set up — photo and personal info added", de:"Profil eingerichtet — Foto und persönliche Daten hinzugefügt", sk:"Nastavený profil — pridaná fotka a osobné údaje"}, desc:{en:"Your employee profile is the base for HR records and appears across internal systems.", de:"Dein Mitarbeiterprofil ist die Basis für HR-Daten und erscheint in internen Systemen.", sk:"Tvoj zamestnanecký profil je základ pre HR záznamy a zobrazuje sa v interných systémoch."}},
+    {day:1, text:{en:"Contract details verified", de:"Vertragsdetails überprüft", sk:"Overené zmluvné údaje"}, desc:{en:"Check start date, role, and reporting line are correctly reflected.", de:"Prüfe, ob Starttermin, Rolle und Reporting-Linie korrekt hinterlegt sind.", sk:"Skontroluj, či je správne uvedený dátum nástupu, rola a reporting línia."}},
+    {day:10, text:{en:"SMART goals discussed / created", de:"SMART-Ziele besprochen / erstellt", sk:"Prediskutované / vytvorené SMART ciele"}, desc:{en:"First goal-setting conversation with your manager — sets the frame for your first review.", de:"Erstes Zielgespräch mit deinem Manager — Grundlage für dein erstes Review.", sk:"Prvý rozhovor o cieľoch s manažérom — nastavuje rámec pre tvoje prvé hodnotenie."}},
+    {day:7, text:{en:"Learning Hub explored, mandatory trainings started", de:"Learning Hub erkundet, Pflichtschulungen gestartet", sk:"Preskúmaný Learning Hub, začaté povinné školenia"}, desc:{en:"Includes compliance and security trainings due within your first weeks.", de:"Beinhaltet Compliance- und Security-Schulungen, fällig in den ersten Wochen.", sk:"Zahŕňa compliance a bezpečnostné školenia, ktoré treba absolvovať v prvých týždňoch."}}
   ]},
-  {id:"c2", num:"02", title:"eHuman", note:"SK team only", owner:"HR · SK team only", tasks:[
-    {day:1, text:"First login done, password changed (default: 123)", desc:"Slovak attendance & HR system. Default password must be changed on first login."},
-    {day:2, text:"First HomeOffice / Office request submitted", desc:"Test the request flow you'll use regularly for HomeOffice / office attendance."},
-    {day:3, text:"Attendance records checked and correct", desc:"Confirm your first working days are logged correctly."}
+  {id:"c2", num:"02", title:{en:"eHuman", de:"eHuman", sk:"eHuman"}, note:"SK team only", owner:"HR · SK team only", tasks:[
+    {day:1, text:{en:"First login done, password changed (default: 123)", de:"Erster Login erledigt, Passwort geändert (Standard: 123)", sk:"Prvé prihlásenie hotové, zmenené heslo (predvolené: 123)"}, desc:{en:"Slovak attendance & HR system. Default password must be changed on first login.", de:"Slowakisches Anwesenheits- & HR-System. Standardpasswort muss beim ersten Login geändert werden.", sk:"Slovenský dochádzkový a HR systém. Predvolené heslo treba zmeniť pri prvom prihlásení."}},
+    {day:2, text:{en:"First HomeOffice / Office request submitted", de:"Erster HomeOffice-/Büro-Antrag eingereicht", sk:"Podaná prvá žiadosť o HomeOffice / prácu z kancelárie"}, desc:{en:"Test the request flow you'll use regularly for HomeOffice / office attendance.", de:"Teste den Antragsprozess, den du regelmäßig für HomeOffice/Büro-Anwesenheit nutzen wirst.", sk:"Vyskúšaj si postup žiadosti, ktorý budeš pravidelne používať pre HomeOffice / dochádzku."}},
+    {day:3, text:{en:"Attendance records checked and correct", de:"Anwesenheitsdaten geprüft und korrekt", sk:"Skontrolované a správne dochádzkové záznamy"}, desc:{en:"Confirm your first working days are logged correctly.", de:"Bestätige, dass deine ersten Arbeitstage korrekt erfasst sind.", sk:"Potvrď, že tvoje prvé pracovné dni sú správne zaznamenané."}}
   ]},
-  {id:"c3", num:"03", title:"IT Help Desk", owner:"IT Help Desk", tasks:[
-    {day:1, text:"Laptop & equipment received and set up", desc:"Hardware, chargers, headset — flag anything missing right away."},
-    {day:7, text:"SAP S/4HANA Login — ticket created / solved", desc:"Core ERP access. Needed before any client system work."},
-    {day:7, text:"Cisco VPN — ticket created / solved", desc:"Required for accessing internal and client networks remotely."},
-    {day:7, text:"Single Sign-On (SSO) — ticket created / solved", desc:"Unified login used across most internal tools."},
-    {day:7, text:"SIRION access — ticket created / solved", desc:"Contract and vendor management platform."},
-    {day:8, text:"Manage My Timesheet (S/4HANA) — access confirmed, first hours booked", desc:"Replaces the old CAT2/ECC time entry. This is where you'll log hours going forward."},
-    {day:8, text:"SAP Analytics Cloud (SAC) — access confirmed, resource calendar checked", desc:"Shows your planned staffing/resource allocation across projects."}
+  {id:"c3", num:"03", title:{en:"IT Help Desk", de:"IT Help Desk", sk:"IT Help Desk"}, owner:"IT Help Desk", tasks:[
+    {day:1, text:{en:"Laptop & equipment received and set up", de:"Laptop & Ausstattung erhalten und eingerichtet", sk:"Prevzatý a nastavený notebook a vybavenie"}, desc:{en:"Hardware, chargers, headset — flag anything missing right away.", de:"Hardware, Ladegeräte, Headset — melde fehlende Teile sofort.", sk:"Hardvér, nabíjačky, headset — chýbajúce veci nahlás okamžite."}},
+    {day:7, text:{en:"SAP S/4HANA Login — ticket created / solved", de:"SAP S/4HANA Login — Ticket erstellt / gelöst", sk:"SAP S/4HANA prihlásenie — ticket vytvorený / vyriešený"}, desc:{en:"Core ERP access. Needed before any client system work.", de:"Zentraler ERP-Zugang. Voraussetzung für jede Arbeit in Kundensystemen.", sk:"Základný prístup do ERP. Potrebný pred akoukoľvek prácou v zákazníckych systémoch."}},
+    {day:7, text:{en:"Cisco VPN — ticket created / solved", de:"Cisco VPN — Ticket erstellt / gelöst", sk:"Cisco VPN — ticket vytvorený / vyriešený"}, desc:{en:"Required for accessing internal and client networks remotely.", de:"Erforderlich für den Remote-Zugriff auf interne und Kundennetzwerke.", sk:"Potrebné pre vzdialený prístup do interných a zákazníckych sietí."}},
+    {day:7, text:{en:"Single Sign-On (SSO) — ticket created / solved", de:"Single Sign-On (SSO) — Ticket erstellt / gelöst", sk:"Single Sign-On (SSO) — ticket vytvorený / vyriešený"}, desc:{en:"Unified login used across most internal tools.", de:"Einheitlicher Login für die meisten internen Tools.", sk:"Jednotné prihlásenie používané naprieč väčšinou interných nástrojov."}},
+    {day:7, text:{en:"SIRION access — ticket created / solved", de:"SIRION-Zugang — Ticket erstellt / gelöst", sk:"SIRION prístup — ticket vytvorený / vyriešený"}, desc:{en:"Contract and vendor management platform.", de:"Plattform für Vertrags- und Lieferantenmanagement.", sk:"Platforma na správu zmlúv a dodávateľov."}},
+    {day:8, text:{en:"Manage My Timesheet (S/4HANA) — access confirmed, first hours booked", de:"Manage My Timesheet (S/4HANA) — Zugang bestätigt, erste Stunden gebucht", sk:"Manage My Timesheet (S/4HANA) — potvrdený prístup, zapísané prvé hodiny"}, desc:{en:"Replaces the old CAT2/ECC time entry. This is where you'll log hours going forward.", de:"Ersetzt die alte CAT2/ECC-Zeiterfassung. Hier trägst du künftig deine Stunden ein.", sk:"Nahrádza staré CAT2/ECC zapisovanie hodín. Tu budeš odteraz zapisovať svoje hodiny."}},
+    {day:8, text:{en:"SAP Analytics Cloud (SAC) — access confirmed, resource calendar checked", de:"SAP Analytics Cloud (SAC) — Zugang bestätigt, Ressourcenkalender geprüft", sk:"SAP Analytics Cloud (SAC) — potvrdený prístup, skontrolovaný resource kalendár"}, desc:{en:"Shows your planned staffing/resource allocation across projects.", de:"Zeigt deine geplante Ressourcen-/Personalzuteilung über Projekte hinweg.", sk:"Zobrazuje tvoje plánované obsadenie/alokáciu naprieč projektmi."}}
   ]},
-  {id:"c4", num:"04", title:"Jira", owner:"{manager}", tasks:[
-    {day:5, text:"Jira licence requested from {manager}", desc:"Needed to see and work on project tasks."},
-    {day:7, text:"Logged in and explored DM dashboard", desc:"Get familiar with how your project's board and backlog are structured."},
-    {day:10, text:"Familiar with Task / Story / Bug / Epic types", desc:"Know which issue type to use when creating or updating tickets."}
+  {id:"c4", num:"04", title:{en:"Jira", de:"Jira", sk:"Jira"}, owner:"{manager}", tasks:[
+    {day:5, text:{en:"Jira licence requested from {manager}", de:"Jira-Lizenz bei {manager} angefragt", sk:"Vyžiadaná Jira licencia od {manager}"}, desc:{en:"Needed to see and work on project tasks.", de:"Erforderlich, um Projektaufgaben zu sehen und zu bearbeiten.", sk:"Potrebné na zobrazenie a prácu na projektových úlohách."}},
+    {day:7, text:{en:"Logged in and explored DM dashboard", de:"Eingeloggt und DM-Dashboard erkundet", sk:"Prihlásený a preskúmaný DM dashboard"}, desc:{en:"Get familiar with how your project's board and backlog are structured.", de:"Mach dich mit dem Aufbau von Board und Backlog deines Projekts vertraut.", sk:"Oboznám sa so štruktúrou boardu a backlogu tvojho projektu."}},
+    {day:10, text:{en:"Familiar with Task / Story / Bug / Epic types", de:"Vertraut mit den Typen Task / Story / Bug / Epic", sk:"Oboznámený s typmi Task / Story / Bug / Epic"}, desc:{en:"Know which issue type to use when creating or updating tickets.", de:"Wisse, welchen Ticket-Typ du beim Erstellen oder Aktualisieren verwenden sollst.", sk:"Vedieť, aký typ ticketu použiť pri vytváraní alebo aktualizácii."}}
   ]},
-  {id:"c5", num:"05", title:"Confluence", owner:"Self-guided", tasks:[
-    {day:3, text:"DMS space and main sections explored", desc:"Internal knowledge base — templates, processes, project documentation."},
-    {day:4, text:"PL Handbook read (Project Leads section)", desc:"Single source of truth for how Project Leads work day-to-day."},
-    {day:5, text:"Lessons Learned page reviewed", desc:"Real examples of what worked (and didn't) on past rollouts."}
+  {id:"c5", num:"05", title:{en:"Confluence", de:"Confluence", sk:"Confluence"}, owner:"Self-guided", tasks:[
+    {day:3, text:{en:"DMS space and main sections explored", de:"DMS-Bereich und Hauptabschnitte erkundet", sk:"Preskúmaný DMS priestor a hlavné sekcie"}, desc:{en:"Internal knowledge base — templates, processes, project documentation.", de:"Interne Wissensdatenbank — Vorlagen, Prozesse, Projektdokumentation.", sk:"Interná znalostná databáza — šablóny, procesy, projektová dokumentácia."}},
+    {day:4, text:{en:"PL Handbook read (Project Leads section)", de:"PL-Handbuch gelesen (Abschnitt Project Leads)", sk:"Prečítaný PL Handbook (sekcia Project Leads)"}, desc:{en:"Single source of truth for how Project Leads work day-to-day.", de:"Zentrale Referenz für den Arbeitsalltag von Project Leads.", sk:"Hlavný zdroj informácií o dennodennej práci Project Leadov."}},
+    {day:5, text:{en:"Lessons Learned page reviewed", de:"Lessons-Learned-Seite durchgesehen", sk:"Preštudovaná stránka Lessons Learned"}, desc:{en:"Real examples of what worked (and didn't) on past rollouts.", de:"Reale Beispiele, was bei früheren Rollouts funktioniert hat (und was nicht).", sk:"Reálne príklady toho, čo pri predošlých rolloutoch fungovalo (a čo nie)."}}
   ]},
-  {id:"c6", num:"06", title:"Cisco VPN", owner:"IT Help Desk", tasks:[
-    {day:3, text:"VPN access ticket submitted via IT Help Desk", desc:"Same ticket as under IT Help Desk — tracked here for visibility."},
-    {day:5, text:"Cisco Secure Client installed", desc:"Client software needed to actually connect."},
-    {day:5, text:"VPN tested — login with company email works", desc:"Confirm you can connect before you need it for client work."}
+  {id:"c6", num:"06", title:{en:"Cisco VPN", de:"Cisco VPN", sk:"Cisco VPN"}, owner:"IT Help Desk", tasks:[
+    {day:3, text:{en:"VPN access ticket submitted via IT Help Desk", de:"VPN-Zugangsticket über IT Help Desk eingereicht", sk:"Podaný ticket na VPN prístup cez IT Help Desk"}, desc:{en:"Same ticket as under IT Help Desk — tracked here for visibility.", de:"Gleiches Ticket wie unter IT Help Desk — hier zur besseren Übersicht.", sk:"Rovnaký ticket ako v IT Help Desk — sledovaný tu pre prehľadnosť."}},
+    {day:5, text:{en:"Cisco Secure Client installed", de:"Cisco Secure Client installiert", sk:"Nainštalovaný Cisco Secure Client"}, desc:{en:"Client software needed to actually connect.", de:"Client-Software, die für die eigentliche Verbindung nötig ist.", sk:"Klientský softvér potrebný na samotné pripojenie."}},
+    {day:5, text:{en:"VPN tested — login with company email works", de:"VPN getestet — Login mit Firmen-E-Mail funktioniert", sk:"Otestované VPN — prihlásenie firemným emailom funguje"}, desc:{en:"Confirm you can connect before you need it for client work.", de:"Bestätige die Verbindung, bevor du sie für Kundenarbeit brauchst.", sk:"Over si pripojenie skôr, než ho budeš potrebovať pre prácu na projekte."}}
   ]},
-  {id:"c7", num:"07", title:"Mural", owner:"{manager}", tasks:[
-    {day:4, text:"Access to all relevant Mural boards requested from {manager} (team meetings, demos, project boards)", desc:"Covers boards used for team meetings, workshops, demos and project planning."},
-    {day:10, text:"Key Mural boards explored (retros, workshops, demo boards)", desc:"Get a feel for how the team runs retros and workshop sessions."}
+  {id:"c7", num:"07", title:{en:"Mural", de:"Mural", sk:"Mural"}, owner:"{manager}", tasks:[
+    {day:4, text:{en:"Access to all relevant Mural boards requested from {manager} (team meetings, demos, project boards)", de:"Zugang zu allen relevanten Mural-Boards bei {manager} angefragt (Team-Meetings, Demos, Projekt-Boards)", sk:"Vyžiadaný prístup ku všetkým relevantným Mural boardom od {manager} (team meetingy, demá, projektové boardy)"}, desc:{en:"Covers boards used for team meetings, workshops, demos and project planning.", de:"Umfasst Boards für Team-Meetings, Workshops, Demos und Projektplanung.", sk:"Zahŕňa boardy pre team meetingy, workshopy, demá a plánovanie projektu."}},
+    {day:10, text:{en:"Key Mural boards explored (retros, workshops, demo boards)", de:"Wichtige Mural-Boards erkundet (Retros, Workshops, Demo-Boards)", sk:"Preskúmané kľúčové Mural boardy (retrá, workshopy, demo boardy)"}, desc:{en:"Get a feel for how the team runs retros and workshop sessions.", de:"Bekomme ein Gefühl dafür, wie das Team Retros und Workshops gestaltet.", sk:"Získaj predstavu, ako tím vedie retrá a workshopové sedenia."}}
   ]},
-  {id:"c8", num:"08", title:"Sirion", owner:"IT Help Desk", tasks:[
-    {day:2, text:"Sirion access ticket created via IT Help Desk", desc:"Same request flow as other IT Help Desk tickets."},
-    {day:5, text:"First login and contract repository explored", desc:"Where client contracts and vendor documents are stored."}
+  {id:"c8", num:"08", title:{en:"Sirion", de:"Sirion", sk:"Sirion"}, owner:"IT Help Desk", tasks:[
+    {day:2, text:{en:"Sirion access ticket created via IT Help Desk", de:"Sirion-Zugangsticket über IT Help Desk erstellt", sk:"Vytvorený ticket na Sirion prístup cez IT Help Desk"}, desc:{en:"Same request flow as other IT Help Desk tickets.", de:"Gleicher Antragsprozess wie bei anderen IT-Help-Desk-Tickets.", sk:"Rovnaký postup žiadosti ako pri ostatných IT Help Desk ticketoch."}},
+    {day:5, text:{en:"First login and contract repository explored", de:"Erster Login und Vertragsablage erkundet", sk:"Prvé prihlásenie a preskúmanie repozitára zmlúv"}, desc:{en:"Where client contracts and vendor documents are stored.", de:"Speicherort für Kundenverträge und Lieferantendokumente.", sk:"Miesto, kde sa uchovávajú zákaznícke zmluvy a dodávateľské dokumenty."}}
   ]},
-  {id:"c9", num:"09", title:"Smartsheets", owner:"Toni Schmidt", tasks:[
-    {day:3, text:"Access requested from Toni Schmidt", desc:"Used for project forecasting and budget controlling."},
-    {day:7, text:"Monthly forecasting process understood", desc:"Recurring update of current + next 2 months, then moved to 'ready for controlling'."},
-    {day:10, text:"KPI fields familiar: Budget, AC, Status indicators", desc:"Core metrics used to report project health in controlling calls."}
+  {id:"c9", num:"09", title:{en:"Smartsheets", de:"Smartsheets", sk:"Smartsheets"}, owner:"Toni Schmidt", tasks:[
+    {day:3, text:{en:"Access requested from Toni Schmidt", de:"Zugang bei Toni Schmidt angefragt", sk:"Vyžiadaný prístup od Toni Schmidt"}, desc:{en:"Used for project forecasting and budget controlling.", de:"Wird für Projekt-Forecasting und Budget-Controlling verwendet.", sk:"Používa sa na projektový forecasting a rozpočtový controlling."}},
+    {day:7, text:{en:"Monthly forecasting process understood", de:"Monatlichen Forecasting-Prozess verstanden", sk:"Pochopený mesačný forecasting proces"}, desc:{en:"Recurring update of current + next 2 months, then moved to 'ready for controlling'.", de:"Wiederkehrendes Update für den aktuellen + die nächsten 2 Monate, dann Status 'ready for controlling'.", sk:"Pravidelná aktualizácia aktuálneho + nasledujúcich 2 mesiacov, potom presun do 'ready for controlling'."}},
+    {day:10, text:{en:"KPI fields familiar: Budget, AC, Status indicators", de:"KPI-Felder bekannt: Budget, AC, Status-Indikatoren", sk:"Oboznámenie s KPI poľami: Budget, AC, Status indikátory"}, desc:{en:"Core metrics used to report project health in controlling calls.", de:"Kernkennzahlen zur Berichterstattung des Projektstatus in Controlling-Calls.", sk:"Kľúčové metriky na reportovanie stavu projektu v controlling calloch."}}
   ]},
-  {id:"c10", num:"10", title:"Teams & SharePoint", owner:"{manager}", tasks:[
-    {day:7, text:"Added to project Teams channel by {manager}", desc:"Where day-to-day project communication happens."},
-    {day:4, text:"Added to all relevant Teams groups and chats (team, project, general DM channels)", desc:"Covers your team channel, project channel(s), and general DM community chats."},
-    {day:5, text:"SharePoint / OneDrive access received from {manager}", desc:"Shared project files, templates, and working documents."},
-    {day:7, text:"All key links saved as browser bookmarks", desc:"Small habit that saves real time later — Jira, Confluence, SAC, Smartsheets, etc."}
+  {id:"c10", num:"10", title:{en:"Teams & SharePoint", de:"Teams & SharePoint", sk:"Teams & SharePoint"}, owner:"{manager}", tasks:[
+    {day:7, text:{en:"Added to project Teams channel by {manager}", de:"Von {manager} zum Projekt-Teams-Kanal hinzugefügt", sk:"Pridaný do projektového Teams kanála od {manager}"}, desc:{en:"Where day-to-day project communication happens.", de:"Ort der täglichen Projektkommunikation.", sk:"Miesto, kde prebieha bežná projektová komunikácia."}},
+    {day:4, text:{en:"Added to all relevant Teams groups and chats (team, project, general DM channels)", de:"Zu allen relevanten Teams-Gruppen und Chats hinzugefügt (Team, Projekt, allgemeine DM-Kanäle)", sk:"Pridaný do všetkých relevantných Teams skupín a chatov (tím, projekt, všeobecné DM kanály)"}, desc:{en:"Covers your team channel, project channel(s), and general DM community chats.", de:"Umfasst deinen Team-Kanal, Projekt-Kanäle und allgemeine DM-Community-Chats.", sk:"Zahŕňa tvoj tímový kanál, projektové kanály a všeobecné DM komunitné chaty."}},
+    {day:5, text:{en:"SharePoint / OneDrive access received from {manager}", de:"SharePoint-/OneDrive-Zugang von {manager} erhalten", sk:"Získaný prístup do SharePoint / OneDrive od {manager}"}, desc:{en:"Shared project files, templates, and working documents.", de:"Geteilte Projektdateien, Vorlagen und Arbeitsdokumente.", sk:"Zdieľané projektové súbory, šablóny a pracovné dokumenty."}},
+    {day:7, text:{en:"All key links saved as browser bookmarks", de:"Alle wichtigen Links als Browser-Lesezeichen gespeichert", sk:"Uložené všetky kľúčové odkazy ako záložky v prehliadači"}, desc:{en:"Small habit that saves real time later — Jira, Confluence, SAC, Smartsheets, etc.", de:"Kleine Angewohnheit, die später viel Zeit spart — Jira, Confluence, SAC, Smartsheets usw.", sk:"Drobný zvyk, ktorý neskôr ušetrí čas — Jira, Confluence, SAC, Smartsheets atď."}}
   ]}
 ];
 
@@ -619,7 +921,7 @@ async function resumeFromCode(){
     if(!res.ok || !rows.length){
       errEl.style.display = "block";
       submitBtn.disabled = false;
-      submitBtn.textContent = "Find my routing";
+      submitBtn.textContent = t("resume_button");
       return;
     }
     const r = rows[0];
@@ -636,7 +938,7 @@ async function resumeFromCode(){
     errEl.textContent = "Something went wrong reaching the database. Try again.";
     errEl.style.display = "block";
     submitBtn.disabled = false;
-    submitBtn.textContent = "Find my routing";
+    submitBtn.textContent = t("resume_button");
   }
 }
 
@@ -723,26 +1025,53 @@ function getActiveCategories(profile){
   return CATEGORIES;
 }
 
-function buildTasks(profile){
+/* The template library (CATEGORIES + ROLE_EXTRA) is no longer auto-assigned.
+   It's only used to generate "Recommended" suggestions that a manager or
+   buddy can pick from. What a joiner actually sees/works on lives in
+   profile.customTasks — that's the single source of truth for real tasks. */
+/* Resolves a {en,de,sk} field to the current language (falls back to
+   English, and passes plain strings through unchanged for backward compat). */
+function tr(field){
+  if(field == null) return "";
+  if(typeof field === "string") return field;
+  return field[currentLang] || field.en || "";
+}
+
+function getRecommendedTasks(profile){
   const list = [];
-  let idc = 0;
   getActiveCategories(profile).forEach(cat=>{
-    const catTasks = cat.tasks.map(t=>({...t}));
-    if(ROLE_EXTRA[profile.position] && ROLE_EXTRA[profile.position].cat === cat.id){
-      catTasks.push({...ROLE_EXTRA[profile.position], role:true});
-    }
-    catTasks.forEach(t=>{
-      idc++;
-      const tid = "t"+idc;
-      const text = t.text.replace("{manager}", profile.manager);
-      list.push({tid, catId:cat.id, day:t.day, text, desc: t.desc||"", role: !!t.role});
+    cat.tasks.forEach((t,i)=>{
+      list.push({
+        key: cat.id+"_"+i, catId: cat.id, catTitle: tr(cat.title),
+        day: t.day, text: tr(t.text).replace("{manager}", profile.manager), desc: tr(t.desc)
+      });
     });
   });
-  const custom = profile.customTasks || profile.custom_tasks || [];
-  custom.forEach(ct=>{
-    list.push({tid: ct.id, catId:"custom", day: ct.day||1, text: ct.text, desc: ct.desc||"", role:false, custom:true});
+  const roleExtra = ROLE_EXTRA[profile.position];
+  if(roleExtra){
+    list.push({
+      key: "role_"+profile.position, catId: roleExtra.cat, catTitle: t("cat_role_specific"),
+      day: roleExtra.day, text: tr(roleExtra.text).replace("{manager}", profile.manager),
+      desc: tr(roleExtra.desc), role:true
+    });
+  }
+  adminTemplates.forEach(at=>{
+    const txt = at["text_"+currentLang] || at.text_en;
+    const dsc = at["desc_"+currentLang] || at.desc_en || "";
+    list.push({
+      key: "admin_"+at.id, catId: "admin_"+at.id, catTitle: at.cat_title,
+      day: at.day||1, text: txt, desc: dsc
+    });
   });
   return list;
+}
+
+function buildTasks(profile){
+  const assigned = profile.customTasks || profile.custom_tasks || [];
+  return assigned.map(t=>({
+    tid: t.id, catId: t.catId || "assigned", catTitle: t.catTitle || "Assigned tasks",
+    day: t.day || 1, text: t.text, desc: t.desc || "", role: !!t.role, custom: t.source === "custom"
+  }));
 }
 
 function dayNumber(startDateStr){
@@ -772,50 +1101,50 @@ function renderSetupZone(){
     document.getElementById("reset-confirm").style.display = "none";
     zone.innerHTML = `
       <div class="setup-card">
-        <div class="setup-eyebrow">Routing header · create</div>
-        <h1>Let's set up your routing.</h1>
-        <p class="sub">A few details, and we'll release your personal onboarding routing — operations 0010 through 0100, sequenced across your first ten days.</p>
+        <div class="setup-eyebrow">${t("setup_eyebrow")}</div>
+        <h1>${t("setup_h1")}</h1>
+        <p class="sub">${t("setup_sub")}</p>
 
         <div class="grid2">
           <div class="field">
-            <label>Your name</label>
-            <input type="text" id="f-name" placeholder="First name Surname">
+            <label>${t("label_name")}</label>
+            <input type="text" id="f-name" placeholder="${t("placeholder_name")}">
           </div>
           <div class="field">
-            <label>Start date</label>
+            <label>${t("label_start_date")}</label>
             <input type="date" id="f-date">
           </div>
         </div>
 
         <div class="grid2">
           <div class="field">
-            <label>Position</label>
+            <label>${t("label_position")}</label>
             <select id="f-position"></select>
           </div>
           <div class="field">
-            <label>Team manager</label>
+            <label>${t("label_manager")}</label>
             <select id="f-manager"></select>
           </div>
         </div>
         <div class="field-inline" id="manager-other-wrap">
-          <input type="text" id="f-manager-other" placeholder="Manager name">
+          <input type="text" id="f-manager-other" placeholder="${t("placeholder_manager_other")}">
         </div>
 
         <div class="field">
-          <label>Country / Region</label>
+          <label>${t("label_country")}</label>
           <select id="f-country"></select>
         </div>
 
-        <button class="cta" id="f-submit">Release routing →</button>
-        <div id="f-error" style="display:none;color:var(--coral);font-size:12.5px;margin-top:10px;">Please choose a position, manager and country before releasing.</div>
+        <button class="cta" id="f-submit">${t("button_release")}</button>
+        <div id="f-error" style="display:none;color:var(--coral);font-size:12.5px;margin-top:10px;">${t("error_choose_all")}</div>
       </div>
 
       <div class="resume-wrap">
-        <button class="resume-link" id="resume-toggle">Already started? Resume with your code</button>
+        <button class="resume-link" id="resume-toggle">${t("resume_toggle")}</button>
         <div class="resume-box" id="resume-box" style="display:none;">
-          <input type="text" id="resume-code-input" placeholder="Your resume code">
-          <button class="resume-submit" id="resume-submit">Find my routing</button>
-          <div class="resume-error" id="resume-error" style="display:none;">No routing found for that code. Double-check it and try again.</div>
+          <input type="text" id="resume-code-input" placeholder="${t("resume_placeholder")}">
+          <button class="resume-submit" id="resume-submit">${t("resume_button")}</button>
+          <div class="resume-error" id="resume-error" style="display:none;">${t("resume_error")}</div>
         </div>
       </div>
     `;
@@ -827,17 +1156,17 @@ function renderSetupZone(){
     }
 
     const posSel = document.getElementById("f-position");
-    addPlaceholder(posSel, "Choose...");
+    addPlaceholder(posSel, t("placeholder_choose"));
     POSITIONS.forEach(p=>{
       const o = document.createElement("option"); o.value=p; o.textContent=p; posSel.appendChild(o);
     });
     const mgrSel = document.getElementById("f-manager");
-    addPlaceholder(mgrSel, "Choose...");
+    addPlaceholder(mgrSel, t("placeholder_choose"));
     MANAGERS.forEach(m=>{
       const o = document.createElement("option"); o.value=m; o.textContent=m; mgrSel.appendChild(o);
     });
     const countrySel = document.getElementById("f-country");
-    addPlaceholder(countrySel, "Choose...");
+    addPlaceholder(countrySel, t("placeholder_choose"));
     COUNTRIES.forEach(c=>{
       const o = document.createElement("option"); o.value=c; o.textContent=c; countrySel.appendChild(o);
     });
@@ -889,26 +1218,26 @@ function renderSetupZone(){
     const pct = total ? Math.round((done/total)*100) : 0;
 
     zone.innerHTML = `
-      <div class="summary-bar">
+      <div class="summary-bar"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
         <div class="who">
           <h2>${escapeHtml(state.name)}</h2>
           <div class="meta">
             <span><b>${escapeHtml(state.position)}</b></span>
             <span>${escapeHtml(state.country||"")}</span>
             <span>Manager: <b>${escapeHtml(state.manager)}</b></span>
-            <span>Day <b>${currentDay}</b> of ${state.targetDays || 10} · started ${formatDate(state.startDate)}</span>
+            <span>${t("day_word")} <b>${currentDay}</b> ${t("of_word")} ${state.targetDays || 10} · ${t("started_word")} ${formatDate(state.startDate)}</span>
           </div>
         </div>
         <div class="pct">
           <div class="num mono">${pct}%</div>
-          <div class="lbl">Confirmed · ${done}/${total} operations</div>
+          <div class="lbl">${t("confirmed_word")} · ${done}/${total} operations</div>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
       </div>
       <div class="mgr-code-box">
-        <div class="lbl">Your personal resume code</div>
+        <div class="lbl">${t("resume_code_label")}</div>
         <div class="code mono">${escapeHtml(state.accessCode || "—")}</div>
-        <div class="hint">Save this somewhere safe. If you accidentally reset or switch devices, use "Resume with your code" to get your progress back — no need to redo anything.</div>
+        <div class="hint">${t("resume_code_hint")}</div>
       </div>
     `;
 
@@ -936,8 +1265,8 @@ function renderDashboardZone(){
     zone.innerHTML = `
       <div class="locked-zone">
         <div class="lock-icon">🔒</div>
-        <div class="lock-title">Waiting for routing release</div>
-        <div class="lock-sub">Fill in the details above and press <b>Release routing</b> — your ten operations (0010 to 0100) will unlock here, with tasks sequenced across your first ten days.</div>
+        <div class="lock-title">${t("locked_title")}</div>
+        <div class="lock-sub">${t("locked_sub")}</div>
         <div class="locked-preview">
           <div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div>
         </div>
@@ -949,21 +1278,96 @@ function renderDashboardZone(){
   const currentDay = dayNumber(state.startDate);
   taskIndex = buildTasks(state);
 
+  if(!taskIndex.length){
+    zone.innerHTML = `
+      <div class="locked-zone">
+        <div class="lock-icon">⏳</div>
+        <div class="lock-title">${t("empty_tasks_title")}</div>
+        <div class="lock-sub">${t("empty_tasks_sub")}</div>
+      </div>
+    `;
+    return;
+  }
+
+  const done = taskIndex.filter(tk=>state.tasks[tk.tid]).length;
+  const pct = Math.round((done/taskIndex.length)*100);
+  const isComplete = pct >= 100;
+
   zone.innerHTML = `
+    ${isComplete ? `
+      <div class="congrats-banner">
+        <div class="emoji">🎉</div>
+        <h3>${t("congrats_title")}</h3>
+        <p>${t("congrats_sub")}</p>
+      </div>
+      <div class="feedback-box" id="feedback-box">
+        <div style="font-weight:600;font-size:13.5px;margin-bottom:8px;">${t("feedback_prompt")}</div>
+        <textarea id="feedback-text" placeholder="${t("feedback_placeholder")}"></textarea>
+        <button class="cta" id="feedback-submit">${t("feedback_submit")}</button>
+        <div class="feedback-thanks" id="feedback-thanks" style="display:none;">${t("feedback_thanks")}</div>
+      </div>
+    ` : ""}
     <div class="routing-strip">
-      <div class="strip-title">Routing overview</div>
+      <div class="strip-title">${t("strip_title")}</div>
       <div class="strip-row" id="strip-row"></div>
     </div>
     <div id="op-list"></div>
-    <div class="footer-note">Welcome to the team! Questions about any operation? <b>Ask your buddy or manager.</b></div>
+    <div class="footer-note">${t("footer_note")}</div>
   `;
+
+  if(isComplete){
+    document.getElementById("feedback-submit").addEventListener("click", async ()=>{
+      const msg = document.getElementById("feedback-text").value.trim();
+      if(!msg) return;
+      const btn = document.getElementById("feedback-submit");
+      btn.disabled = true;
+      const ok = await submitFeedback(state.id, state.name, state.position, msg);
+      if(ok){
+        document.getElementById("feedback-box").querySelector("textarea").style.display = "none";
+        btn.style.display = "none";
+        document.getElementById("feedback-thanks").style.display = "block";
+      } else {
+        btn.disabled = false;
+      }
+    });
+  }
 
   renderStrip();
   renderOpList(currentDay);
 }
 
+async function submitFeedback(profileId, name, position, message){
+  if(!cloudConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ id: genId("fb"), profile_id: profileId, name, position, message })
+    });
+    return res.ok;
+  }catch(e){ console.error("feedback submit failed", e); return false; }
+}
+
+function getAssignedGroups(){
+  const groups = [];
+  const seen = new Set();
+  taskIndex.forEach(t=>{
+    if(!seen.has(t.catId)){
+      seen.add(t.catId);
+      groups.push({ id: t.catId, title: t.catTitle || "Assigned tasks" });
+    }
+  });
+  return groups;
+}
+
 function catStatus(catId){
   const tasks = taskIndex.filter(t=>t.catId===catId);
+  if(!tasks.length) return "none";
   const done = tasks.filter(t=>state.tasks[t.tid]).length;
   if(done === tasks.length) return "done";
   if(done > 0) return "progress";
@@ -975,18 +1379,18 @@ function catStatus(catId){
 function renderStrip(){
   const row = document.getElementById("strip-row");
   row.innerHTML = "";
-  const cats = getActiveCategories();
-  cats.forEach((cat, i)=>{
+  const groups = getAssignedGroups();
+  groups.forEach((cat, i)=>{
     const status = catStatus(cat.id);
     const el = document.createElement("div");
     el.className = "strip-op status-"+status;
-    el.innerHTML = `<div class="dot"></div><div class="num mono">${cat.num}</div>`;
+    el.innerHTML = `<div class="dot"></div><div class="num mono">${String((i+1)*10).padStart(3,"0")}</div>`;
     el.addEventListener("click", ()=>{
       const card = document.getElementById("card-"+cat.id);
       if(card){ card.classList.remove("collapsed"); card.scrollIntoView({behavior:"smooth", block:"center"}); }
     });
     row.appendChild(el);
-    if(i < cats.length-1){
+    if(i < groups.length-1){
       const line = document.createElement("div");
       line.className = "strip-line";
       row.appendChild(line);
@@ -997,25 +1401,21 @@ function renderStrip(){
 function renderOpList(currentDay){
   const wrap = document.getElementById("op-list");
   wrap.innerHTML = "";
-  const renderCats = [...getActiveCategories()];
-  if(taskIndex.some(t=>t.catId==="custom")){
-    renderCats.push({id:"custom", num:"✦", title:"Added by your manager", owner:""});
-  }
-  renderCats.forEach(cat=>{
+  const groups = getAssignedGroups();
+  groups.forEach((cat, i)=>{
     const tasks = taskIndex.filter(t=>t.catId===cat.id);
     const doneCount = tasks.filter(t=>state.tasks[t.tid]).length;
     const status = catStatus(cat.id);
     const badgeClass = status==="done" ? "badge-done" : (status==="progress" || status==="attention") ? "badge-progress" : "badge-none";
-    const badgeText = status==="done" ? "Completed" : (doneCount>0 ? "In process" : "Not started");
+    const badgeText = status==="done" ? t("op_completed") : (doneCount>0 ? t("op_inprocess") : t("op_notstarted"));
 
     const card = document.createElement("div");
     card.className = "op-card" + (status==="done" ? " collapsed" : "");
     card.id = "card-"+cat.id;
     card.innerHTML = `
       <div class="op-head">
-        <div class="op-num mono">${cat.num}</div>
-        <div class="op-title">${escapeHtml(cat.title)}${cat.note ? ` <span style="font-weight:400;color:var(--ink-soft);font-size:12.5px;">· ${escapeHtml(cat.note)}</span>` : ""}</div>
-        <div class="op-owner">${escapeHtml((cat.owner||"").replace("{manager}", state.manager))}</div>
+        <div class="op-num mono">OP ${String((i+1)*10).padStart(3,"0")}</div>
+        <div class="op-title">${escapeHtml(cat.title)}</div>
         <div class="op-count mono">${doneCount}/${tasks.length}</div>
         <div class="op-badge ${badgeClass}">${badgeText}</div>
         <div class="chev">▾</div>
@@ -1036,7 +1436,7 @@ function renderOpList(currentDay){
           <div class="task-tags">
             <span class="tag-day ${overdue?'attention':''}">Day ${t.day}${overdue?' · due':''}</span>
             ${t.role ? `<span class="tag-role">Role-specific</span>` : ""}
-            ${t.custom ? `<span class="tag-role">Added by manager</span>` : ""}
+            ${t.custom ? `<span class="tag-role">Added just for you</span>` : ""}
           </div>
           <textarea class="task-note" placeholder="Notes / comments" data-note-tid="${t.tid}">${escapeHtml(state.notes[t.tid]||"")}</textarea>
         </div>
@@ -1094,18 +1494,18 @@ function applyRoleView(){
   const dashZone = document.getElementById("dashboard-zone");
   const sectionLabel = document.querySelector(".section-label");
   const mgrZone = document.getElementById("manager-zone");
-  if(currentRole === "manager"){
-    setupZone.style.display = "none";
-    dashZone.style.display = "none";
-    sectionLabel.style.display = "none";
-    mgrZone.style.display = "block";
-    renderManagerZone();
-  } else {
-    setupZone.style.display = "block";
-    dashZone.style.display = "block";
-    sectionLabel.style.display = "block";
-    mgrZone.style.display = "none";
-  }
+  const buddyZone = document.getElementById("buddy-zone");
+  const adminZone = document.getElementById("admin-zone");
+  setupZone.style.display = currentRole === "joiner" ? "block" : "none";
+  dashZone.style.display = currentRole === "joiner" ? "block" : "none";
+  sectionLabel.style.display = currentRole === "joiner" ? "block" : "none";
+  mgrZone.style.display = currentRole === "manager" ? "block" : "none";
+  buddyZone.style.display = currentRole === "buddy" ? "block" : "none";
+  adminZone.style.display = currentRole === "admin" ? "block" : "none";
+  if(currentRole === "joiner") renderAll();
+  if(currentRole === "manager") renderManagerZone();
+  if(currentRole === "buddy") renderBuddyZone();
+  if(currentRole === "admin") renderAdminZone();
 }
 
 function renderManagerZone(){
@@ -1113,16 +1513,22 @@ function renderManagerZone(){
   if(!managerView.verified){
     zone.innerHTML = `
       <div class="mgr-card">
-        <div class="setup-eyebrow">Team manager · access</div>
-        <h1>View your team's onboarding</h1>
-        <p class="sub">Pick your name. First time here, you'll set your own PIN — after that, just enter it to get in. Nobody else, including Tomáš, sets or sees your PIN.</p>
+        <div class="setup-eyebrow">${t("manager_eyebrow")}</div>
+        <h1>${t("manager_h1")}</h1>
+        <p class="sub">${t("manager_sub")}</p>
         <div class="field">
-          <label>Your name</label>
+          <label>${t("label_your_name")}</label>
           <select id="mgr-name-select"></select>
         </div>
         <div id="mgr-pin-section"></div>
       </div>
+      <div class="admin-link-wrap"><button class="admin-link" id="mgr-admin-link">${t("role_admin")}</button></div>
     `;
+    document.getElementById("mgr-admin-link").addEventListener("click", ()=>{
+      adminEntryRole = "manager";
+      currentRole = "admin";
+      applyRoleView();
+    });
     const sel = document.getElementById("mgr-name-select");
     const ph = document.createElement("option"); ph.value=""; ph.textContent="Choose..."; ph.disabled=true; ph.selected=true;
     sel.appendChild(ph);
@@ -1140,7 +1546,7 @@ function renderManagerZone(){
   const doneCount = rows.filter(p=>mgrRowStatus(p)==="done").length;
 
   zone.innerHTML = `
-    <button class="mgr-back" id="mgr-back-btn">← Back</button>
+    <button class="mgr-back" id="mgr-back-btn">${t("back_link")}</button>
     <div class="setup-eyebrow">${escapeHtml(managerView.name)}'s team</div>
     ${managerView.pin ? `
       <div class="pin-reminder">
@@ -1150,18 +1556,18 @@ function renderManagerZone(){
       </div>
     ` : ""}
     <div class="mgr-stats-row">
-      <div class="mgr-stat"><div class="num mono">${total}</div><div class="lbl">Your joiners</div></div>
-      <div class="mgr-stat"><div class="num mono">${avgPct}%</div><div class="lbl">Average progress</div></div>
-      <div class="mgr-stat"><div class="num mono">${behindCount}</div><div class="lbl">Behind schedule</div></div>
+      <div class="mgr-stat"><div class="num mono">${total}</div><div class="lbl">${t("your_joiners")}</div></div>
+      <div class="mgr-stat"><div class="num mono">${avgPct}%</div><div class="lbl">${t("avg_progress")}</div></div>
+      <div class="mgr-stat"><div class="num mono">${behindCount}</div><div class="lbl">${t("behind_schedule")}</div></div>
     </div>
     ${renderJoinsChart(rows)}
     ${renderTeamCompareChart(rows)}
     <div class="mgr-list-controls">
-      <input type="text" id="mgr-search" placeholder="Search by name...">
+      <input type="text" id="mgr-search" placeholder="${t("search_by_name")}">
       <select id="mgr-sort">
-        <option value="behind">Sort: most behind first</option>
-        <option value="recent">Sort: recently updated</option>
-        <option value="name">Sort: name (A–Z)</option>
+        <option value="behind">${t("sort_behind")}</option>
+        <option value="recent">${t("sort_recent")}</option>
+        <option value="name">${t("sort_name")}</option>
       </select>
     </div>
     <div id="mgr-rows"></div>
@@ -1182,6 +1588,356 @@ function renderManagerZone(){
   document.getElementById("mgr-search").addEventListener("input", renderMgrRows);
   document.getElementById("mgr-sort").addEventListener("change", renderMgrRows);
   renderMgrRows();
+}
+
+/* ============ BUDDY MODE ============ */
+let buddyView = { verified:false, profile:null };
+let adminTemplates = [];
+let adminView = { verified:false };
+
+async function loadAdminTemplates(){
+  if(!cloudConfigured()) return;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/custom_templates?select=*`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(res.ok) adminTemplates = await res.json();
+  }catch(e){ console.error("load admin templates failed", e); }
+}
+
+function renderBuddyZone(){
+  const zone = document.getElementById("buddy-zone");
+  if(!buddyView.verified){
+    zone.innerHTML = `
+      <div class="mgr-card">
+        <div class="setup-eyebrow">${t("buddy_eyebrow")}</div>
+        <h1>${t("buddy_h1")}</h1>
+        <p class="sub">${t("buddy_sub")}</p>
+        <div class="field">
+          <label>${t("label_their_code")}</label>
+          <input type="text" id="buddy-code-input" placeholder="e.g. A1B2C3" style="text-transform:uppercase;">
+        </div>
+        <button class="cta" id="buddy-submit">${t("button_open_routing")}</button>
+        <div class="mgr-error" id="buddy-error">${t("buddy_error")}</div>
+      </div>
+      <div class="admin-link-wrap"><button class="admin-link" id="buddy-admin-link">${t("role_admin")}</button></div>
+    `;
+    document.getElementById("buddy-submit").addEventListener("click", submitBuddyCode);
+    document.getElementById("buddy-code-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitBuddyCode(); });
+    document.getElementById("buddy-admin-link").addEventListener("click", ()=>{
+      adminEntryRole = "buddy";
+      currentRole = "admin";
+      applyRoleView();
+    });
+    return;
+  }
+
+  const p = buddyView.profile;
+  const currentDay = dayNumber(p.start_date);
+  zone.innerHTML = `
+    <button class="mgr-back" id="buddy-back-btn">${t("back_link")}</button>
+    <div class="summary-bar" style="margin-bottom:18px;"><span class="corner corner-tl"></span><span class="corner corner-tr"></span><span class="corner corner-bl"></span><span class="corner corner-br"></span>
+      <div class="who">
+        <h2>${escapeHtml(p.name)}</h2>
+        <div class="meta">
+          <span><b>${escapeHtml(p.position)}</b></span>
+          <span>Manager: <b>${escapeHtml(p.manager)}</b></span>
+          <span>${t("day_word")} <b>${currentDay}</b> ${t("of_word")} ${p.target_days||10}</span>
+        </div>
+      </div>
+      <div class="pct">
+        <div class="num mono">${p.pct||0}%</div>
+        <div class="lbl">${t("confirmed_word")} · ${p.done_tasks||0}/${p.total_tasks||0} tasks</div>
+      </div>
+    </div>
+    <div id="buddy-detail"></div>
+  `;
+  document.getElementById("buddy-back-btn").addEventListener("click", ()=>{
+    buddyView = { verified:false, profile:null };
+    renderBuddyZone();
+  });
+  const detailEl = document.getElementById("buddy-detail");
+  renderMgrDetail(detailEl, p, { allowRemove:false, onChange: ()=>renderBuddyZone(), actorRole:"buddy", actorName:"Buddy" });
+}
+
+async function submitBuddyCode(){
+  const code = document.getElementById("buddy-code-input").value.trim().toUpperCase();
+  const errEl = document.getElementById("buddy-error");
+  errEl.style.display = "none";
+  if(!code) return;
+  if(!cloudConfigured()){
+    errEl.textContent = "Cloud sync isn't configured yet, so buddy access isn't available.";
+    errEl.style.display = "block";
+    return;
+  }
+  const submitBtn = document.getElementById("buddy-submit");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Looking...";
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&access_code=eq.${encodeURIComponent(code)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length){
+      errEl.style.display = "block";
+      submitBtn.disabled = false;
+      submitBtn.textContent = t("button_open_routing");
+      return;
+    }
+    buddyView = { verified:true, profile: rows[0] };
+    renderBuddyZone();
+  }catch(e){
+    errEl.textContent = "Something went wrong reaching the database. Try again.";
+    errEl.style.display = "block";
+    submitBtn.disabled = false;
+    submitBtn.textContent = t("button_open_routing");
+  }
+}
+
+/* ============ ADMIN MODE ============ */
+let adminEntryRole = "manager";
+
+function renderAdminZone(){
+  const zone = document.getElementById("admin-zone");
+  if(!adminView.verified){
+    zone.innerHTML = `
+      <button class="mgr-back" id="admin-back-unverified">${t("back_link")}</button>
+      <div class="mgr-card">
+        <div class="setup-eyebrow">${t("admin_eyebrow")}</div>
+        <h1>${t("admin_h1")}</h1>
+        <p class="sub">${t("admin_sub")}</p>
+        <div id="admin-pin-section"><div class="sub" style="margin:10px 0;">Checking...</div></div>
+      </div>
+    `;
+    document.getElementById("admin-back-unverified").addEventListener("click", ()=>{
+      currentRole = adminEntryRole;
+      applyRoleView();
+    });
+    checkAdminExists();
+    return;
+  }
+
+  zone.innerHTML = `
+    <button class="mgr-back" id="admin-back-btn">${t("back_link")}</button>
+    <div class="setup-eyebrow">${t("admin_h1")}</div>
+
+    <div class="admin-section">
+      <h3>${t("admin_templates_title")}</h3>
+      <div id="admin-templates-list"><div class="sub">Loading...</div></div>
+      <div class="mgr-add-task-form" style="display:block;margin-top:10px;">
+        <input type="text" id="admin-newtpl-cat" placeholder="Category label (e.g. IT Help Desk)">
+        <input type="text" id="admin-newtpl-text-en" placeholder="Task text (English)" style="margin-top:8px;">
+        <input type="text" id="admin-newtpl-text-de" placeholder="Task text (Deutsch, optional)" style="margin-top:8px;">
+        <input type="text" id="admin-newtpl-text-sk" placeholder="Task text (Slovensky, optional)" style="margin-top:8px;">
+        <textarea id="admin-newtpl-desc-en" placeholder="Description (English, optional)" style="margin-top:8px;"></textarea>
+        <div class="mgr-newtask-row">
+          <select id="admin-newtpl-day">
+            ${Array.from({length:30},(_,i)=>i+1).map(d=>`<option value="${d}">${t("day_word")} ${d}</option>`).join("")}
+          </select>
+          <button id="admin-newtpl-submit">${t("button_add_task")}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h3>${t("admin_feedback_title")}</h3>
+      <div id="admin-feedback-list"><div class="sub">Loading...</div></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>${t("admin_audit_title")}</h3>
+      <div id="admin-audit-list"><div class="sub">Loading...</div></div>
+    </div>
+  `;
+
+  document.getElementById("admin-back-btn").addEventListener("click", ()=>{
+    adminView = { verified:false };
+    currentRole = adminEntryRole;
+    applyRoleView();
+  });
+  document.getElementById("admin-newtpl-submit").addEventListener("click", submitNewTemplate);
+
+  renderAdminTemplatesList();
+  loadAndRenderFeedback();
+  loadAndRenderAudit();
+}
+
+async function checkAdminExists(){
+  const section = document.getElementById("admin-pin-section");
+  if(!cloudConfigured()){
+    section.innerHTML = `<div class="mgr-error" style="display:block;">Cloud sync isn't configured yet.</div>`;
+    return;
+  }
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/app_admin?select=id&id=eq.admin`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(res.ok && rows.length) renderAdminEnterPin();
+    else renderAdminSetPin();
+  }catch(e){
+    section.innerHTML = `<div class="mgr-error" style="display:block;">Couldn't reach the database.</div>`;
+  }
+}
+
+function renderAdminEnterPin(){
+  const section = document.getElementById("admin-pin-section");
+  section.innerHTML = `
+    <div class="field"><label>${t("admin_pin_enter")}</label>
+      <input type="password" id="admin-pin-input" placeholder="${t("admin_pin_enter")}"></div>
+    <button class="cta" id="admin-pin-submit">${t("button_view_team")}</button>
+    <div class="mgr-error" id="admin-error">${t("pin_error_wrong")}</div>
+  `;
+  document.getElementById("admin-pin-submit").addEventListener("click", submitAdminEnterPin);
+  document.getElementById("admin-pin-input").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitAdminEnterPin(); });
+}
+function renderAdminSetPin(){
+  const section = document.getElementById("admin-pin-section");
+  section.innerHTML = `
+    <div class="field"><label>${t("admin_pin_new")}</label>
+      <input type="password" id="admin-pin-new" placeholder="${t("admin_pin_new")}"></div>
+    <div class="field"><label>${t("admin_pin_confirm")}</label>
+      <input type="password" id="admin-pin-confirm" placeholder="${t("admin_pin_confirm")}"></div>
+    <button class="cta" id="admin-pin-set-submit">${t("button_set_pin")}</button>
+    <div class="mgr-error" id="admin-error">${t("pin_error_mismatch")}</div>
+  `;
+  document.getElementById("admin-pin-set-submit").addEventListener("click", submitAdminSetPin);
+}
+async function submitAdminEnterPin(){
+  const pin = document.getElementById("admin-pin-input").value.trim();
+  const errEl = document.getElementById("admin-error");
+  errEl.style.display = "none";
+  if(!pin){ errEl.style.display = "block"; return; }
+  try{
+    const hash = await sha256Hex(pin);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/app_admin?select=pin_hash&id=eq.admin`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length || rows[0].pin_hash !== hash){ errEl.style.display = "block"; return; }
+    adminView = { verified:true };
+    renderAdminZone();
+  }catch(e){ errEl.style.display = "block"; }
+}
+async function submitAdminSetPin(){
+  const pin1 = document.getElementById("admin-pin-new").value.trim();
+  const pin2 = document.getElementById("admin-pin-confirm").value.trim();
+  const errEl = document.getElementById("admin-error");
+  errEl.style.display = "none";
+  if(!pin1 || pin1.length < 4 || pin1 !== pin2){ errEl.style.display = "block"; return; }
+  try{
+    const hash = await sha256Hex(pin1);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/app_admin`, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Prefer":"return=minimal" },
+      body: JSON.stringify({ id:"admin", pin_hash: hash })
+    });
+    if(!res.ok){ errEl.textContent = "Couldn't save PIN."; errEl.style.display = "block"; return; }
+    adminView = { verified:true };
+    renderAdminZone();
+  }catch(e){ errEl.style.display = "block"; }
+}
+
+function renderAdminTemplatesList(){
+  const wrap = document.getElementById("admin-templates-list");
+  if(!adminTemplates.length){
+    wrap.innerHTML = `<div class="mgr-empty-note">No extra templates added yet.</div>`;
+    return;
+  }
+  wrap.innerHTML = adminTemplates.map(at=>`
+    <div class="template-row">
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:12.5px;">${escapeHtml(at.cat_title)}: ${escapeHtml(at.text_en)}</div>
+        <div style="font-size:11px;color:var(--ink-soft);">${t("day_word")} ${at.day||1}</div>
+      </div>
+      <button class="mgr-remove-btn" data-id="${escapeHtml(at.id)}">${t("remove_view")}</button>
+    </div>
+  `).join("");
+  wrap.querySelectorAll(".mgr-remove-btn").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      await deleteCustomTemplate(btn.dataset.id);
+      adminTemplates = adminTemplates.filter(x=>x.id!==btn.dataset.id);
+      renderAdminTemplatesList();
+    });
+  });
+}
+
+async function submitNewTemplate(){
+  const catTitle = document.getElementById("admin-newtpl-cat").value.trim();
+  const textEn = document.getElementById("admin-newtpl-text-en").value.trim();
+  const textDe = document.getElementById("admin-newtpl-text-de").value.trim();
+  const textSk = document.getElementById("admin-newtpl-text-sk").value.trim();
+  const descEn = document.getElementById("admin-newtpl-desc-en").value.trim();
+  const day = parseInt(document.getElementById("admin-newtpl-day").value, 10);
+  if(!catTitle || !textEn) return;
+  const newTpl = {
+    id: genId("tpl"), cat_title: catTitle, text_en: textEn,
+    text_de: textDe || null, text_sk: textSk || null, desc_en: descEn || null, day
+  };
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/custom_templates`, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Prefer":"return=minimal" },
+      body: JSON.stringify(newTpl)
+    });
+    if(res.ok){
+      adminTemplates.push(newTpl);
+      renderAdminTemplatesList();
+      document.getElementById("admin-newtpl-cat").value = "";
+      document.getElementById("admin-newtpl-text-en").value = "";
+      document.getElementById("admin-newtpl-text-de").value = "";
+      document.getElementById("admin-newtpl-text-sk").value = "";
+      document.getElementById("admin-newtpl-desc-en").value = "";
+    }
+  }catch(e){ console.error("add template failed", e); }
+}
+async function deleteCustomTemplate(id){
+  if(!cloudConfigured()) return;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/custom_templates?id=eq.${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+  }catch(e){ console.error("delete template failed", e); }
+}
+
+async function loadAndRenderFeedback(){
+  const wrap = document.getElementById("admin-feedback-list");
+  if(!cloudConfigured()){ wrap.innerHTML = `<div class="mgr-empty-note">Not configured.</div>`; return; }
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/feedback?select=*&order=created_at.desc&limit=30`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length){ wrap.innerHTML = `<div class="mgr-empty-note">No feedback yet.</div>`; return; }
+    wrap.innerHTML = rows.map(r=>`
+      <div class="feedback-row">
+        <div class="who">${escapeHtml(r.name||"—")} · ${escapeHtml(r.position||"")}</div>
+        <div class="msg">${escapeHtml(r.message)}</div>
+      </div>
+    `).join("");
+  }catch(e){ wrap.innerHTML = `<div class="mgr-empty-note">Couldn't load feedback.</div>`; }
+}
+
+async function loadAndRenderAudit(){
+  const wrap = document.getElementById("admin-audit-list");
+  if(!cloudConfigured()){ wrap.innerHTML = `<div class="mgr-empty-note">Not configured.</div>`; return; }
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/audit_log?select=*&order=created_at.desc&limit=40`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length){ wrap.innerHTML = `<div class="mgr-empty-note">No activity yet.</div>`; return; }
+    wrap.innerHTML = rows.map(r=>{
+      const time = new Date(r.created_at).toLocaleString();
+      return `
+        <div class="audit-row">
+          <span class="audit-time">${time}</span>
+          <span class="audit-text"><b>${escapeHtml(r.actor_name||r.actor_role)}</b> (${escapeHtml(r.actor_role)}) → ${escapeHtml(r.action)} for <b>${escapeHtml(r.profile_name||"")}</b>${r.detail ? ": "+escapeHtml(r.detail) : ""}</span>
+        </div>
+      `;
+    }).join("");
+  }catch(e){ wrap.innerHTML = `<div class="mgr-empty-note">Couldn't load activity.</div>`; }
 }
 
 function renderMgrRows(){
@@ -1205,7 +1961,7 @@ function renderMgrRows(){
 
   rowsWrap.innerHTML = list.map(p=>{
     const status = mgrRowStatus(p);
-    const statusTxt = status==="done" ? "Completed" : status==="behind" ? "Behind" : "On track";
+    const statusTxt = status==="done" ? t("status_done") : status==="behind" ? t("status_behind") : t("status_on_track");
     const d = dayNumber(p.start_date);
     return `
       <div class="mgr-row-wrap">
@@ -1232,7 +1988,7 @@ function renderMgrRows(){
       rowsWrap.querySelectorAll(".mgr-chev").forEach(c=>c.style.transform="");
       if(!isOpen){
         const profile = rows.find(r=>r.id===id);
-        renderMgrDetail(detailEl, profile);
+        renderMgrDetail(detailEl, profile, { allowRemove:true, onChange: renderMgrRows, actorRole:"manager", actorName: managerView.name });
         detailEl.style.display = "block";
         rowEl.querySelector(".mgr-chev").style.transform = "rotate(180deg)";
       }
@@ -1263,21 +2019,32 @@ function renderTeamCompareChart(rows){
 }
 
 
-function renderMgrDetail(container, p){
+function renderMgrDetail(container, p, opts){
+  opts = opts || {};
+  const allowRemove = opts.allowRemove !== false;
+  const actorRole = opts.actorRole || "manager";
+  const actorName = opts.actorName || "";
   const tasks = p.tasks || {};
   const notes = p.notes || {};
-  const idx = buildTasks(p);
-  const cats = [...getActiveCategories(p)];
-  if(idx.some(t=>t.catId==="custom")){
-    cats.push({id:"custom", title:"Added by manager"});
-  }
+  const assigned = p.customTasks || p.custom_tasks || [];
   const id = cssEscape(p.id);
 
-  const catBlocks = cats.map(cat=>{
-    const catTasks = idx.filter(t=>t.catId===cat.id);
+  // group assigned tasks by category for display
+  const assignedGroups = [];
+  const seenCat = new Set();
+  assigned.forEach(t=>{
+    const catId = t.catId || "assigned";
+    if(!seenCat.has(catId)){
+      seenCat.add(catId);
+      assignedGroups.push({ id: catId, title: t.catTitle || "Assigned" });
+    }
+  });
+
+  const assignedBlocks = assignedGroups.map(cat=>{
+    const catTasks = assigned.filter(t=>(t.catId||"assigned")===cat.id);
     const rowsHtml = catTasks.map(t=>{
-      const isDone = !!tasks[t.tid];
-      const note = notes[t.tid];
+      const isDone = !!tasks[t.id];
+      const note = notes[t.id];
       return `
         <div class="mgr-detail-task">
           <span class="mgr-detail-check">${isDone ? "✅" : "⬜"}</span>
@@ -1292,33 +2059,72 @@ function renderMgrDetail(container, p){
     return `<div class="mgr-detail-cat"><div class="mgr-detail-cat-title">${escapeHtml(cat.title)}</div>${rowsHtml}</div>`;
   }).join("");
 
+  // recommended = template library minus anything already assigned from a template
+  const assignedTemplateKeys = new Set(assigned.filter(t=>t.templateKey).map(t=>t.templateKey));
+  const recommended = getRecommendedTasks(p).filter(r=>!assignedTemplateKeys.has(r.key));
+  const recGroups = [];
+  const seenRecCat = new Set();
+  recommended.forEach(r=>{
+    if(!seenRecCat.has(r.catTitle)){
+      seenRecCat.add(r.catTitle);
+      recGroups.push(r.catTitle);
+    }
+  });
+  const recommendedBlocks = recGroups.map(catTitle=>{
+    const items = recommended.filter(r=>r.catTitle===catTitle);
+    const itemsHtml = items.map(r=>`
+      <div class="rec-task">
+        <div class="rec-task-main">
+          <div class="rec-task-text">${escapeHtml(r.text)}</div>
+          ${r.desc ? `<div class="rec-task-desc">${escapeHtml(r.desc)}</div>` : ""}
+        </div>
+        <select class="rec-task-day" data-key="${escapeHtml(r.key)}">
+          ${Array.from({length:30},(_,i)=>i+1).map(d=>`<option value="${d}" ${d===r.day?'selected':''}>${t("day_word")} ${d}</option>`).join("")}
+        </select>
+        <button class="rec-task-add" data-key="${escapeHtml(r.key)}">+ Add</button>
+      </div>
+    `).join("");
+    return `<div class="mgr-detail-cat"><div class="mgr-detail-cat-title">${escapeHtml(catTitle)}</div>${itemsHtml}</div>`;
+  }).join("");
+
   container.innerHTML = `
     <div class="mgr-detail-inner">
       <div class="mgr-target-days">
-        <span class="mgr-target-label">Target onboarding length:</span>
+        <span class="mgr-target-label">${t("target_days_label")}</span>
         <select id="mgr-target-days-${id}">
-          ${[5,7,10,15,20,30].map(n=>`<option value="${n}" ${n===(p.target_days||10)?'selected':''}>${n} days</option>`).join("")}
+          ${[5,7,10,15,20,30].map(n=>`<option value="${n}" ${n===(p.target_days||10)?'selected':''}>${n} ${t("day_word").toLowerCase()}s</option>`).join("")}
         </select>
-        <span class="mgr-target-hint">Adjusts what counts as "on track" for this person only.</span>
+        <span class="mgr-target-hint">${t("target_days_hint")}</span>
       </div>
-      ${catBlocks}
-      <button class="mgr-add-task-btn" id="mgr-add-task-${id}">+ Add task</button>
+
+      <div class="mgr-section-label">${t("section_assigned")} ${assigned.length ? `(${assigned.length})` : ""}</div>
+      ${assigned.length ? assignedBlocks : `<div class="mgr-empty-note">${t("empty_assigned")}</div>`}
+
+      <div class="mgr-section-label rec-label">${t("section_recommended")} ${recommended.length ? `(${recommended.length})` : ""}</div>
+      <div class="rec-wrap" id="rec-wrap-${id}">
+        ${recommended.length ? recommendedBlocks : `<div class="mgr-empty-note">${t("empty_recommended")}</div>`}
+      </div>
+
+      <button class="mgr-add-task-btn" id="mgr-add-task-${id}">${t("add_own_task")}</button>
       <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:none;">
-        <input type="text" id="mgr-newtask-text-${id}" placeholder="Task name">
-        <textarea id="mgr-newtask-desc-${id}" placeholder="Description (optional)"></textarea>
+        <input type="text" id="mgr-newtask-text-${id}" placeholder="${t("task_name_ph")}">
+        <textarea id="mgr-newtask-desc-${id}" placeholder="${t("task_desc_ph")}"></textarea>
         <div class="mgr-newtask-row">
           <select id="mgr-newtask-day-${id}">
-            ${Array.from({length:10},(_,i)=>i+1).map(d=>`<option value="${d}">Day ${d}</option>`).join("")}
+            ${Array.from({length:30},(_,i)=>i+1).map(d=>`<option value="${d}">${t("day_word")} ${d}</option>`).join("")}
           </select>
-          <button id="mgr-newtask-submit-${id}">Add task</button>
+          <button id="mgr-newtask-submit-${id}">${t("button_add_task")}</button>
         </div>
       </div>
-      <button class="mgr-remove-btn" id="mgr-remove-${id}">Remove from my view</button>
-      <span class="mgr-remove-confirm" id="mgr-remove-confirm-${id}" style="display:none;">
-        Remove ${escapeHtml(p.name)} from your dashboard? This only removes them from view, it doesn't affect their routing.
-        <button class="mgr-remove-yes" data-id="${escapeHtml(p.id)}">Yes, remove</button>
-        <button class="mgr-remove-no">Cancel</button>
-      </span>
+
+      ${allowRemove ? `
+        <button class="mgr-remove-btn" id="mgr-remove-${id}">${t("remove_view")}</button>
+        <span class="mgr-remove-confirm" id="mgr-remove-confirm-${id}" style="display:none;">
+          ${t("remove_confirm_prefix")} ${escapeHtml(p.name)} ${t("remove_confirm_suffix")}
+          <button class="mgr-remove-yes" data-id="${escapeHtml(p.id)}">${t("remove_yes")}</button>
+          <button class="mgr-remove-no">${t("remove_no")}</button>
+        </span>
+      ` : ""}
     </div>
   `;
 
@@ -1328,11 +2134,42 @@ function renderMgrDetail(container, p){
     const ok = await updateTargetDaysInCloud(p.id, newDays);
     if(ok){
       p.target_days = newDays;
-      const rowInList = managerView.rows.find(r=>r.id===p.id);
+      const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
       if(rowInList) rowInList.target_days = newDays;
-      renderManagerZone();
+      logAudit(p.id, p.name, actorRole, actorName, "target_days_changed", `${newDays} days`);
+      if(opts.onChange) opts.onChange();
     }
     e.target.disabled = false;
+  });
+
+  container.querySelectorAll(".rec-task-add").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      const key = btn.dataset.key;
+      const rec = recommended.find(r=>r.key===key);
+      if(!rec) return;
+      const daySelect = container.querySelector(`.rec-task-day[data-key="${CSS.escape(key)}"]`);
+      const chosenDay = parseInt(daySelect.value, 10);
+      const newTask = {
+        id: genId("at"),
+        templateKey: rec.key, catId: rec.catId, catTitle: rec.catTitle,
+        text: rec.text, desc: rec.desc, day: chosenDay, source:"template", role: !!rec.role
+      };
+      btn.disabled = true;
+      btn.textContent = "Adding...";
+      const ok = await addCustomTaskToCloud(p.id, newTask);
+      if(ok){
+        p.customTasks = [...(p.customTasks||p.custom_tasks||[]), newTask];
+        p.custom_tasks = p.customTasks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+        logAudit(p.id, p.name, actorRole, actorName, "task_added", rec.text);
+        renderMgrDetail(container, p, opts);
+      } else {
+        btn.disabled = false;
+        btn.textContent = "+ Add";
+      }
+    });
   });
 
   const addBtn = container.querySelector(`#mgr-add-task-${id}`);
@@ -1349,44 +2186,71 @@ function renderMgrDetail(container, p){
     const text = textInput.value.trim();
     if(!text) { textInput.focus(); return; }
     const newTask = {
-      id: "ct-" + Date.now() + "-" + Math.random().toString(36).slice(2,6),
-      text,
-      desc: descInput.value.trim(),
-      day: parseInt(dayInput.value, 10)
+      id: genId("ct"),
+      catId: "assigned", catTitle: "Added just for you",
+      text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom"
     };
     const submitBtn = container.querySelector(`#mgr-newtask-submit-${id}`);
     submitBtn.disabled = true;
     submitBtn.textContent = "Adding...";
     const ok = await addCustomTaskToCloud(p.id, newTask);
     if(ok){
-      p.custom_tasks = [...(p.custom_tasks||[]), newTask];
-      const rowInList = managerView.rows.find(r=>r.id===p.id);
-      if(rowInList) rowInList.custom_tasks = p.custom_tasks;
-      renderMgrDetail(container, p);
+      p.customTasks = [...(p.customTasks||p.custom_tasks||[]), newTask];
+      p.custom_tasks = p.customTasks;
+      const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+      if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+      logAudit(p.id, p.name, actorRole, actorName, "custom_task_added", text);
+      renderMgrDetail(container, p, opts);
     } else {
       submitBtn.disabled = false;
-      submitBtn.textContent = "Add task";
+      submitBtn.textContent = t("button_add_task");
     }
   });
 
-  const removeBtn = container.querySelector(`#mgr-remove-${id}`);
-  const confirmEl = container.querySelector(`#mgr-remove-confirm-${id}`);
-  removeBtn.addEventListener("click", (e)=>{
-    e.stopPropagation();
-    removeBtn.style.display = "none";
-    confirmEl.style.display = "inline";
-  });
-  confirmEl.querySelector(".mgr-remove-no").addEventListener("click", (e)=>{
-    e.stopPropagation();
-    confirmEl.style.display = "none";
-    removeBtn.style.display = "inline-block";
-  });
-  confirmEl.querySelector(".mgr-remove-yes").addEventListener("click", async (e)=>{
-    e.stopPropagation();
-    await removeProfileFromCloud(p.id);
-    managerView.rows = managerView.rows.filter(r=>r.id!==p.id);
-    renderManagerZone();
-  });
+  if(allowRemove){
+    const removeBtn = container.querySelector(`#mgr-remove-${id}`);
+    const confirmEl = container.querySelector(`#mgr-remove-confirm-${id}`);
+    removeBtn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      removeBtn.style.display = "none";
+      confirmEl.style.display = "inline";
+    });
+    confirmEl.querySelector(".mgr-remove-no").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      confirmEl.style.display = "none";
+      removeBtn.style.display = "inline-block";
+    });
+    confirmEl.querySelector(".mgr-remove-yes").addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      await removeProfileFromCloud(p.id);
+      logAudit(p.id, p.name, actorRole, actorName, "profile_removed_from_view", "");
+      managerView.rows = managerView.rows.filter(r=>r.id!==p.id);
+      renderManagerZone();
+    });
+  }
+}
+
+function genId(prefix){
+  return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2,8);
+}
+
+async function logAudit(profileId, profileName, actorRole, actorName, action, detail){
+  if(!cloudConfigured()) return;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/audit_log`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({
+        id: genId("log"), profile_id: profileId, profile_name: profileName,
+        actor_role: actorRole, actor_name: actorName, action, detail
+      })
+    });
+  }catch(e){ console.error("audit log failed", e); }
 }
 
 async function updateTargetDaysInCloud(profileId, targetDays){
@@ -1520,11 +2384,11 @@ function renderEnterPinForm(name){
   section.innerHTML = `
     <div class="pin-box">
       <div class="pin-box-icon">🔐</div>
-      <div class="pin-box-title">Welcome back, ${escapeHtml(name)}</div>
-      <div class="pin-box-sub">Enter your PIN to open your team's dashboard.</div>
+      <div class="pin-box-title">${t("pin_welcome_back")}, ${escapeHtml(name)}</div>
+      <div class="pin-box-sub">${t("pin_enter_sub")}</div>
       <input type="password" class="pin-input" id="mgr-pin-input" placeholder="••••" inputmode="numeric" autofocus>
-      <button class="cta" id="mgr-pin-submit">View my team →</button>
-      <div class="mgr-error" id="mgr-error">Incorrect PIN.</div>
+      <button class="cta" id="mgr-pin-submit">${t("button_view_team")}</button>
+      <div class="mgr-error" id="mgr-error">${t("pin_error_wrong")}</div>
     </div>
   `;
   document.getElementById("mgr-pin-submit").addEventListener("click", ()=>submitEnterPin(name));
@@ -1537,20 +2401,20 @@ function renderSetPinForm(name){
   section.innerHTML = `
     <div class="pin-box">
       <div class="pin-box-icon">✦</div>
-      <div class="pin-box-title">First time as ${escapeHtml(name)}</div>
-      <div class="pin-box-sub">Set a PIN (4+ characters) — you'll use this every time you come back. Nobody else will see it.</div>
+      <div class="pin-box-title">${t("pin_first_time")} ${escapeHtml(name)}</div>
+      <div class="pin-box-sub">${t("pin_set_sub")}</div>
       <div class="pin-grid2">
         <div>
-          <label class="pin-label">New PIN</label>
+          <label class="pin-label">${t("pin_new")}</label>
           <input type="password" class="pin-input" id="mgr-pin-new" placeholder="••••" inputmode="numeric">
         </div>
         <div>
-          <label class="pin-label">Confirm</label>
+          <label class="pin-label">${t("pin_confirm")}</label>
           <input type="password" class="pin-input" id="mgr-pin-confirm" placeholder="••••" inputmode="numeric">
         </div>
       </div>
-      <button class="cta" id="mgr-pin-set-submit">Set PIN & continue →</button>
-      <div class="mgr-error" id="mgr-error">PINs must match and be at least 4 characters.</div>
+      <button class="cta" id="mgr-pin-set-submit">${t("button_set_pin")}</button>
+      <div class="mgr-error" id="mgr-error">${t("pin_error_mismatch")}</div>
     </div>
   `;
   document.getElementById("mgr-pin-set-submit").addEventListener("click", ()=>submitSetPin(name));
@@ -1643,6 +2507,22 @@ function applyTheme(t){
   });
 }
 
+async function loadLang(){
+  const v = await kvGet(LANG_KEY);
+  return v || "en";
+}
+async function saveLang(l){
+  await kvSet(LANG_KEY, l);
+}
+function applyLang(l){
+  currentLang = l;
+  document.querySelectorAll("#lang-toggle button").forEach(b=>{
+    b.classList.toggle("active", b.dataset.lang === l);
+  });
+  applyStaticTranslations();
+  applyRoleView();
+}
+
 /* ============ MENU ============ */
 function initMenu(){
   const trigger = document.getElementById("menu-trigger");
@@ -1663,6 +2543,13 @@ function initMenu(){
       await saveTheme(t);
     });
   });
+  document.querySelectorAll("#lang-toggle button").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const l = btn.dataset.lang;
+      applyLang(l);
+      await saveLang(l);
+    });
+  });
   document.getElementById("copy-status-btn").addEventListener("click", async ()=>{
     if(!state) return;
     const currentDay = dayNumber(state.startDate);
@@ -1670,7 +2557,7 @@ function initMenu(){
     const total = idx.length;
     const done = idx.filter(t=>state.tasks[t.tid]).length;
     const pct = total ? Math.round((done/total)*100) : 0;
-    const inProgress = getActiveCategories().filter(c=>catStatus(c.id)==="progress" || catStatus(c.id)==="attention").map(c=>c.title);
+    const inProgress = getActiveCategories().filter(c=>catStatus(c.id)==="progress" || catStatus(c.id)==="attention").map(c=>tr(c.title));
     const text = `${state.name} — ${state.position}, Day ${currentDay} of onboarding routing.\n${pct}% confirmed (${done}/${total} operations).\nIn progress: ${inProgress.length ? inProgress.join(", ") : "—"}.`;
     try{
       await navigator.clipboard.writeText(text);
@@ -1723,10 +2610,18 @@ async function mergeCustomTasksFromCloud(){
   initRoleToggle();
   const theme = await loadTheme();
   applyTheme(theme);
+  currentLang = await loadLang();
+  document.querySelectorAll("#lang-toggle button").forEach(b=>{
+    b.classList.toggle("active", b.dataset.lang === currentLang);
+  });
+  applyStaticTranslations();
   state = await loadState();
+  await loadAdminTemplates();
   await mergeCustomTasksFromCloud();
   renderAll();
   updateCopyStatusVisibility();
+  const loader = document.getElementById("page-loader");
+  if(loader){ loader.classList.add("hidden"); setTimeout(()=>loader.remove(), 300); }
 })();
 
 </script>
