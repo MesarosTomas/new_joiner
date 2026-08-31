@@ -432,7 +432,7 @@ body{
 .mgr-back{font-size:12.5px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;}
 .mgr-detail-inner{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:16px 18px;margin-top:-11px;margin-bottom:10px;}
 
-.assigned-cat-card{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+.assigned-cat-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);border-radius:10px;margin-bottom:10px;overflow:hidden;}
 .assigned-cat-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:var(--paper);}
 .assigned-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
 .assigned-cat-count{
@@ -470,6 +470,8 @@ body{
 .links-section{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);}
 
 .link-cat-card{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.link-cat-card.link-cat-assigned{border-left:4px solid var(--green);}
+.link-cat-card.link-cat-recommended{border-left:4px solid var(--cyan);}
 .link-cat-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:var(--paper);}
 .link-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
 .link-cat-count{
@@ -558,7 +560,7 @@ body{
 }
 .rec-quickadd:hover{background:#0a1c66;}
 .rec-quickadd:disabled{background:var(--slate);cursor:not-allowed;}
-.rec-cat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:8px;overflow:hidden;}
+.rec-cat-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:8px;margin-bottom:8px;overflow:hidden;}
 .rec-cat-card.rec-cat-featured{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan-soft) inset;}
 .rec-cat-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;}
 .rec-cat-star{color:var(--cyan);font-size:13px;}
@@ -2884,7 +2886,9 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
   if(addLinkBtn && addLinkForm){
     addLinkBtn.addEventListener("click", (e)=>{
       e.stopPropagation();
-      addLinkForm.style.display = addLinkForm.style.display === "none" ? "block" : "none";
+      const wasOpen = addLinkForm.style.display !== "none";
+      addLinkForm.style.display = wasOpen ? "none" : "block";
+      setOpenState('addlinkform_'+p.id, !wasOpen);
     });
   }
 
@@ -2913,6 +2917,10 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
         const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
         if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
         logAudit(p.id, p.name, actorRole, actorName, "custom_link_added", linkName);
+        // Keep the form open and remember the group, so adding several
+        // links to the same group (e.g. a few more Mural boards) is fast.
+        setOpenState('addlinkform_'+p.id, true);
+        lastAddFormValues[p.id] = { ...(lastAddFormValues[p.id]||{}), linkGroup: groupName };
         renderMgrDetail(container, p, opts);
       } else {
         submitLinkBtn.disabled = false;
@@ -3104,7 +3112,7 @@ function renderMgrDetail(container, p, opts){
     const openKey = `link_assigned_${p.id}_${cssEscape(groupName)}`;
     const isOpenNow = getOpenState(openKey, true);
     return `
-      <div class="link-cat-card" data-openkey="${escapeHtml(openKey)}">
+      <div class="link-cat-card link-cat-assigned" data-openkey="${escapeHtml(openKey)}">
         <div class="link-cat-head">
           <span class="link-cat-title">${escapeHtml(groupName)}</span>
           <span class="link-cat-count">${linksInGroup.length}</span>
@@ -3139,7 +3147,7 @@ function renderMgrDetail(container, p, opts){
     const openKey = `link_rec_${p.id}_${cssEscape(groupName)}`;
     const isOpenNow = getOpenState(openKey, false);
     return `
-      <div class="link-cat-card" data-openkey="${escapeHtml(openKey)}">
+      <div class="link-cat-card link-cat-recommended" data-openkey="${escapeHtml(openKey)}">
         <div class="link-cat-head">
           <span class="link-cat-title">${escapeHtml(groupName)}</span>
           <span class="link-cat-count">${items.length}</span>
@@ -3176,8 +3184,8 @@ function renderMgrDetail(container, p, opts){
       </div>
 
       <button class="mgr-add-task-btn" id="mgr-add-task-${id}">${t("add_own_task")}</button>
-      <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:none;">
-        <input type="text" id="mgr-newtask-cat-${id}" placeholder="${t("task_category_ph")}" list="existing-cats-${id}">
+      <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:${getOpenState('addtaskform_'+p.id, false) ? 'block' : 'none'};">
+        <input type="text" id="mgr-newtask-cat-${id}" placeholder="${t("task_category_ph")}" list="existing-cats-${id}" value="${escapeHtml((lastAddFormValues[p.id]||{}).taskCat || '')}">
         <datalist id="existing-cats-${id}">
           ${existingCatTitles.map(c=>`<option value="${escapeHtml(c)}">`).join("")}
         </datalist>
@@ -3201,8 +3209,8 @@ function renderMgrDetail(container, p, opts){
         </div>
 
         <button class="mgr-add-task-btn" id="mgr-add-link-${id}">${t("add_own_link")}</button>
-        <div class="mgr-add-task-form" id="mgr-add-link-form-${id}" style="display:none;">
-          <input type="text" id="mgr-newlink-group-${id}" placeholder="${t("link_group_ph")}" list="existing-link-groups-${id}">
+        <div class="mgr-add-task-form" id="mgr-add-link-form-${id}" style="display:${getOpenState('addlinkform_'+p.id, false) ? 'block' : 'none'};">
+          <input type="text" id="mgr-newlink-group-${id}" placeholder="${t("link_group_ph")}" list="existing-link-groups-${id}" value="${escapeHtml((lastAddFormValues[p.id]||{}).linkGroup || '')}">
           <datalist id="existing-link-groups-${id}">
             ${existingLinkGroupNames.map(g=>`<option value="${escapeHtml(g)}">`).join("")}
           </datalist>
@@ -3381,7 +3389,9 @@ function renderMgrDetail(container, p, opts){
   const addForm = container.querySelector(`#mgr-add-task-form-${id}`);
   addBtn.addEventListener("click", (e)=>{
     e.stopPropagation();
-    addForm.style.display = addForm.style.display === "none" ? "block" : "none";
+    const wasOpen = addForm.style.display !== "none";
+    addForm.style.display = wasOpen ? "none" : "block";
+    setOpenState('addtaskform_'+p.id, !wasOpen);
   });
   container.querySelector(`#mgr-newtask-submit-${id}`).addEventListener("click", async (e)=>{
     e.stopPropagation();
@@ -3410,6 +3420,8 @@ function renderMgrDetail(container, p, opts){
       const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
       if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
       logAudit(p.id, p.name, actorRole, actorName, "custom_task_added", text);
+      setOpenState('addtaskform_'+p.id, true);
+      lastAddFormValues[p.id] = { ...(lastAddFormValues[p.id]||{}), taskCat: catTitle };
       renderMgrDetail(container, p, opts);
     } else {
       submitBtn.disabled = false;
@@ -3573,6 +3585,11 @@ function getOpenState(key, defaultOpen){
   return uiOpenState[key];
 }
 function setOpenState(key, val){ uiOpenState[key] = val; }
+
+/* Remembers the last group/category typed per profile, so adding several
+   links or tasks to the same group in a row doesn't require retyping it
+   every single time. */
+let lastAddFormValues = {};
 
 function genId(prefix){
   return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2,8);
