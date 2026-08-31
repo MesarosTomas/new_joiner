@@ -445,6 +445,11 @@ body{
   display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
 }
 .assigned-task-row:last-child{border-bottom:none;}
+.assigned-task-row.is-done{opacity:.6;}
+.assigned-done-divider{
+  font-size:10.5px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;
+  padding:10px 0 4px;border-top:1px dashed var(--line);margin-top:2px;
+}
 .assigned-task-check{flex:0 0 auto;font-size:14px;padding-top:1px;}
 .assigned-task-main{flex:1;min-width:0;}
 .assigned-task-text{font-size:13px;color:var(--ink);line-height:1.4;}
@@ -726,17 +731,18 @@ body{
 .cat-resource-text{flex:1;min-width:0;}
 .cat-resource-title{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;color:var(--navy-ink);}
 .cat-resource-sub{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
-.cat-resource-actions{display:flex;gap:6px;flex:0 0 auto;align-items:center;}
+.cat-resource-actions{display:flex;gap:10px;flex:0 0 auto;align-items:center;}
 .cat-resource-open-btn{
-  padding:9px 16px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:600;
-  font-size:12.5px;text-decoration:none;white-space:nowrap;
+  padding:11px 22px;background:var(--cyan);color:#fff;border:none;border-radius:8px;font-weight:700;
+  font-size:13px;text-decoration:none;white-space:nowrap;box-shadow:0 2px 6px rgba(0,113,166,.3);
 }
-.cat-resource-open-btn:hover{background:#0a1c66;}
+.cat-resource-open-btn:hover{background:#0090c7;}
 .cat-resource-edit-btn{
-  padding:8px 12px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:12px;
-  cursor:pointer;color:var(--ink-soft);white-space:nowrap;font-weight:600;
+  padding:4px 2px;background:none;border:none;font-size:11.5px;
+  cursor:pointer;color:var(--ink-soft);white-space:nowrap;font-weight:600;text-decoration:underline;
+  text-underline-offset:2px;
 }
-.cat-resource-edit-btn:hover{border-color:var(--navy);color:var(--navy);}
+.cat-resource-edit-btn:hover{color:var(--navy);}
 .cat-resource-add-btn{
   width:100%;padding:10px;background:none;border:1.5px dashed var(--line);border-radius:10px;
   color:var(--ink-soft);font-size:12.5px;cursor:pointer;font-family:'Inter',sans-serif;margin:8px 0;
@@ -921,7 +927,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title_prefix:"Direct link:", resource_sub:"Opens in a new tab", edit_link_word:"Edit link", recommended_tag:"Recommended", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title_prefix:"Direct link:", resource_sub:"Opens in a new tab", edit_link_word:"Edit link", recommended_tag:"Recommended", completed_divider:"✓ Completed", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -988,7 +994,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title_prefix:"Direkter Link:", resource_sub:"Öffnet in neuem Tab", edit_link_word:"Link bearbeiten", recommended_tag:"Empfohlen", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title_prefix:"Direkter Link:", resource_sub:"Öffnet in neuem Tab", edit_link_word:"Link bearbeiten", recommended_tag:"Empfohlen", completed_divider:"✓ Erledigt", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -1055,7 +1061,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title_prefix:"Priamy odkaz:", resource_sub:"Otvorí sa na novej karte", edit_link_word:"Upraviť odkaz", recommended_tag:"Odporúčané", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title_prefix:"Priamy odkaz:", resource_sub:"Otvorí sa na novej karte", edit_link_word:"Upraviť odkaz", recommended_tag:"Odporúčané", completed_divider:"✓ Dokončené", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -2974,16 +2980,18 @@ function renderMgrDetail(container, p, opts){
   const existingCatTitles = [...new Set(assigned.map(t=>t.catTitle).filter(Boolean))];
 
   const assignedBlocks = assignedGroups.map((cat, gi)=>{
-    const catTasks = assigned.filter(t=>(t.catId||"assigned")===cat.id);
-    const doneCount = catTasks.filter(t=>tasks[t.id]).length;
+    const catTasksRaw = assigned.filter(t=>(t.catId||"assigned")===cat.id);
+    const pendingTasks = catTasksRaw.filter(t=>!tasks[t.id]);
+    const doneTasks = catTasksRaw.filter(t=>tasks[t.id]);
+    const doneCount = doneTasks.length;
     const catKeySafe = cssEscape(cat.id) || ("acat"+gi);
-    const rowsHtml = catTasks.map(tk=>{
+    const renderRow = (tk)=>{
       const isDone = !!tasks[tk.id];
       const note = notes[tk.id];
       const completedAt = completedDates[tk.id];
       const completedStr = completedAt ? new Date(completedAt).toLocaleDateString() : "";
       return `
-        <div class="assigned-task-row">
+        <div class="assigned-task-row ${isDone ? 'is-done' : ''}">
           <span class="assigned-task-check">${isDone ? "✅" : "⬜"}</span>
           <div class="assigned-task-main">
             <div class="assigned-task-text ${isDone?'done':''}">${escapeHtml(tk.text)}</div>
@@ -2997,18 +3005,21 @@ function renderMgrDetail(container, p, opts){
           <button class="assigned-task-delete" data-taskid="${escapeHtml(tk.id)}" title="Remove this task">✕</button>
         </div>
       `;
-    }).join("");
+    };
+    const rowsHtml = pendingTasks.map(renderRow).join("")
+      + (pendingTasks.length && doneTasks.length ? `<div class="assigned-done-divider">${t("completed_divider")}</div>` : "")
+      + doneTasks.map(renderRow).join("");
     const assignedOpenKey = `assigned_${p.id}_${catKeySafe}`;
     const assignedIsOpen = getOpenState(assignedOpenKey, true);
     return `
       <div class="assigned-cat-card" data-catkey="${catKeySafe}" data-openkey="${escapeHtml(assignedOpenKey)}">
         <div class="assigned-cat-head">
           <span class="assigned-cat-title">${escapeHtml(cat.title)}</span>
-          <span class="assigned-cat-count">${doneCount}/${catTasks.length}</span>
+          <span class="assigned-cat-count">${doneCount}/${catTasksRaw.length}</span>
           <span class="assigned-cat-chev" style="transform:${assignedIsOpen ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
         <div class="assigned-cat-body" style="display:${assignedIsOpen ? 'block' : 'none'};">
-          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasks, true, cat.title)}</div>
+          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasksRaw, true, cat.title)}</div>
           ${rowsHtml}
         </div>
       </div>
