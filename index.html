@@ -131,6 +131,44 @@ body{
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 
+.guide-overlay{
+  position:fixed;inset:0;background:rgba(15,27,51,.55);z-index:9998;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.guide-panel{
+  background:var(--card);border-radius:14px;max-width:560px;width:100%;max-height:85vh;
+  overflow-y:auto;position:relative;box-shadow:0 12px 40px rgba(13,36,128,.25);
+}
+.guide-close{
+  position:absolute;top:14px;right:14px;background:var(--slate-soft);border:none;border-radius:50%;
+  width:28px;height:28px;cursor:pointer;color:var(--ink-soft);font-size:13px;z-index:2;
+}
+.guide-close:hover{background:var(--coral-soft);color:var(--coral);}
+.guide-tabs{
+  display:flex;gap:0;border-bottom:1px solid var(--line);padding:0 20px;position:sticky;top:0;
+  background:var(--card);border-radius:14px 14px 0 0;
+}
+.guide-tabs button{
+  flex:1;padding:16px 8px 12px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;
+  color:var(--ink-soft);border-bottom:2px solid transparent;font-family:'Inter',sans-serif;
+}
+.guide-tabs button.active{color:var(--navy);border-bottom-color:var(--navy);}
+#guide-body{padding:24px 28px 28px;}
+.guide-title{font-family:'Inter',sans-serif;font-weight:700;font-size:18px;color:var(--navy-ink);margin-bottom:6px;}
+.guide-sub{font-size:13px;color:var(--ink-soft);margin-bottom:18px;line-height:1.5;}
+.guide-step{display:flex;gap:12px;margin-bottom:16px;}
+.guide-step-num{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--cyan-soft);color:var(--navy);
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;
+}
+.guide-step-text{font-size:13.5px;line-height:1.5;color:var(--ink);padding-top:2px;}
+.guide-copy-btn{
+  width:100%;margin-top:8px;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;
+  font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;
+}
+.guide-copy-btn:hover{background:#0a1c66;}
+.guide-copied{color:var(--green);font-size:12.5px;text-align:center;margin-top:8px;display:none;}
+
 .congrats-banner{
   background:linear-gradient(135deg,var(--green),#3f8f2c);color:#fff;border-radius:12px;
   padding:22px 26px;margin-bottom:20px;text-align:center;
@@ -283,6 +321,22 @@ body{
 
 .mgr-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 34px;margin-bottom:22px;box-shadow:0 1px 2px rgba(13,36,128,.05);}
 .admin-link-wrap{text-align:center;}
+.buddy-recent-row{
+  display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:8px;padding:11px 14px;margin-bottom:8px;
+}
+.buddy-recent-main{flex:1;}
+.buddy-recent-name{font-weight:600;font-size:13px;color:var(--ink);}
+.buddy-recent-pos{font-size:11.5px;color:var(--ink-soft);}
+.buddy-recent-open{
+  padding:6px 12px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;
+  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+}
+.buddy-recent-open:hover{background:#0a1c66;}
+.buddy-recent-remove{
+  background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:4px 6px;
+}
+.buddy-recent-remove:hover{color:var(--coral);}
 .admin-link{
   background:none;border:none;color:var(--ink-soft);font-size:12px;cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;font-family:'Inter',sans-serif;
@@ -290,10 +344,14 @@ body{
 .admin-link:hover{color:var(--navy);}
 .mgr-card h1{font-family:'Inter',sans-serif;font-size:22px;margin:0 0 8px;color:var(--navy-ink);}
 .mgr-card p.sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
-.mgr-code-box{background:var(--cyan-soft);border:1px dashed var(--cyan);border-radius:8px;padding:12px 16px;margin-top:14px;}
+.code-boxes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+.mgr-code-box{background:var(--cyan-soft);border:1px dashed var(--cyan);border-radius:8px;padding:12px 16px;margin-top:0;}
 .mgr-code-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);font-weight:600;margin-bottom:4px;}
-.mgr-code-box .code{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--navy-ink);letter-spacing:.06em;}
-.mgr-code-box .hint{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+.mgr-code-box .code{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--navy-ink);letter-spacing:.06em;}
+.mgr-code-box .hint{font-size:11px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
+.code-box-private{background:var(--coral-soft);border-color:var(--coral);}
+.code-box-private .lbl{color:var(--coral);}
+@media(max-width:640px){.code-boxes-grid{grid-template-columns:1fr;}}
 .mgr-error{color:var(--coral);font-size:12.5px;margin-top:10px;display:none;}
 
 .pin-box{
@@ -378,7 +436,35 @@ body{
 }
 .mgr-section-label.rec-label{color:var(--navy);}
 .mgr-empty-note{font-size:12.5px;color:var(--ink-soft);font-style:italic;padding:6px 0 4px;}
-.rec-wrap{background:var(--paper);border-radius:8px;padding:4px 10px;}
+.rec-wrap{}
+.rec-toolbar{display:flex;gap:8px;margin:8px 0 10px;}
+.rec-search{
+  flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;
+  background:var(--card);color:var(--ink);font-family:'Inter',sans-serif;
+}
+.rec-quickadd{
+  padding:8px 14px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;
+  font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+}
+.rec-quickadd:hover{background:#0a1c66;}
+.rec-quickadd:disabled{background:var(--slate);cursor:not-allowed;}
+.rec-cat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:8px;overflow:hidden;}
+.rec-cat-card.rec-cat-featured{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan-soft) inset;}
+.rec-cat-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;}
+.rec-cat-star{color:var(--cyan);font-size:13px;}
+.rec-cat-title{font-weight:600;font-size:12.5px;color:var(--navy-ink);flex:1;}
+.rec-cat-count{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+}
+.rec-cat-addall{
+  padding:4px 10px;background:var(--cyan-soft);color:var(--navy);border:none;border-radius:20px;
+  font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+}
+.rec-cat-addall:hover{background:var(--cyan);color:#fff;}
+.rec-cat-addall:disabled{background:var(--slate-soft);color:var(--slate);cursor:not-allowed;}
+.rec-cat-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
+.rec-cat-body{padding:0 12px 8px;border-top:1px solid var(--line);}
 .rec-task{
   display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;
 }
@@ -445,6 +531,38 @@ body{
 .locked-preview .ghost{
   width:64px;height:34px;border-radius:8px;background:var(--slate-soft);
 }
+
+.tour-btn{
+  display:block;width:100%;max-width:280px;margin:16px auto 20px;padding:12px;
+  background:var(--navy);color:#fff;border:none;border-radius:10px;font-weight:600;font-size:14px;
+  cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 2px 6px rgba(13,36,128,.18);
+}
+.tour-btn:hover{background:#0a1c66;}
+
+.quick-links-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px;margin-bottom:20px;
+}
+.quick-links-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.quick-links-title{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--navy-ink);margin-bottom:2px;}
+.quick-links-sub{font-size:12.5px;color:var(--ink-soft);}
+.tour-link-small{
+  flex:0 0 auto;padding:7px 14px;background:var(--cyan-soft);color:var(--navy);border:none;border-radius:20px;
+  font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+}
+.tour-link-small:hover{background:var(--cyan);color:#fff;}
+.quick-links-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.quick-link-box{
+  display:block;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+  padding:14px 12px;text-decoration:none;transition:border-color .15s ease, transform .15s ease;
+}
+.quick-link-box:hover{border-color:var(--cyan);transform:translateY(-2px);}
+.quick-link-icon{height:24px;margin-bottom:8px;display:flex;align-items:center;}
+.quick-link-icon img{height:22px;width:auto;max-width:32px;object-fit:contain;}
+.quick-link-icon-fallback{font-size:20px;}
+.quick-link-name{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--ink);margin-bottom:3px;}
+.quick-link-desc{font-size:10.5px;color:var(--ink-soft);line-height:1.35;}
+@media(max-width:640px){.quick-links-grid{grid-template-columns:repeat(2,1fr);}}
 
 .routing-strip{
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -570,6 +688,7 @@ body{
           </div>
         </div>
         <button class="menu-action" id="copy-status-btn" style="display:none;">📋 Copy status update</button>
+        <button class="menu-action" id="guide-open-btn" data-i18n="guide_menu">❓ How it works</button>
       </div>
     </div>
     <button class="reset-link" id="reset-btn" style="display:none;">Start a new routing</button>
@@ -592,6 +711,17 @@ body{
   <div id="admin-zone" style="display:none;"></div>
 </div>
 <div id="page-loader" class="page-loader"><div class="page-loader-spinner"></div></div>
+<div id="guide-modal" class="guide-overlay" style="display:none;">
+  <div class="guide-panel">
+    <button class="guide-close" id="guide-close-btn">✕</button>
+    <div class="guide-tabs" id="guide-tabs">
+      <button data-tab="joiner" class="active">🧑‍💻 <span data-i18n="role_joiner_short">New Joiner</span></button>
+      <button data-tab="manager">🧑‍💼 <span data-i18n="role_manager_short">Manager</span></button>
+      <button data-tab="buddy">🤝 <span data-i18n="role_buddy_short">Buddy</span></button>
+    </div>
+    <div id="guide-body"></div>
+  </div>
+</div>
 
 <script>
 /* ============ TRANSLATIONS (EN / DE / SK) ============ */
@@ -600,11 +730,22 @@ const LANG_KEY = "onboarding-lang";
 
 const TRANSLATIONS = {
   en: {
-    role_joiner:"🧑‍💻 New Joiner", role_manager:"🧑‍💼 Team Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    role_joiner:"🧑‍💻 New Joiner", role_manager:"🧑‍💼 Team Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin", role_joiner_short:"New Joiner", role_manager_short:"Manager", role_buddy_short:"Buddy", guide_menu:"❓ How it works", guide_copy_btn:"📋 Copy message for this role", guide_copied_msg:"Copied — paste it into Teams.",
+    quick_links_title:"Quick links", quick_links_sub:"Core systems you'll use — click to open.",
+    link_s4:"SAP S/4HANA", link_s4_desc:"Timesheets, project data, ERP.",
+    link_confluence:"Confluence", link_confluence_desc:"Documentation, PL Handbook, processes.",
+    link_jira:"Jira", link_jira_desc:"Tasks, tickets, project boards.",
+    link_teams:"Microsoft Teams", link_teams_desc:"Chats, calls, your team channels.",
+    link_sharepoint:"SharePoint", link_sharepoint_desc:"Shared files and project documents.",
+    link_successfactors:"SuccessFactors", link_successfactors_desc:"HR profile, goals, learning.",
+    link_concur:"Concur", link_concur_desc:"Travel requests and expenses.",
+    link_helpdesk:"IT Help Desk", link_helpdesk_desc:"Access requests and IT tickets.",
+    link_mural:"Mural — SAP DM Onboarding", link_mural_desc:"Visual onboarding academy board, step by step.",
+    tour_button:"🧭 Take the tour",
     section_your_routing:"Your routing", menu_language:"Language", menu_theme:"Theme",
     cat_role_specific:"Role-specific",
     setup_eyebrow:"Routing header · create", setup_h1:"Let's set up your routing.",
-    setup_sub:"A few details, and you'll get your resume code — your manager or buddy will then assign your first tasks from the recommended list.",
+    setup_sub:"A few details, and you'll get two codes: a private one to resume your progress, and one to share with your manager or buddy so they can assign your first tasks.",
     label_name:"Your name", placeholder_name:"First name Surname",
     label_start_date:"Start date", label_position:"Position", label_manager:"Team manager",
     label_country:"Country / Region", placeholder_choose:"Choose...", placeholder_manager_other:"Manager name",
@@ -614,7 +755,7 @@ const TRANSLATIONS = {
     locked_title:"Waiting for routing release",
     locked_sub:"Fill in the details above and press <b>Release routing</b> to get your code — your manager or buddy will assign your first tasks shortly after.",
     empty_tasks_title:"No tasks assigned yet",
-    empty_tasks_sub:"Your manager or buddy hasn't assigned your first tasks yet. Share your resume code with them if you haven't already — they'll pick your tasks from the recommended list shortly.",
+    empty_tasks_sub:"Your manager or buddy hasn't assigned your first tasks yet. Share your buddy code with them if you haven't already — they'll pick your tasks from the recommended list shortly.",
     footer_note:"Welcome to the team! Questions about any operation? <b>Ask your buddy or manager.</b>",
     strip_title:"Routing overview",
     reset_link:"Start a new routing", reset_confirm_text:"Clear progress and start over?", reset_yes:"Yes, reset", reset_no:"Cancel",
@@ -622,7 +763,8 @@ const TRANSLATIONS = {
     op_completed:"Completed", op_inprocess:"In process", op_notstarted:"Not started",
     day_word:"Day", of_word:"of", started_word:"started", confirmed_word:"Confirmed",
     resume_code_label:"Your personal resume code",
-    resume_code_hint:"Save this somewhere safe. If you accidentally reset or switch devices, use \"Resume with your code\" to get your progress back — no need to redo anything.",
+    resume_code_hint:"Save this somewhere safe and keep it private — it's only for you. If you accidentally reset or switch devices, use \"Resume with your code\" to get your progress back.",
+    buddy_code_label:"Your buddy code", buddy_code_hint:"Share this one with your buddy (not your resume code above) — it lets them see your progress and assign your first tasks.",
     manager_eyebrow:"Team manager · access", manager_h1:"View your team's onboarding",
     manager_sub:"Pick your name. First time here, you'll set your own PIN — after that, just enter it to get in. Nobody else, including Tomáš, sets or sees your PIN.",
     label_your_name:"Your name",
@@ -632,17 +774,18 @@ const TRANSLATIONS = {
     pin_error_wrong:"Incorrect PIN.", pin_error_mismatch:"PINs must match and be at least 4 characters.",
     target_days_label:"Target onboarding length:", target_days_hint:"Adjusts what counts as \"on track\" for this person only.",
     section_assigned:"Assigned tasks", section_recommended:"Recommended",
+    add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
     add_own_task:"+ Add your own task", task_name_ph:"Task name", task_desc_ph:"Description (optional)", button_add_task:"Add task",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
-    your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule",
+    your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
     search_by_name:"Search by name...", sort_behind:"Sort: most behind first", sort_recent:"Sort: recently updated", sort_name:"Sort: name (A–Z)",
     back_link:"← Back",
     buddy_eyebrow:"Buddy · access", buddy_h1:"Check in on your new joiner",
-    buddy_sub:"Enter the resume code they shared with you — you'll see their progress right away, and can assign their first tasks from the recommended list.",
-    label_their_code:"Their resume code", button_open_routing:"Open their routing →",
+    buddy_sub:"Enter the buddy code they shared with you — you'll see their progress right away, and can assign their first tasks from the recommended list.",
+    label_their_code:"Their buddy code", button_open_routing:"Open their routing →",
     buddy_error:"No joiner found with that code. Double-check it and try again.",
     admin_eyebrow:"Admin · access", admin_h1:"Manage the onboarding tool",
     admin_sub:"Set your admin PIN the first time, then log in with it going forward.",
@@ -654,11 +797,22 @@ const TRANSLATIONS = {
     status_on_track:"On track", status_behind:"Behind", status_done:"Completed"
   },
   de: {
-    role_joiner:"🧑‍💻 Neuer Mitarbeiter", role_manager:"🧑‍💼 Team-Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    role_joiner:"🧑‍💻 Neuer Mitarbeiter", role_manager:"🧑‍💼 Team-Manager", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin", role_joiner_short:"Neuer Mitarbeiter", role_manager_short:"Manager", role_buddy_short:"Buddy", guide_menu:"❓ So funktioniert es", guide_copy_btn:"📋 Nachricht für diese Rolle kopieren", guide_copied_msg:"Kopiert — füge es in Teams ein.",
+    quick_links_title:"Schnellzugriffe", quick_links_sub:"Kernsysteme, die du brauchst — anklicken zum Öffnen.",
+    link_s4:"SAP S/4HANA", link_s4_desc:"Zeiterfassung, Projektdaten, ERP.",
+    link_confluence:"Confluence", link_confluence_desc:"Dokumentation, PL Handbook, Prozesse.",
+    link_jira:"Jira", link_jira_desc:"Aufgaben, Tickets, Projekt-Boards.",
+    link_teams:"Microsoft Teams", link_teams_desc:"Chats, Anrufe, deine Team-Kanäle.",
+    link_sharepoint:"SharePoint", link_sharepoint_desc:"Geteilte Dateien und Projektdokumente.",
+    link_successfactors:"SuccessFactors", link_successfactors_desc:"HR-Profil, Ziele, Weiterbildung.",
+    link_concur:"Concur", link_concur_desc:"Reiseanträge und Spesen.",
+    link_helpdesk:"IT Help Desk", link_helpdesk_desc:"Zugangsanfragen und IT-Tickets.",
+    link_mural:"Mural — SAP DM Onboarding", link_mural_desc:"Visuelles Onboarding-Board, Schritt für Schritt.",
+    tour_button:"🧭 Zur Tour",
     section_your_routing:"Dein Routing", menu_language:"Sprache", menu_theme:"Design",
     cat_role_specific:"Rollenspezifisch",
     setup_eyebrow:"Routing-Kopf · erstellen", setup_h1:"Richten wir dein Routing ein.",
-    setup_sub:"Ein paar Angaben, und du erhältst deinen Wiederherstellungscode — dein Manager oder Buddy weist dir dann deine ersten Aufgaben aus der Empfehlungsliste zu.",
+    setup_sub:"Ein paar Angaben, und du erhältst zwei Codes: einen privaten, um deinen Fortschritt fortzusetzen, und einen zum Teilen mit deinem Manager oder Buddy, damit sie dir Aufgaben zuweisen können.",
     label_name:"Dein Name", placeholder_name:"Vorname Nachname",
     label_start_date:"Startdatum", label_position:"Position", label_manager:"Team-Manager",
     label_country:"Land / Region", placeholder_choose:"Auswählen...", placeholder_manager_other:"Name des Managers",
@@ -676,7 +830,8 @@ const TRANSLATIONS = {
     op_completed:"Abgeschlossen", op_inprocess:"In Bearbeitung", op_notstarted:"Nicht begonnen",
     day_word:"Tag", of_word:"von", started_word:"gestartet", confirmed_word:"Bestätigt",
     resume_code_label:"Dein persönlicher Wiederherstellungscode",
-    resume_code_hint:"Bewahre diesen sicher auf. Falls du versehentlich zurücksetzt oder das Gerät wechselst, nutze \"Mit Code fortsetzen\", um deinen Fortschritt zurückzuholen.",
+    resume_code_hint:"Bewahre diesen sicher und privat auf — er ist nur für dich. Falls du versehentlich zurücksetzt oder das Gerät wechselst, nutze \"Mit Code fortsetzen\".",
+    buddy_code_label:"Dein Buddy-Code", buddy_code_hint:"Teile diesen (nicht deinen Wiederherstellungscode oben) mit deinem Buddy — damit sieht er/sie deinen Fortschritt und kann dir erste Aufgaben zuweisen.",
     manager_eyebrow:"Team-Manager · Zugang", manager_h1:"Onboarding deines Teams ansehen",
     manager_sub:"Wähle deinen Namen. Beim ersten Mal legst du deine eigene PIN fest — danach genügt die Eingabe. Niemand sonst, auch nicht Tomáš, legt deine PIN fest oder sieht sie.",
     label_your_name:"Dein Name",
@@ -686,17 +841,18 @@ const TRANSLATIONS = {
     pin_error_wrong:"Falsche PIN.", pin_error_mismatch:"Die PINs müssen übereinstimmen und mindestens 4 Zeichen lang sein.",
     target_days_label:"Ziel-Onboarding-Dauer:", target_days_hint:"Beeinflusst nur für diese Person, was als \"im Zeitplan\" gilt.",
     section_assigned:"Zugewiesene Aufgaben", section_recommended:"Empfohlen",
+    add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
     add_own_task:"+ Eigene Aufgabe hinzufügen", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", button_add_task:"Aufgabe hinzufügen",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
-    your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand",
+    your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
     search_by_name:"Nach Name suchen...", sort_behind:"Sortieren: größter Rückstand zuerst", sort_recent:"Sortieren: zuletzt aktualisiert", sort_name:"Sortieren: Name (A–Z)",
     back_link:"← Zurück",
     buddy_eyebrow:"Buddy · Zugang", buddy_h1:"Fortschritt deines neuen Kollegen ansehen",
     buddy_sub:"Gib den Code ein, den sie/er dir gegeben hat — du siehst sofort den Fortschritt und kannst erste Aufgaben aus der Empfehlungsliste zuweisen.",
-    label_their_code:"Ihr/sein Wiederherstellungscode", button_open_routing:"Routing öffnen →",
+    label_their_code:"Ihr/sein Buddy-Code", button_open_routing:"Routing öffnen →",
     buddy_error:"Kein Mitarbeiter mit diesem Code gefunden. Bitte überprüfen und erneut versuchen.",
     admin_eyebrow:"Admin · Zugang", admin_h1:"Onboarding-Tool verwalten",
     admin_sub:"Lege beim ersten Mal deine Admin-PIN fest, danach meldest du dich damit an.",
@@ -708,11 +864,22 @@ const TRANSLATIONS = {
     status_on_track:"Im Zeitplan", status_behind:"Im Rückstand", status_done:"Abgeschlossen"
   },
   sk: {
-    role_joiner:"🧑‍💻 Nový kolega", role_manager:"🧑‍💼 Team manažér", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin",
+    role_joiner:"🧑‍💻 Nový kolega", role_manager:"🧑‍💼 Team manažér", role_buddy:"🤝 Buddy", role_admin:"⚙️ Admin", role_joiner_short:"Nový kolega", role_manager_short:"Manažér", role_buddy_short:"Buddy", guide_menu:"❓ Ako to funguje", guide_copy_btn:"📋 Skopírovať správu pre túto rolu", guide_copied_msg:"Skopírované — vlož to do Teams.",
+    quick_links_title:"Rýchle odkazy", quick_links_sub:"Základné systémy, ktoré budeš potrebovať — klikni na otvorenie.",
+    link_s4:"SAP S/4HANA", link_s4_desc:"Timesheety, projektové dáta, ERP.",
+    link_confluence:"Confluence", link_confluence_desc:"Dokumentácia, PL Handbook, procesy.",
+    link_jira:"Jira", link_jira_desc:"Úlohy, tickety, projektové boardy.",
+    link_teams:"Microsoft Teams", link_teams_desc:"Chaty, hovory, tvoje tímové kanály.",
+    link_sharepoint:"SharePoint", link_sharepoint_desc:"Zdieľané súbory a projektové dokumenty.",
+    link_successfactors:"SuccessFactors", link_successfactors_desc:"HR profil, ciele, vzdelávanie.",
+    link_concur:"Concur", link_concur_desc:"Žiadosti o cesty a výdavky.",
+    link_helpdesk:"IT Help Desk", link_helpdesk_desc:"Žiadosti o prístup a IT tickety.",
+    link_mural:"Mural — SAP DM Onboarding", link_mural_desc:"Vizuálny onboarding board krok za krokom.",
+    tour_button:"🧭 Prejsť tour",
     section_your_routing:"Tvoj routing", menu_language:"Jazyk", menu_theme:"Téma",
     cat_role_specific:"Podľa role",
     setup_eyebrow:"Hlavička routingu · vytvoriť", setup_h1:"Nastavme si tvoj routing.",
-    setup_sub:"Pár údajov a dostaneš svoj obnovovací kód — manažér alebo buddy ti potom priradí prvé úlohy zo zoznamu odporúčaní.",
+    setup_sub:"Pár údajov a dostaneš dva kódy: súkromný na obnovenie progressu a jeden na zdieľanie s manažérom alebo buddym, aby ti mohli prideliť prvé úlohy.",
     label_name:"Tvoje meno", placeholder_name:"Meno Priezvisko",
     label_start_date:"Dátum nástupu", label_position:"Pozícia", label_manager:"Team manažér",
     label_country:"Krajina / Región", placeholder_choose:"Vyber...", placeholder_manager_other:"Meno manažéra",
@@ -730,7 +897,8 @@ const TRANSLATIONS = {
     op_completed:"Dokončené", op_inprocess:"Prebieha", op_notstarted:"Nezačaté",
     day_word:"Deň", of_word:"z", started_word:"začalo", confirmed_word:"Potvrdené",
     resume_code_label:"Tvoj osobný obnovovací kód",
-    resume_code_hint:"Ulož si ho na bezpečné miesto. Ak omylom resetuješ alebo zmeníš zariadenie, použi \"Pokračuj so svojím kódom\" a dostaneš svoj progress späť.",
+    resume_code_hint:"Ulož si ho na bezpečné miesto a nechaj si ho pre seba — je len tvoj. Ak omylom resetuješ alebo zmeníš zariadenie, použi \"Pokračuj so svojím kódom\".",
+    buddy_code_label:"Tvoj buddy kód", buddy_code_hint:"Tento (nie kód vyššie) zdieľaj so svojím buddym — vďaka nemu uvidí tvoj progress a prideli ti prvé úlohy.",
     manager_eyebrow:"Team manažér · prístup", manager_h1:"Pozri si onboarding svojho tímu",
     manager_sub:"Vyber svoje meno. Prvýkrát si nastavíš vlastný PIN — potom ho už len zadáš. Nikto iný, ani Tomáš, tvoj PIN nenastavuje ani nevidí.",
     label_your_name:"Tvoje meno",
@@ -740,17 +908,18 @@ const TRANSLATIONS = {
     pin_error_wrong:"Nesprávny PIN.", pin_error_mismatch:"PINy sa musia zhodovať a mať aspoň 4 znaky.",
     target_days_label:"Cieľová dĺžka onboardingu:", target_days_hint:"Ovplyvňuje, čo sa počíta ako \"v poriadku\" len pre túto osobu.",
     section_assigned:"Pridelené úlohy", section_recommended:"Odporúčané",
+    add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
     add_own_task:"+ Pridať vlastnú úlohu", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", button_add_task:"Pridať úlohu",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
-    your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú",
+    your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
     search_by_name:"Hľadať podľa mena...", sort_behind:"Triediť: najviac pozadu", sort_recent:"Triediť: naposledy aktualizované", sort_name:"Triediť: meno (A–Z)",
     back_link:"← Späť",
     buddy_eyebrow:"Buddy · prístup", buddy_h1:"Pozri sa na svojho nového kolegu",
     buddy_sub:"Zadaj kód, ktorý ti poslal — hneď uvidíš jeho progress a môžeš mu prideliť prvé úlohy zo zoznamu odporúčaní.",
-    label_their_code:"Jeho/jej obnovovací kód", button_open_routing:"Otvoriť routing →",
+    label_their_code:"Jeho/jej buddy kód", button_open_routing:"Otvoriť routing →",
     buddy_error:"Pre tento kód sa nenašiel žiadny kolega. Skontroluj ho a skús znova.",
     admin_eyebrow:"Admin · prístup", admin_h1:"Správa onboarding nástroja",
     admin_sub:"Prvýkrát si nastav admin PIN, potom sa ním prihlasuj.",
@@ -772,6 +941,121 @@ function applyStaticTranslations(){
     el.textContent = t(el.dataset.i18n);
   });
 }
+
+const GUIDE_CONTENT = {
+  en: {
+    joiner: {
+      title:"For new joiners", sub:"Set up your routing once, then track your tasks as they get assigned.",
+      steps:[
+        "Click <b>New Joiner</b> and fill in your name, start date, position, manager and country.",
+        "Press <b>Release routing</b> — you'll get two codes: a private resume code (keep it) and a buddy code (share it).",
+        "Share your <b>buddy code</b> with your manager or buddy — they'll assign your first tasks from the recommended list.",
+        "Come back anytime, tick off tasks as you finish them, and add notes if useful."
+      ],
+      copy:"Hi! Here's the onboarding app — click \"New Joiner\", fill in your details, and share the buddy code you get (not the resume code) with me so I can assign your first tasks."
+    },
+    manager: {
+      title:"For team managers", sub:"See everyone who picked you as their manager, in one place.",
+      steps:[
+        "Click <b>Team Manager</b> and choose your name from the list.",
+        "First time: set your own PIN (nobody else sees it). After that, just enter it to get in.",
+        "Click into anyone on your list to see their progress, assign tasks from the recommended list, or add your own.",
+        "You can also adjust how many days their onboarding should take, if it's different from the default."
+      ],
+      copy:"Hi! You've got a new joiner starting soon — could you open the onboarding app, click \"Team Manager\", pick your name and set a PIN (first time only)? You'll then see everyone on your team and can assign their first tasks."
+    },
+    buddy: {
+      title:"For buddies", sub:"Check in on your new colleague and help assign their first tasks.",
+      steps:[
+        "Ask the new joiner for their <b>buddy code</b> (not their resume code — they get both after setting up their routing).",
+        "Click <b>Buddy</b> and enter that code — you'll see their progress right away.",
+        "Assign tasks from the recommended list (one by one, a whole category at once, or everything), or add your own.",
+        "The app remembers who you've checked on before, so you won't need the code again next time."
+      ],
+      copy:"Hi! You're the buddy for our new colleague — could you ask them for their buddy code from the onboarding app, then click \"Buddy\" and enter that code? You'll see their progress and can assign their first tasks."
+    }
+  },
+  de: {
+    joiner: {
+      title:"Für neue Mitarbeiter", sub:"Richte dein Routing einmal ein und verfolge dann deine Aufgaben.",
+      steps:[
+        "Klicke auf <b>Neuer Mitarbeiter</b> und gib Name, Startdatum, Position, Manager und Land ein.",
+        "Klicke auf <b>Routing freigeben</b> — du erhältst zwei Codes: einen privaten Wiederherstellungscode (behalte ihn) und einen Buddy-Code (teile ihn).",
+        "Teile deinen <b>Buddy-Code</b> mit deinem Manager oder Buddy — sie weisen dir dann deine ersten Aufgaben zu.",
+        "Komm jederzeit zurück, hake erledigte Aufgaben ab und füge bei Bedarf Notizen hinzu."
+      ],
+      copy:"Hallo! Hier ist die Onboarding-App — klick auf \"Neuer Mitarbeiter\", gib deine Daten ein und teile mir den Buddy-Code mit (nicht den Wiederherstellungscode), den du bekommst, damit ich dir die ersten Aufgaben zuweisen kann."
+    },
+    manager: {
+      title:"Für Team-Manager", sub:"Sieh alle, die dich als Manager ausgewählt haben, an einem Ort.",
+      steps:[
+        "Klicke auf <b>Team-Manager</b> und wähle deinen Namen aus der Liste.",
+        "Beim ersten Mal legst du deine eigene PIN fest (niemand sonst sieht sie). Danach genügt die Eingabe.",
+        "Klicke auf jemanden aus deiner Liste, um Fortschritt zu sehen, Aufgaben aus der Empfehlungsliste zuzuweisen oder eigene hinzuzufügen.",
+        "Du kannst auch anpassen, wie viele Tage das Onboarding dauern soll, falls abweichend vom Standard."
+      ],
+      copy:"Hallo! Du bekommst bald einen neuen Kollegen — könntest du die Onboarding-App öffnen, auf \"Team-Manager\" klicken, deinen Namen wählen und eine PIN festlegen (nur beim ersten Mal)? Danach siehst du dein ganzes Team und kannst Aufgaben zuweisen."
+    },
+    buddy: {
+      title:"Für Buddys", sub:"Sieh nach deinem neuen Kollegen und hilf bei den ersten Aufgaben.",
+      steps:[
+        "Frag den neuen Mitarbeiter nach seinem <b>Buddy-Code</b> (nicht dem Wiederherstellungscode — er bekommt beide nach dem Einrichten).",
+        "Klicke auf <b>Buddy</b> und gib diesen Code ein — du siehst sofort den Fortschritt.",
+        "Weise Aufgaben aus der Empfehlungsliste zu (einzeln, pro Kategorie oder alles auf einmal) oder füge eigene hinzu.",
+        "Die App merkt sich, wen du schon betreut hast — den Code brauchst du dann nicht mehr erneut."
+      ],
+      copy:"Hallo! Du bist Buddy für unseren neuen Kollegen — könntest du ihn nach seinem Buddy-Code aus der Onboarding-App fragen, dann auf \"Buddy\" klicken und den Code eingeben? Du siehst dann den Fortschritt und kannst die ersten Aufgaben zuweisen."
+    }
+  },
+  sk: {
+    joiner: {
+      title:"Pre nových kolegov", sub:"Nastav si routing raz, potom už len sleduj svoje úlohy, ako ti ich pridelia.",
+      steps:[
+        "Klikni na <b>New Joiner</b> a vyplň meno, dátum nástupu, pozíciu, manažéra a krajinu.",
+        "Klikni na <b>Release routing</b> — dostaneš dva kódy: súkromný obnovovací kód (nechaj si ho) a buddy kód (zdieľaj ho).",
+        "Svoj <b>buddy kód</b> zdieľaj so svojím manažérom alebo buddym — oni ti odtiaľ pridelia prvé úlohy zo zoznamu odporúčaní.",
+        "Vráť sa kedykoľvek, odklikávaj hotové úlohy a pokojne pridaj poznámky, ak sa hodí."
+      ],
+      copy:"Ahoj! Tu je onboarding appka — klikni na \"New Joiner\", vyplň svoje údaje a pošli mi buddy kód (nie obnovovací kód), ktorý dostaneš, nech ti viem prideliť prvé úlohy."
+    },
+    manager: {
+      title:"Pre team manažérov", sub:"Uvidíš na jednom mieste všetkých, čo si ťa zvolili ako manažéra.",
+      steps:[
+        "Klikni na <b>Team Manager</b> a vyber svoje meno zo zoznamu.",
+        "Prvýkrát si nastavíš vlastný PIN (nikto iný ho neuvidí). Potom už len zadáš ten istý.",
+        "Rozklikni ktoréhokoľvek zo svojho zoznamu — uvidíš jeho progress, prideľ mu úlohy z odporúčaní, alebo pridaj vlastné.",
+        "Vieš mu tiež upraviť, na koľko dní má mať naplánovaný onboarding, ak sa líši od štandardu."
+      ],
+      copy:"Ahoj! Čoskoro ti nastupuje nový kolega — vedel by si otvoriť onboarding appku, kliknúť na \"Team Manager\", vybrať svoje meno a nastaviť si PIN (len prvýkrát)? Potom uvidíš celý svoj tím a prideliš mu prvé úlohy."
+    },
+    buddy: {
+      title:"Pre buddyho", sub:"Pozri sa na svojho nového kolegu a pomôž mu prideliť prvé úlohy.",
+      steps:[
+        "Vypýtaj si od nového kolegu jeho <b>buddy kód</b> (nie obnovovací kód — dostane oba po nastavení routingu).",
+        "Klikni na <b>Buddy</b> a zadaj ten kód — hneď uvidíš jeho progress.",
+        "Prideľ mu úlohy z odporúčaní (po jednej, celú kategóriu naraz, alebo úplne všetko), alebo pridaj vlastné.",
+        "Appka si pamätá, koho si už sledoval, takže nabudúce kód nebudeš potrebovať znova."
+      ],
+      copy:"Ahoj! Si buddy pre nášho nového kolegu — vedel by si sa ho spýtať na buddy kód z onboarding appky, potom kliknúť na \"Buddy\" a zadať ten kód? Uvidíš jeho progress a prideliš mu prvé úlohy."
+    }
+  }
+};
+
+/* Quick links to core systems — shown to every new joiner from day one,
+   right alongside their tasks. Real brand logos via Simple Icons CDN
+   (slug = simpleicons.org name); falls back to the emoji if a logo
+   isn't available there. Swap in real URLs where marked. */
+const LINKS_CATALOG = [
+  {icon:"🏢", slug:"sap", url:"https://my417565.s4hana.cloud.sap", key:"link_s4"},
+  {icon:"📘", slug:"confluence", url:"https://syntax.atlassian.net/wiki/spaces/DPT/overview?homepageId=3080450", key:"link_confluence"},
+  {icon:"🗂️", slug:"jira", url:"https://syntax.atlassian.net/jira", key:"link_jira"},
+  {icon:"💬", slug:"microsoftteams", url:"https://teams.microsoft.com", key:"link_teams"},
+  {icon:"📁", slug:"microsoftsharepoint", url:"https://syntaxsystems.sharepoint.com", key:"link_sharepoint"},
+  {icon:"👤", slug:"sap", url:"https://performancemanager.successfactors.eu", key:"link_successfactors"},
+  {icon:"✈️", slug:"sapconcur", url:"https://www.concursolutions.com", key:"link_concur"},
+  {icon:"🎫", slug:"servicenow", url:"https://simplified.service-now.com/esc", key:"link_helpdesk"},
+  {icon:"🧠", slug:"mural", url:"https://app.mural.co/t/syntaxsystems1645/m/syntaxsystems1645/1687374734289/e427f6be79fe1bfd95f761ab4514e87757309275", key:"link_mural"}
+];
 
 const POSITIONS = [
   "Developer","SAP Consultant","DM Consultant","Senior Consultant","Project Manager",
@@ -927,7 +1211,7 @@ async function resumeFromCode(){
     const r = rows[0];
     state = {
       id: r.id, name: r.name, position: r.position, manager: r.manager,
-      country: r.country, startDate: r.start_date, accessCode: r.access_code,
+      country: r.country, startDate: r.start_date, accessCode: r.access_code, buddyCode: r.buddy_code,
       tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || [],
       targetDays: r.target_days || 10
     };
@@ -956,6 +1240,7 @@ async function syncProfileToCloud(){
       country: state.country,
       start_date: state.startDate,
       access_code: state.accessCode,
+      buddy_code: state.buddyCode,
       total_tasks: total,
       done_tasks: done,
       pct: total ? Math.round((done/total)*100) : 0,
@@ -1195,7 +1480,8 @@ function renderSetupZone(){
       }
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
       const accessCode = genAccessCode();
-      state = { id: profileId, name, position, manager, country, startDate, accessCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10 };
+      const buddyCode = genAccessCode();
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, buddyCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10 };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -1211,6 +1497,7 @@ function renderSetupZone(){
   } else {
     resetBtn.style.display = "inline";
     if(!state.accessCode){ state.accessCode = genAccessCode(); saveState(); }
+    if(!state.buddyCode){ state.buddyCode = genAccessCode(); saveState(); }
     const currentDay = dayNumber(state.startDate);
     taskIndex = buildTasks(state);
     const total = taskIndex.length;
@@ -1234,10 +1521,17 @@ function renderSetupZone(){
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
       </div>
-      <div class="mgr-code-box">
-        <div class="lbl">${t("resume_code_label")}</div>
-        <div class="code mono">${escapeHtml(state.accessCode || "—")}</div>
-        <div class="hint">${t("resume_code_hint")}</div>
+      <div class="code-boxes-grid">
+        <div class="mgr-code-box code-box-private">
+          <div class="lbl">🔒 ${t("resume_code_label")}</div>
+          <div class="code mono">${escapeHtml(state.accessCode || "—")}</div>
+          <div class="hint">${t("resume_code_hint")}</div>
+        </div>
+        <div class="mgr-code-box code-box-share">
+          <div class="lbl">🤝 ${t("buddy_code_label")}</div>
+          <div class="code mono">${escapeHtml(state.buddyCode || "—")}</div>
+          <div class="hint">${t("buddy_code_hint")}</div>
+        </div>
       </div>
     `;
 
@@ -1258,6 +1552,32 @@ function renderSetupZone(){
   }
 }
 
+function renderQuickLinksHtml(withTourLink){
+  return `
+    <div class="quick-links-card">
+      <div class="quick-links-head-row">
+        <div>
+          <div class="quick-links-title">${t("quick_links_title")}</div>
+          <div class="quick-links-sub">${t("quick_links_sub")}</div>
+        </div>
+        ${withTourLink ? `<button class="tour-link-small" id="tour-link-small">${t("tour_button")}</button>` : ""}
+      </div>
+      <div class="quick-links-grid">
+        ${LINKS_CATALOG.map(l=>`
+          <a class="quick-link-box" href="${l.url}" target="_blank" rel="noopener">
+            <div class="quick-link-icon">
+              <img src="https://cdn.simpleicons.org/${l.slug}" alt=""
+                   onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${l.icon}',className:'quick-link-icon-fallback'}))">
+            </div>
+            <div class="quick-link-name">${escapeHtml(t(l.key))}</div>
+            <div class="quick-link-desc">${escapeHtml(t(l.key+"_desc"))}</div>
+          </a>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
 function renderDashboardZone(){
   const zone = document.getElementById("dashboard-zone");
 
@@ -1271,7 +1591,10 @@ function renderDashboardZone(){
           <div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div>
         </div>
       </div>
+      <button class="tour-btn" id="tour-btn-1">${t("tour_button")}</button>
+      ${renderQuickLinksHtml()}
     `;
+    document.getElementById("tour-btn-1").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
     return;
   }
 
@@ -1285,7 +1608,10 @@ function renderDashboardZone(){
         <div class="lock-title">${t("empty_tasks_title")}</div>
         <div class="lock-sub">${t("empty_tasks_sub")}</div>
       </div>
+      <button class="tour-btn" id="tour-btn-2">${t("tour_button")}</button>
+      ${renderQuickLinksHtml()}
     `;
+    document.getElementById("tour-btn-2").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
     return;
   }
 
@@ -1307,6 +1633,7 @@ function renderDashboardZone(){
         <div class="feedback-thanks" id="feedback-thanks" style="display:none;">${t("feedback_thanks")}</div>
       </div>
     ` : ""}
+    ${renderQuickLinksHtml(true)}
     <div class="routing-strip">
       <div class="strip-title">${t("strip_title")}</div>
       <div class="strip-row" id="strip-row"></div>
@@ -1314,6 +1641,8 @@ function renderDashboardZone(){
     <div id="op-list"></div>
     <div class="footer-note">${t("footer_note")}</div>
   `;
+
+  document.getElementById("tour-link-small").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
 
   if(isComplete){
     document.getElementById("feedback-submit").addEventListener("click", async ()=>{
@@ -1605,6 +1934,26 @@ async function loadAdminTemplates(){
   }catch(e){ console.error("load admin templates failed", e); }
 }
 
+const BUDDY_RECENTS_KEY = "buddy-recents";
+async function loadBuddyRecents(){
+  const v = await kvGet(BUDDY_RECENTS_KEY);
+  try{ return v ? JSON.parse(v) : []; }catch(e){ return []; }
+}
+async function saveBuddyRecent(profile){
+  let list = await loadBuddyRecents();
+  list = list.filter(r=>r.id !== profile.id);
+  list.unshift({ id: profile.id, name: profile.name, position: profile.position, accessCode: profile.access_code });
+  list = list.slice(0, 8);
+  await kvSet(BUDDY_RECENTS_KEY, JSON.stringify(list));
+  return list;
+}
+async function removeBuddyRecent(id){
+  let list = await loadBuddyRecents();
+  list = list.filter(r=>r.id !== id);
+  await kvSet(BUDDY_RECENTS_KEY, JSON.stringify(list));
+  return list;
+}
+
 function renderBuddyZone(){
   const zone = document.getElementById("buddy-zone");
   if(!buddyView.verified){
@@ -1620,6 +1969,7 @@ function renderBuddyZone(){
         <button class="cta" id="buddy-submit">${t("button_open_routing")}</button>
         <div class="mgr-error" id="buddy-error">${t("buddy_error")}</div>
       </div>
+      <div id="buddy-recents-wrap"></div>
       <div class="admin-link-wrap"><button class="admin-link" id="buddy-admin-link">${t("role_admin")}</button></div>
     `;
     document.getElementById("buddy-submit").addEventListener("click", submitBuddyCode);
@@ -1629,6 +1979,7 @@ function renderBuddyZone(){
       currentRole = "admin";
       applyRoleView();
     });
+    renderBuddyRecentsList();
     return;
   }
 
@@ -1658,6 +2009,57 @@ function renderBuddyZone(){
   });
   const detailEl = document.getElementById("buddy-detail");
   renderMgrDetail(detailEl, p, { allowRemove:false, onChange: ()=>renderBuddyZone(), actorRole:"buddy", actorName:"Buddy" });
+  saveBuddyRecent(p);
+}
+
+async function renderBuddyRecentsList(){
+  const wrap = document.getElementById("buddy-recents-wrap");
+  if(!wrap) return;
+  const list = await loadBuddyRecents();
+  if(!list.length){ wrap.innerHTML = ""; return; }
+  wrap.innerHTML = `
+    <div class="mgr-section-label">${t("your_people")}</div>
+    <div id="buddy-recents-list"></div>
+  `;
+  const listEl = document.createElement("div");
+  document.getElementById("buddy-recents-list").replaceWith(listEl);
+  listEl.id = "buddy-recents-list";
+  list.forEach(r=>{
+    const row = document.createElement("div");
+    row.className = "buddy-recent-row";
+    row.innerHTML = `
+      <div class="buddy-recent-main">
+        <div class="buddy-recent-name">${escapeHtml(r.name)}</div>
+        <div class="buddy-recent-pos">${escapeHtml(r.position||"")}</div>
+      </div>
+      <button class="buddy-recent-open" data-id="${escapeHtml(r.id)}">${t("button_open_routing")}</button>
+      <button class="buddy-recent-remove" data-id="${escapeHtml(r.id)}" title="Remove from this list">✕</button>
+    `;
+    listEl.appendChild(row);
+  });
+  listEl.querySelectorAll(".buddy-recent-open").forEach(btn=>{
+    btn.addEventListener("click", ()=>reopenBuddyProfile(btn.dataset.id));
+  });
+  listEl.querySelectorAll(".buddy-recent-remove").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      await removeBuddyRecent(btn.dataset.id);
+      renderBuddyRecentsList();
+    });
+  });
+}
+
+async function reopenBuddyProfile(id){
+  if(!cloudConfigured()) return;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&id=eq.${encodeURIComponent(id)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    const rows = await res.json();
+    if(!res.ok || !rows.length) return;
+    buddyView = { verified:true, profile: rows[0] };
+    renderBuddyZone();
+  }catch(e){ console.error("reopen buddy profile failed", e); }
 }
 
 async function submitBuddyCode(){
@@ -1674,7 +2076,7 @@ async function submitBuddyCode(){
   submitBtn.disabled = true;
   submitBtn.textContent = "Looking...";
   try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&access_code=eq.${encodeURIComponent(code)}`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=*&buddy_code=eq.${encodeURIComponent(code)}`, {
       headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
     });
     const rows = await res.json();
@@ -2070,10 +2472,18 @@ function renderMgrDetail(container, p, opts){
       recGroups.push(r.catTitle);
     }
   });
-  const recommendedBlocks = recGroups.map(catTitle=>{
+  // Put the role-specific recommendation first — it's the single most
+  // relevant suggestion for this person's actual job, so it shouldn't
+  // be buried under ten generic system-access categories.
+  const roleLabel = t("cat_role_specific");
+  recGroups.sort((a,b)=> (a===roleLabel ? -1 : b===roleLabel ? 1 : 0));
+
+  const recommendedBlocks = recGroups.map((catTitle, gi)=>{
     const items = recommended.filter(r=>r.catTitle===catTitle);
+    const isRole = catTitle === roleLabel;
+    const catKey = cssEscape(catTitle) || ("cat"+gi);
     const itemsHtml = items.map(r=>`
-      <div class="rec-task">
+      <div class="rec-task" data-search="${escapeHtml(r.text.toLowerCase())}">
         <div class="rec-task-main">
           <div class="rec-task-text">${escapeHtml(r.text)}</div>
           ${r.desc ? `<div class="rec-task-desc">${escapeHtml(r.desc)}</div>` : ""}
@@ -2084,7 +2494,18 @@ function renderMgrDetail(container, p, opts){
         <button class="rec-task-add" data-key="${escapeHtml(r.key)}">+ Add</button>
       </div>
     `).join("");
-    return `<div class="mgr-detail-cat"><div class="mgr-detail-cat-title">${escapeHtml(catTitle)}</div>${itemsHtml}</div>`;
+    return `
+      <div class="rec-cat-card ${isRole ? 'rec-cat-featured' : ''}" data-catkey="${escapeHtml(catKey)}">
+        <div class="rec-cat-head">
+          ${isRole ? `<span class="rec-cat-star">★</span>` : ""}
+          <span class="rec-cat-title">${escapeHtml(catTitle)}</span>
+          <span class="rec-cat-count">${items.length}</span>
+          <button class="rec-cat-addall" data-catkey="${escapeHtml(catKey)}">${t("add_all")}</button>
+          <span class="rec-cat-chev">▾</span>
+        </div>
+        <div class="rec-cat-body" style="display:${isRole ? 'block' : 'none'};">${itemsHtml}</div>
+      </div>
+    `;
   }).join("");
 
   container.innerHTML = `
@@ -2101,6 +2522,12 @@ function renderMgrDetail(container, p, opts){
       ${assigned.length ? assignedBlocks : `<div class="mgr-empty-note">${t("empty_assigned")}</div>`}
 
       <div class="mgr-section-label rec-label">${t("section_recommended")} ${recommended.length ? `(${recommended.length})` : ""}</div>
+      ${recommended.length ? `
+        <div class="rec-toolbar">
+          <input type="text" class="rec-search" id="rec-search-${id}" placeholder="${t("search_recommended")}">
+          <button class="rec-quickadd" id="rec-quickadd-${id}">${t("quick_add_all")}</button>
+        </div>
+      ` : ""}
       <div class="rec-wrap" id="rec-wrap-${id}">
         ${recommended.length ? recommendedBlocks : `<div class="mgr-empty-note">${t("empty_recommended")}</div>`}
       </div>
@@ -2171,6 +2598,99 @@ function renderMgrDetail(container, p, opts){
       }
     });
   });
+
+  // Collapsible category headers (click anywhere on the header, except the "Add all" button)
+  container.querySelectorAll(".rec-cat-head").forEach(head=>{
+    head.addEventListener("click", (e)=>{
+      if(e.target.closest(".rec-cat-addall")) return;
+      const body = head.parentElement.querySelector(".rec-cat-body");
+      const chev = head.querySelector(".rec-cat-chev");
+      const open = body.style.display !== "none";
+      body.style.display = open ? "none" : "block";
+      if(chev) chev.style.transform = open ? "" : "rotate(180deg)";
+    });
+  });
+
+  // "+ Add all" per category — bulk-assigns every item in that category at once
+  container.querySelectorAll(".rec-cat-addall").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      const catKey = btn.dataset.catkey;
+      const card = container.querySelector(`.rec-cat-card[data-catkey="${CSS.escape(catKey)}"]`);
+      const daySelects = card.querySelectorAll(".rec-task-day");
+      const keysInCat = Array.from(daySelects).map(s=>s.dataset.key);
+      const items = keysInCat.map(k=>{
+        const rec = recommended.find(r=>r.key===k);
+        const sel = card.querySelector(`.rec-task-day[data-key="${CSS.escape(k)}"]`);
+        return { rec, day: parseInt(sel.value,10) };
+      }).filter(x=>x.rec);
+      if(!items.length) return;
+      btn.disabled = true;
+      btn.textContent = "…";
+      const newTasks = items.map(({rec,day})=>({
+        id: genId("at"), templateKey: rec.key, catId: rec.catId, catTitle: rec.catTitle,
+        text: rec.text, desc: rec.desc, day, source:"template", role: !!rec.role
+      }));
+      const ok = await addMultipleTasksToCloud(p.id, newTasks);
+      if(ok){
+        p.customTasks = [...(p.customTasks||p.custom_tasks||[]), ...newTasks];
+        p.custom_tasks = p.customTasks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+        logAudit(p.id, p.name, actorRole, actorName, "tasks_bulk_added", `${newTasks.length} tasks (${newTasks[0].catTitle})`);
+        renderMgrDetail(container, p, opts);
+      } else {
+        btn.disabled = false;
+        btn.textContent = t("add_all");
+      }
+    });
+  });
+
+  // Quick-add everything still recommended, across all categories
+  const quickAddBtn = container.querySelector(`#rec-quickadd-${id}`);
+  if(quickAddBtn){
+    quickAddBtn.addEventListener("click", async ()=>{
+      quickAddBtn.disabled = true;
+      quickAddBtn.textContent = "…";
+      const newTasks = recommended.map(rec=>({
+        id: genId("at"), templateKey: rec.key, catId: rec.catId, catTitle: rec.catTitle,
+        text: rec.text, desc: rec.desc, day: rec.day, source:"template", role: !!rec.role
+      }));
+      const ok = await addMultipleTasksToCloud(p.id, newTasks);
+      if(ok){
+        p.customTasks = [...(p.customTasks||p.custom_tasks||[]), ...newTasks];
+        p.custom_tasks = p.customTasks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+        logAudit(p.id, p.name, actorRole, actorName, "tasks_bulk_added", `${newTasks.length} tasks (all recommended)`);
+        renderMgrDetail(container, p, opts);
+      } else {
+        quickAddBtn.disabled = false;
+        quickAddBtn.textContent = t("quick_add_all");
+      }
+    });
+  }
+
+  // Live search across recommended items — filters items and auto-expands
+  // matching categories, hides categories with zero matches.
+  const searchInput = container.querySelector(`#rec-search-${id}`);
+  if(searchInput){
+    searchInput.addEventListener("input", ()=>{
+      const q = searchInput.value.trim().toLowerCase();
+      container.querySelectorAll(".rec-cat-card").forEach(card=>{
+        const items = card.querySelectorAll(".rec-task");
+        let anyMatch = false;
+        items.forEach(item=>{
+          const match = !q || item.dataset.search.includes(q);
+          item.style.display = match ? "flex" : "none";
+          if(match) anyMatch = true;
+        });
+        card.style.display = anyMatch ? "block" : "none";
+        const body = card.querySelector(".rec-cat-body");
+        if(q && anyMatch) body.style.display = "block";
+      });
+    });
+  }
 
   const addBtn = container.querySelector(`#mgr-add-task-${id}`);
   const addForm = container.querySelector(`#mgr-add-task-form-${id}`);
@@ -2292,6 +2812,30 @@ async function addCustomTaskToCloud(profileId, newTask){
     });
     return patchRes.ok;
   }catch(e){ console.error("add custom task failed", e); return false; }
+}
+
+async function addMultipleTasksToCloud(profileId, newTasks){
+  if(!cloudConfigured() || !newTasks.length) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].custom_tasks) || [];
+    const updated = [...current, ...newTasks];
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ custom_tasks: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("add multiple tasks failed", e); return false; }
 }
 
 function cssEscape(str){
@@ -2521,9 +3065,58 @@ function applyLang(l){
   });
   applyStaticTranslations();
   applyRoleView();
+  const guideModal = document.getElementById("guide-modal");
+  if(guideModal && guideModal.style.display !== "none") renderGuideTab(guideActiveTab);
 }
 
 /* ============ MENU ============ */
+let guideActiveTab = "joiner";
+
+function openGuide(){
+  document.getElementById("guide-modal").style.display = "flex";
+  renderGuideTab(guideActiveTab);
+}
+function closeGuide(){
+  document.getElementById("guide-modal").style.display = "none";
+}
+function renderGuideTab(tabKey){
+  guideActiveTab = tabKey;
+  document.querySelectorAll("#guide-tabs button").forEach(b=>{
+    b.classList.toggle("active", b.dataset.tab === tabKey);
+  });
+  const content = (GUIDE_CONTENT[currentLang] && GUIDE_CONTENT[currentLang][tabKey]) || GUIDE_CONTENT.en[tabKey];
+  const body = document.getElementById("guide-body");
+  body.innerHTML = `
+    <div class="guide-title">${escapeHtml(content.title)}</div>
+    <div class="guide-sub">${escapeHtml(content.sub)}</div>
+    ${content.steps.map((s,i)=>`
+      <div class="guide-step">
+        <div class="guide-step-num">${i+1}</div>
+        <div class="guide-step-text">${s}</div>
+      </div>
+    `).join("")}
+    <button class="guide-copy-btn" id="guide-copy-btn">${t("guide_copy_btn")}</button>
+    <div class="guide-copied" id="guide-copied">${t("guide_copied_msg")}</div>
+  `;
+  document.getElementById("guide-copy-btn").addEventListener("click", async ()=>{
+    try{
+      await navigator.clipboard.writeText(content.copy);
+      document.getElementById("guide-copied").style.display = "block";
+      setTimeout(()=>{ document.getElementById("guide-copied").style.display = "none"; }, 2200);
+    }catch(e){ console.error("copy failed", e); }
+  });
+}
+
+function initGuideModal(){
+  document.getElementById("guide-close-btn").addEventListener("click", closeGuide);
+  document.getElementById("guide-modal").addEventListener("click", (e)=>{
+    if(e.target.id === "guide-modal") closeGuide();
+  });
+  document.querySelectorAll("#guide-tabs button").forEach(btn=>{
+    btn.addEventListener("click", ()=>renderGuideTab(btn.dataset.tab));
+  });
+}
+
 function initMenu(){
   const trigger = document.getElementById("menu-trigger");
   const dropdown = document.getElementById("menu-dropdown");
@@ -2549,6 +3142,10 @@ function initMenu(){
       applyLang(l);
       await saveLang(l);
     });
+  });
+  document.getElementById("guide-open-btn").addEventListener("click", ()=>{
+    dropdown.classList.remove("open");
+    openGuide();
   });
   document.getElementById("copy-status-btn").addEventListener("click", async ()=>{
     if(!state) return;
@@ -2607,6 +3204,7 @@ async function mergeCustomTasksFromCloud(){
 
 (async function init(){
   initMenu();
+  initGuideModal();
   initRoleToggle();
   const theme = await loadTheme();
   applyTheme(theme);
