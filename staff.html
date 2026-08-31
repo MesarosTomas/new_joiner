@@ -55,6 +55,8 @@ body{
   background:var(--paper);
   color:var(--ink);
   font-family:'Inter',sans-serif;
+  font-size:15px;
+  line-height:1.5;
   -webkit-font-smoothing:antialiased;
   min-height:100vh;
 }
@@ -152,7 +154,7 @@ body{
   flex:1;padding:16px 8px 12px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;
   color:var(--ink-soft);border-bottom:2px solid transparent;font-family:'Inter',sans-serif;
 }
-.guide-tabs button.active{color:var(--navy);border-bottom-color:var(--navy);}
+.guide-tabs button.active{color:var(--navy-ink);border-bottom-color:var(--cyan);}
 #guide-body{padding:24px 28px 28px;}
 .guide-title{font-family:'Inter',sans-serif;font-weight:700;font-size:18px;color:var(--navy-ink);margin-bottom:6px;}
 .guide-sub{font-size:13px;color:var(--ink-soft);margin-bottom:18px;line-height:1.5;}
@@ -253,7 +255,7 @@ body{
   background:none;border:none;color:var(--ink-soft);font-size:12.5px;text-decoration:underline;
   text-underline-offset:3px;cursor:pointer;font-family:'Inter',sans-serif;
 }
-.resume-link:hover{color:var(--navy);}
+.resume-link:hover{color:var(--navy-ink);}
 .resume-box{
   max-width:420px;margin:12px auto 0;background:var(--card);border:1px solid var(--line);border-radius:8px;
   padding:16px;text-align:left;
@@ -348,12 +350,12 @@ body{
   background:none;border:none;color:var(--ink-soft);font-size:12px;cursor:pointer;
   text-decoration:underline;text-underline-offset:3px;font-family:'Inter',sans-serif;
 }
-.admin-link:hover{color:var(--navy);}
+.admin-link:hover{color:var(--navy-ink);}
 .mgr-card h1{font-family:'Inter',sans-serif;font-size:22px;margin:0 0 8px;color:var(--navy-ink);}
 .mgr-card p.sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
 .code-boxes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
 .mgr-code-box{background:var(--cyan-soft);border:1px dashed var(--cyan);border-radius:8px;padding:12px 16px;margin-top:0;}
-.mgr-code-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);font-weight:600;margin-bottom:4px;}
+.mgr-code-box .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-ink);font-weight:600;margin-bottom:4px;}
 .mgr-code-box .code{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--navy-ink);letter-spacing:.06em;}
 .mgr-code-box .hint{font-size:11px;color:var(--ink-soft);margin-top:6px;line-height:1.4;}
 .code-box-private{background:var(--coral-soft);border-color:var(--coral);}
@@ -466,6 +468,25 @@ body{
   color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;
 }
 .assigned-task-delete:hover{border-color:var(--coral);color:var(--coral);}
+.assigned-task-actions{display:flex;flex-direction:column;gap:6px;flex:0 0 auto;}
+.assigned-task-edit{
+  background:none;border:1px solid var(--line);border-radius:50%;width:22px;height:22px;
+  color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;
+}
+.assigned-task-edit:hover{border-color:var(--navy);color:var(--navy-ink);}
+.task-edit-form{margin-top:8px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px;}
+.task-edit-form input, .task-edit-form textarea{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;font-size:12.5px;
+  background:var(--card);color:var(--ink);font-family:'Inter',sans-serif;margin-bottom:8px;
+}
+.task-edit-form .task-edit-save{
+  padding:7px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-weight:600;
+  font-size:12px;cursor:pointer;
+}
+.task-edit-form .task-edit-cancel{
+  padding:7px 14px;background:var(--card);color:var(--ink-soft);border:1px solid var(--line);border-radius:6px;
+  font-size:12px;cursor:pointer;
+}
 
 .links-section{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);}
 
@@ -507,6 +528,12 @@ body{
 }
 .rec-link-add:hover{background:#0a1c66;}
 .rec-link-add:disabled{background:var(--slate);cursor:not-allowed;}
+.add-more-link-btn{
+  width:100%;padding:8px;background:none;border:1.5px dashed var(--line);border-radius:8px;
+  color:var(--ink-soft);font-size:11.5px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px;
+}
+.add-more-link-btn:hover{border-color:var(--green);color:var(--navy);}
+.add-more-link-form{margin-top:8px;}
 
 .joiner-links-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
 .joiner-links-head{
@@ -539,14 +566,14 @@ body{
   display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);
   text-decoration:none;color:var(--ink);font-size:12px;font-weight:500;
 }
-.joiner-link-item:hover{color:var(--navy);}
+.joiner-link-item:hover{color:var(--navy-ink);}
 .joiner-link-item-arrow{color:var(--cyan);font-weight:700;flex:0 0 auto;margin-left:8px;}
 @media(max-width:640px){.joiner-links-grid{grid-template-columns:repeat(2,1fr);}}
 .mgr-section-label{
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
   margin:16px 0 8px;
 }
-.mgr-section-label.rec-label{color:var(--navy);}
+.mgr-section-label.rec-label{color:var(--navy-ink);}
 .mgr-empty-note{font-size:12.5px;color:var(--ink-soft);font-style:italic;padding:6px 0 4px;}
 .rec-wrap{}
 .rec-toolbar{display:flex;gap:8px;margin:8px 0 10px;}
@@ -682,27 +709,31 @@ body{
 
 .routing-strip{
   background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:20px 22px;margin-bottom:26px;
+  padding:14px 20px;margin-bottom:22px;
 }
 .routing-strip .strip-title{
-  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
-  margin-bottom:14px;font-weight:600;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  font-weight:600;display:flex;align-items:center;justify-content:space-between;cursor:pointer;
 }
-.strip-row{display:flex;align-items:center;overflow-x:auto;padding-bottom:6px;}
+.routing-strip .strip-title .strip-chev{color:var(--ink-soft);font-size:10px;transition:transform .15s ease;}
+.routing-strip.collapsed .strip-title .strip-chev{transform:rotate(-90deg);}
+.routing-strip .strip-row{margin-top:12px;}
+.routing-strip.collapsed .strip-row{display:none;}
+.strip-row{display:flex;align-items:center;overflow-x:auto;padding-bottom:4px;}
 .strip-op{
   flex:0 0 auto;display:flex;flex-direction:column;align-items:center;
-  width:74px;cursor:pointer;
+  width:56px;cursor:pointer;
 }
 .strip-op .dot{
-  width:15px;height:15px;border-radius:50%;border:2px solid var(--slate);background:var(--card);
-  margin-bottom:6px;
+  width:11px;height:11px;border-radius:50%;border:2px solid var(--slate);background:var(--card);
+  margin-bottom:5px;
 }
 .strip-op.status-done .dot{background:var(--green);border-color:var(--green);}
 .strip-op.status-progress .dot{background:var(--amber);border-color:var(--amber);}
 .strip-op.status-attention .dot{background:var(--coral);border-color:var(--coral);}
-.strip-op .num{font-size:10px;color:var(--ink-soft);}
+.strip-op .num{font-size:9px;color:var(--ink-soft);}
 .strip-line{
-  flex:1 1 auto;height:2px;background:var(--line);min-width:14px;
+  flex:1 1 auto;height:2px;background:var(--line);min-width:10px;
 }
 
 .op-card{
@@ -713,7 +744,7 @@ body{
   display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;
 }
 .op-head .op-num{
-  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;color:var(--navy);
+  font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:11.5px;color:var(--navy-ink);
   background:var(--cyan-soft);border:none;border-radius:20px;min-width:26px;height:22px;padding:0 9px;
   display:flex;align-items:center;justify-content:center;flex:0 0 auto;
 }
@@ -744,7 +775,7 @@ body{
   cursor:pointer;color:var(--ink-soft);white-space:nowrap;font-weight:600;text-decoration:underline;
   text-underline-offset:2px;
 }
-.cat-resource-edit-btn:hover{color:var(--navy);}
+.cat-resource-edit-btn:hover{color:var(--navy-ink);}
 .cat-resource-add-btn{
   width:100%;padding:10px;background:none;border:1.5px dashed var(--line);border-radius:10px;
   color:var(--ink-soft);font-size:12.5px;cursor:pointer;font-family:'Inter',sans-serif;margin:8px 0;
@@ -931,7 +962,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title_prefix:"Direct link:", resource_sub:"Opens in a new tab", edit_link_word:"Edit link", recommended_tag:"Recommended", completed_divider:"✓ Completed", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title_prefix:"Direct link:", resource_sub:"Opens in a new tab", edit_link_word:"Edit link", recommended_tag:"Recommended", completed_divider:"✓ Completed", resource_url_ph:"https://...", save_word:"Save", cancel_word:"Cancel", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.", add_another_link_btn:"+ Add another link here",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -998,7 +1029,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title_prefix:"Direkter Link:", resource_sub:"Öffnet in neuem Tab", edit_link_word:"Link bearbeiten", recommended_tag:"Empfohlen", completed_divider:"✓ Erledigt", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title_prefix:"Direkter Link:", resource_sub:"Öffnet in neuem Tab", edit_link_word:"Link bearbeiten", recommended_tag:"Empfohlen", completed_divider:"✓ Erledigt", resource_url_ph:"https://...", save_word:"Speichern", cancel_word:"Abbrechen", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.", add_another_link_btn:"+ Weiteren Link hier hinzufügen",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -1065,7 +1096,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title_prefix:"Priamy odkaz:", resource_sub:"Otvorí sa na novej karte", edit_link_word:"Upraviť odkaz", recommended_tag:"Odporúčané", completed_divider:"✓ Dokončené", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title_prefix:"Priamy odkaz:", resource_sub:"Otvorí sa na novej karte", edit_link_word:"Upraviť odkaz", recommended_tag:"Odporúčané", completed_divider:"✓ Dokončené", resource_url_ph:"https://...", save_word:"Uložiť", cancel_word:"Zrušiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.", add_another_link_btn:"+ Pridať ďalší odkaz sem",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -1888,6 +1919,18 @@ function renderDashboardZone(){
         <h3>${t("congrats_title")}</h3>
         <p>${t("congrats_sub")}</p>
       </div>
+    ` : ""}
+    ${renderJoinerLinksHtml(true)}
+    <div class="routing-strip ${getOpenState('routing_strip_'+state.id, true) ? '' : 'collapsed'}" id="routing-strip">
+      <div class="strip-title" id="routing-strip-toggle">
+        <span>${t("strip_title")}</span>
+        <span class="strip-chev">▾</span>
+      </div>
+      <div class="strip-row" id="strip-row"></div>
+    </div>
+    <div id="op-list"></div>
+    <div class="footer-note">${t("footer_note")}</div>
+    ${isComplete ? `
       <div class="feedback-box" id="feedback-box">
         <div style="font-weight:600;font-size:13.5px;margin-bottom:8px;">${t("feedback_prompt")}</div>
         <textarea id="feedback-text" placeholder="${t("feedback_placeholder")}"></textarea>
@@ -1895,17 +1938,16 @@ function renderDashboardZone(){
         <div class="feedback-thanks" id="feedback-thanks" style="display:none;">${t("feedback_thanks")}</div>
       </div>
     ` : ""}
-    ${renderJoinerLinksHtml(true)}
-    <div class="routing-strip">
-      <div class="strip-title">${t("strip_title")}</div>
-      <div class="strip-row" id="strip-row"></div>
-    </div>
-    <div id="op-list"></div>
-    <div class="footer-note">${t("footer_note")}</div>
   `;
 
   document.getElementById("tour-link-small").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
   wireJoinerLinksToggle();
+  document.getElementById("routing-strip-toggle").addEventListener("click", ()=>{
+    const stripEl = document.getElementById("routing-strip");
+    const willBeOpen = stripEl.classList.contains("collapsed");
+    stripEl.classList.toggle("collapsed");
+    setOpenState('routing_strip_'+state.id, willBeOpen);
+  });
 
   if(isComplete){
     document.getElementById("feedback-submit").addEventListener("click", async ()=>{
@@ -2002,7 +2044,9 @@ function renderOpList(currentDay){
     const badgeText = status==="done" ? t("op_completed") : (doneCount>0 ? t("op_inprocess") : t("op_notstarted"));
 
     const card = document.createElement("div");
-    card.className = "op-card" + (status==="done" ? " collapsed" : "");
+    const openKey = `joiner_op_${state.id}_${cat.id}`;
+    const isOpenNow = getOpenState(openKey, false);
+    card.className = "op-card" + (isOpenNow ? "" : " collapsed");
     card.id = "card-"+cat.id;
     card.innerHTML = `
       <div class="op-head">
@@ -2040,6 +2084,7 @@ function renderOpList(currentDay){
 
     card.querySelector(".op-head").addEventListener("click", ()=>{
       card.classList.toggle("collapsed");
+      setOpenState(openKey, !card.classList.contains("collapsed"));
     });
 
     wrap.appendChild(card);
@@ -2851,6 +2896,48 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
     });
   });
 
+  // "+ Add another link" inline within an already-assigned group (e.g. a second Mural board)
+  container.querySelectorAll(".add-more-link-btn").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const groupKey = btn.dataset.groupkey;
+      const form = container.querySelector(`#add-more-link-form-${groupKey}-${id}`);
+      if(form) form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+  });
+  container.querySelectorAll(".add-more-link-submit").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(taskOpBusy) return;
+      const groupName = btn.dataset.group;
+      const groupKey = btn.dataset.groupkey;
+      const nameInput = container.querySelector(`#add-more-link-name-${groupKey}-${id}`);
+      const urlInput = container.querySelector(`#add-more-link-url-${groupKey}-${id}`);
+      const linkName = nameInput.value.trim();
+      const url = urlInput.value.trim();
+      if(!linkName || !url){ (linkName ? urlInput : nameInput).focus(); return; }
+      taskOpBusy = true;
+      btn.disabled = true;
+      btn.textContent = "…";
+      const newLink = { id: genId("lk"), groupName, linkName, url };
+      const ok = await addLinkToCloud(p.id, newLink);
+      taskOpBusy = false;
+      if(ok){
+        p.assignedLinks = [...(p.assignedLinks||p.assigned_links||[]), newLink];
+        p.assigned_links = p.assignedLinks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
+        logAudit(p.id, p.name, actorRole, actorName, "custom_link_added", linkName);
+        // Keep this group's card open so the new link is visible right away
+        setOpenState(`link_assigned_${p.id}_${groupKey}`, true);
+        renderMgrDetail(container, p, opts);
+      } else {
+        btn.disabled = false;
+        btn.textContent = t("add_link_word");
+      }
+    });
+  });
+
   // Add a recommended link
   container.querySelectorAll(".rec-link-add").forEach(btn=>{
     btn.addEventListener("click", async (e)=>{
@@ -3000,19 +3087,31 @@ function renderMgrDetail(container, p, opts){
       const note = notes[tk.id];
       const completedAt = completedDates[tk.id];
       const completedStr = completedAt ? new Date(completedAt).toLocaleDateString() : "";
+      const tkSafe = cssEscape(tk.id);
       return `
         <div class="assigned-task-row ${isDone ? 'is-done' : ''}">
           <span class="assigned-task-check">${isDone ? "✅" : "⬜"}</span>
           <div class="assigned-task-main">
-            <div class="assigned-task-text ${isDone?'done':''}">${escapeHtml(tk.text)}</div>
-            ${tk.desc ? `<div class="assigned-task-desc">${escapeHtml(tk.desc)}</div>` : ""}
+            <div class="assigned-task-text ${isDone?'done':''}" id="task-view-text-${tkSafe}">${escapeHtml(tk.text)}</div>
+            ${tk.desc ? `<div class="assigned-task-desc" id="task-view-desc-${tkSafe}">${escapeHtml(tk.desc)}</div>` : ""}
             ${note ? `<div class="assigned-task-note">"${escapeHtml(note)}"</div>` : ""}
             <div class="assigned-task-meta">
               <span class="tag-day">${t("day_word")} ${tk.day||1}</span>
               ${isDone && completedStr ? `<span class="tag-done-date">✓ ${completedStr}</span>` : ""}
             </div>
+            <div class="task-edit-form" id="task-edit-form-${tkSafe}" style="display:none;">
+              <input type="text" id="task-edit-text-${tkSafe}" value="${escapeHtml(tk.text)}">
+              <textarea id="task-edit-desc-${tkSafe}" placeholder="${t("task_desc_ph")}">${escapeHtml(tk.desc||"")}</textarea>
+              <div class="mgr-newtask-row">
+                <button class="task-edit-save" data-taskid="${escapeHtml(tk.id)}">${t("save_word")}</button>
+                <button class="task-edit-cancel" data-taskid="${escapeHtml(tk.id)}">${t("cancel_word")}</button>
+              </div>
+            </div>
           </div>
-          <button class="assigned-task-delete" data-taskid="${escapeHtml(tk.id)}" title="Remove this task">✕</button>
+          <div class="assigned-task-actions">
+            <button class="assigned-task-edit" data-taskid="${escapeHtml(tk.id)}" title="${t("edit_link_word")}">✎</button>
+            <button class="assigned-task-delete" data-taskid="${escapeHtml(tk.id)}" title="Remove this task">✕</button>
+          </div>
         </div>
       `;
     };
@@ -3101,6 +3200,7 @@ function renderMgrDetail(container, p, opts){
   });
   const assignedLinkBlocks = linkGroups.map(groupName=>{
     const linksInGroup = assignedLinks.filter(l=>l.groupName===groupName);
+    const groupKeySafe = cssEscape(groupName);
     const rowsHtml = linksInGroup.map(l=>`
       <div class="assigned-link-row">
         <div class="assigned-link-main">
@@ -3111,7 +3211,7 @@ function renderMgrDetail(container, p, opts){
         <button class="assigned-link-delete" data-linkid="${escapeHtml(l.id)}" title="Remove this link">✕</button>
       </div>
     `).join("");
-    const openKey = `link_assigned_${p.id}_${cssEscape(groupName)}`;
+    const openKey = `link_assigned_${p.id}_${groupKeySafe}`;
     const isOpenNow = getOpenState(openKey, true);
     return `
       <div class="link-cat-card link-cat-assigned" data-openkey="${escapeHtml(openKey)}">
@@ -3120,7 +3220,17 @@ function renderMgrDetail(container, p, opts){
           <span class="link-cat-count">${linksInGroup.length}</span>
           <span class="link-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
-        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">${rowsHtml}</div>
+        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">
+          ${rowsHtml}
+          <button class="add-more-link-btn" data-group="${escapeHtml(groupName)}" data-groupkey="${groupKeySafe}">${t("add_another_link_btn")}</button>
+          <div class="mgr-add-task-form add-more-link-form" id="add-more-link-form-${groupKeySafe}-${id}" style="display:none;">
+            <input type="text" id="add-more-link-name-${groupKeySafe}-${id}" placeholder="${t("link_name_ph")}">
+            <input type="text" id="add-more-link-url-${groupKeySafe}-${id}" placeholder="${t("resource_url_ph")}" style="margin-top:8px;">
+            <div class="mgr-newtask-row">
+              <button class="add-more-link-submit" data-group="${escapeHtml(groupName)}" data-groupkey="${groupKeySafe}" style="flex:1;">${t("add_link_word")}</button>
+            </div>
+          </div>
+        </div>
       </div>
     `;
   }).join("");
@@ -3467,6 +3577,53 @@ function renderMgrDetail(container, p, opts){
     });
   });
 
+  // Edit an assigned task's text/description in place
+  container.querySelectorAll(".assigned-task-edit").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const tid = cssEscape(btn.dataset.taskid);
+      const form = container.querySelector(`#task-edit-form-${tid}`);
+      if(form) form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+  });
+  container.querySelectorAll(".task-edit-cancel").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const tid = cssEscape(btn.dataset.taskid);
+      const form = container.querySelector(`#task-edit-form-${tid}`);
+      if(form) form.style.display = "none";
+    });
+  });
+  container.querySelectorAll(".task-edit-save").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(taskOpBusy) return;
+      const taskId = btn.dataset.taskid;
+      const tid = cssEscape(taskId);
+      const textInput = container.querySelector(`#task-edit-text-${tid}`);
+      const descInput = container.querySelector(`#task-edit-desc-${tid}`);
+      const newText = textInput.value.trim();
+      if(!newText){ textInput.focus(); return; }
+      taskOpBusy = true;
+      btn.disabled = true;
+      btn.textContent = "…";
+      const updates = { text: newText, desc: descInput.value.trim() };
+      const ok = await editAssignedTaskInCloud(p.id, taskId, updates);
+      taskOpBusy = false;
+      if(ok){
+        p.customTasks = assigned.map(x=>x.id===taskId ? {...x, ...updates} : x);
+        p.custom_tasks = p.customTasks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+        logAudit(p.id, p.name, actorRole, actorName, "task_edited", newText);
+        renderMgrDetail(container, p, opts);
+      } else {
+        btn.disabled = false;
+        btn.textContent = t("save_word");
+      }
+    });
+  });
+
   // Remove a single assigned task (with inline confirm, no browser dialog)
   container.querySelectorAll(".assigned-task-delete").forEach(btn=>{
     btn.addEventListener("click", async (e)=>{
@@ -3522,6 +3679,30 @@ async function deleteAssignedTaskFromCloud(profileId, taskId){
     });
     return patchRes.ok;
   }catch(e){ console.error("delete task failed", e); return false; }
+}
+
+async function editAssignedTaskInCloud(profileId, taskId, updates){
+  if(!cloudConfigured()) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].custom_tasks) || [];
+    const updated = current.map(x=>x.id===taskId ? {...x, ...updates} : x);
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ custom_tasks: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("edit task failed", e); return false; }
 }
 
 async function addLinkToCloud(profileId, newLink){
