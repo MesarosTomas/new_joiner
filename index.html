@@ -704,7 +704,7 @@ body{
     <button data-role="buddy" data-i18n="role_buddy">🤝 Buddy</button>
   </div>
   <div id="setup-zone"></div>
-  <div class="section-label" data-i18n="section_your_routing">Your routing</div>
+  <div class="section-label" id="dashboard-section-label" data-i18n="section_your_routing" style="display:none;">Your routing</div>
   <div id="dashboard-zone"></div>
   <div id="manager-zone" style="display:none;"></div>
   <div id="buddy-zone" style="display:none;"></div>
@@ -1580,23 +1580,18 @@ function renderQuickLinksHtml(withTourLink){
 
 function renderDashboardZone(){
   const zone = document.getElementById("dashboard-zone");
+  const dashLabel = document.getElementById("dashboard-section-label");
 
   if(!state){
+    if(dashLabel) dashLabel.style.display = "none";
     zone.innerHTML = `
-      <div class="locked-zone">
-        <div class="lock-icon">🔒</div>
-        <div class="lock-title">${t("locked_title")}</div>
-        <div class="lock-sub">${t("locked_sub")}</div>
-        <div class="locked-preview">
-          <div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div><div class="ghost"></div>
-        </div>
-      </div>
       <button class="tour-btn" id="tour-btn-1">${t("tour_button")}</button>
       ${renderQuickLinksHtml()}
     `;
     document.getElementById("tour-btn-1").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
     return;
   }
+  if(dashLabel) dashLabel.style.display = "block";
 
   const currentDay = dayNumber(state.startDate);
   taskIndex = buildTasks(state);
@@ -1827,7 +1822,7 @@ function applyRoleView(){
   const adminZone = document.getElementById("admin-zone");
   setupZone.style.display = currentRole === "joiner" ? "block" : "none";
   dashZone.style.display = currentRole === "joiner" ? "block" : "none";
-  sectionLabel.style.display = currentRole === "joiner" ? "block" : "none";
+  sectionLabel.style.display = (currentRole === "joiner" && state) ? "block" : "none";
   mgrZone.style.display = currentRole === "manager" ? "block" : "none";
   buddyZone.style.display = currentRole === "buddy" ? "block" : "none";
   adminZone.style.display = currentRole === "admin" ? "block" : "none";
