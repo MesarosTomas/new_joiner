@@ -4037,7 +4037,7 @@ async function mergeCustomTasksFromCloud(){
   await loadManagerDirectory();
   await loadCategoryLinks();
   await mergeCustomTasksFromCloud();
-  renderAll();
+  applyRoleView();
   updateCopyStatusVisibility();
   const loader = document.getElementById("page-loader");
   if(loader){ loader.classList.add("hidden"); setTimeout(()=>loader.remove(), 300); }
