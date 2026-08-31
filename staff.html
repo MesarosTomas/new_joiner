@@ -512,24 +512,29 @@ body{
 .joiner-links-card.collapsed .joiner-links-chev{transform:rotate(-90deg);}
 .joiner-links-body{padding:0 22px 18px;}
 
-.joiner-link-group{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
-.joiner-link-group-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
-.joiner-link-group-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;}
-.joiner-link-group-icon img{height:20px;width:auto;max-width:24px;object-fit:contain;}
-.joiner-link-group-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
-.joiner-link-group-count{
-  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
-  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+.joiner-links-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start;}
+.joiner-link-box{
+  background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  transition:border-color .15s ease;
 }
-.joiner-link-group-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
-.joiner-link-group-body{padding:0 14px 8px;}
+.joiner-link-box.expanded{border-color:var(--cyan);grid-column:span 1;}
+.joiner-link-box-head{display:flex;align-items:center;gap:8px;padding:14px;cursor:pointer;}
+.joiner-link-box-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;}
+.joiner-link-box-icon img{height:20px;width:auto;max-width:24px;object-fit:contain;}
+.joiner-link-box-name{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--navy-ink);flex:1;}
+.joiner-link-box-count{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:2px 7px;flex:0 0 auto;
+}
+.joiner-link-box-body{display:none;padding:0 14px 10px;}
+.joiner-link-box.expanded .joiner-link-box-body{display:block;}
 .joiner-link-item{
-  display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);
-  text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:500;
+  display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);
+  text-decoration:none;color:var(--ink);font-size:12px;font-weight:500;
 }
-.joiner-link-item:last-child{border-bottom:none;}
 .joiner-link-item:hover{color:var(--navy);}
-.joiner-link-item-arrow{color:var(--cyan);font-weight:700;}
+.joiner-link-item-arrow{color:var(--cyan);font-weight:700;flex:0 0 auto;margin-left:8px;}
+@media(max-width:640px){.joiner-links-grid{grid-template-columns:repeat(2,1fr);}}
 .mgr-section-label{
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
   margin:16px 0 8px;
@@ -552,6 +557,10 @@ body{
 .rec-cat-card.rec-cat-featured{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan-soft) inset;}
 .rec-cat-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;}
 .rec-cat-star{color:var(--cyan);font-size:13px;}
+.rec-cat-badge{
+  font-size:10px;font-weight:600;color:var(--ink-soft);background:var(--slate-soft);
+  border-radius:20px;padding:2px 8px;text-transform:uppercase;letter-spacing:.03em;
+}
 .rec-cat-title{font-weight:600;font-size:12.5px;color:var(--navy-ink);flex:1;}
 .rec-cat-count{
   font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
@@ -724,8 +733,8 @@ body{
 }
 .cat-resource-open-btn:hover{background:#0a1c66;}
 .cat-resource-edit-btn{
-  padding:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:12px;
-  cursor:pointer;color:var(--ink-soft);
+  padding:8px 12px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:12px;
+  cursor:pointer;color:var(--ink-soft);white-space:nowrap;font-weight:600;
 }
 .cat-resource-edit-btn:hover{border-color:var(--navy);color:var(--navy);}
 .cat-resource-add-btn{
@@ -914,7 +923,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title:"Guide & access", resource_sub:"Click through to this system", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title_prefix:"Direct link:", resource_sub:"Opens in a new tab", edit_link_word:"Edit link", recommended_tag:"Recommended", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -981,7 +990,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title:"Anleitung & Zugang", resource_sub:"Klicke durch zu diesem System", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title_prefix:"Direkter Link:", resource_sub:"Öffnet in neuem Tab", edit_link_word:"Link bearbeiten", recommended_tag:"Empfohlen", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -1048,7 +1057,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title:"Návod a prístup", resource_sub:"Kliknutím sa dostaneš priamo do systému", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title_prefix:"Priamy odkaz:", resource_sub:"Otvorí sa na novej karte", edit_link_word:"Upraviť odkaz", recommended_tag:"Odporúčané", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -1766,22 +1775,20 @@ function renderJoinerLinksHtml(withTourLink){
   });
   const groupsHtml = groups.map((groupName, gi)=>{
     const itemsInGroup = links.filter(l=>l.groupName===groupName);
-    const sample = itemsInGroup[0];
     const slug = RECOMMENDED_LINKS.find(rl=>rl.groupName===groupName);
     const icon = slug ? slug.groupIcon : "🔗";
     const iconSlug = slug ? slug.groupSlug : null;
     return `
-      <div class="joiner-link-group">
-        <div class="joiner-link-group-head" data-gi="${gi}">
-          <div class="joiner-link-group-icon">
+      <div class="joiner-link-box" data-gi="${gi}">
+        <div class="joiner-link-box-head">
+          <div class="joiner-link-box-icon">
             ${iconSlug ? `<img src="https://cdn.simpleicons.org/${iconSlug}" alt=""
                  onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${icon}'}))">` : icon}
           </div>
-          <span class="joiner-link-group-title">${escapeHtml(groupName)}</span>
-          <span class="joiner-link-group-count">${itemsInGroup.length}</span>
-          <span class="joiner-link-group-chev">▾</span>
+          <div class="joiner-link-box-name">${escapeHtml(groupName)}</div>
+          <div class="joiner-link-box-count">${itemsInGroup.length}</div>
         </div>
-        <div class="joiner-link-group-body">
+        <div class="joiner-link-box-body">
           ${itemsInGroup.map(l=>`
             <a class="joiner-link-item" href="${l.url}" target="_blank" rel="noopener">
               <span class="joiner-link-item-name">${escapeHtml(l.linkName)}</span>
@@ -1806,7 +1813,7 @@ function renderJoinerLinksHtml(withTourLink){
         </div>
       </div>
       <div class="joiner-links-body" id="joiner-links-body">
-        ${groups.length ? groupsHtml : `<div class="mgr-empty-note">${t("no_links_yet")}</div>`}
+        ${groups.length ? `<div class="joiner-links-grid">${groupsHtml}</div>` : `<div class="mgr-empty-note">${t("no_links_yet")}</div>`}
       </div>
     </div>
   `;
@@ -1822,14 +1829,10 @@ function wireJoinerLinksToggle(){
     body.style.display = open ? "none" : "block";
     if(card) card.classList.toggle("collapsed", open);
   });
-  card.querySelectorAll(".joiner-link-group-head").forEach(head=>{
-    head.addEventListener("click", (e)=>{
+  card.querySelectorAll(".joiner-link-box").forEach(box=>{
+    box.querySelector(".joiner-link-box-head").addEventListener("click", (e)=>{
       e.stopPropagation();
-      const groupBody = head.parentElement.querySelector(".joiner-link-group-body");
-      const chev = head.querySelector(".joiner-link-group-chev");
-      const open = groupBody.style.display !== "none";
-      groupBody.style.display = open ? "none" : "block";
-      if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+      box.classList.toggle("expanded");
     });
   });
 }
@@ -2002,7 +2005,7 @@ function renderOpList(currentDay){
         <div class="chev">▾</div>
       </div>
       <div class="op-body">
-        <div class="op-body-resource">${renderCatResourceHtml(cat.id, tasks, false)}</div>
+        <div class="op-body-resource">${renderCatResourceHtml(cat.id, tasks, false, cat.title)}</div>
       </div>
     `;
     const body = card.querySelector(".op-body");
@@ -2763,20 +2766,21 @@ function renderTeamCompareChart(rows){
 }
 
 
-function renderCatResourceHtml(catId, tasksInCat, editable){
+function renderCatResourceHtml(catId, tasksInCat, editable, categoryTitle){
   const link = getCategoryLink(catId, tasksInCat);
   const safeKey = cssEscape(catId);
+  const label = categoryTitle ? `${t("resource_title_prefix")} ${categoryTitle}` : t("resource_title_prefix");
   if(link){
     return `
       <div class="cat-resource" data-catid="${escapeHtml(catId)}">
         <div class="cat-resource-icon">🔗</div>
         <div class="cat-resource-text">
-          <div class="cat-resource-title">${t("resource_title")}</div>
+          <div class="cat-resource-title">${escapeHtml(label)}</div>
           <div class="cat-resource-sub">${t("resource_sub")}</div>
         </div>
         <div class="cat-resource-actions">
           <a class="cat-resource-open-btn" href="${link.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${t("open_link")} →</a>
-          ${editable ? `<button class="cat-resource-edit-btn" data-catid="${escapeHtml(catId)}">✎</button>` : ""}
+          ${editable ? `<button class="cat-resource-edit-btn" data-catid="${escapeHtml(catId)}">✎ ${t("edit_link_word")}</button>` : ""}
         </div>
       </div>
       ${editable ? `<div class="cat-resource-edit-form" id="cat-edit-form-${safeKey}" style="display:none;">
@@ -2787,7 +2791,7 @@ function renderCatResourceHtml(catId, tasksInCat, editable){
   }
   if(!editable) return "";
   return `
-    <button class="cat-resource-add-btn" data-catid="${escapeHtml(catId)}">${t("add_link_btn")}</button>
+    <button class="cat-resource-add-btn" data-catid="${escapeHtml(catId)}">${t("add_link_btn")}${categoryTitle ? ` — ${escapeHtml(categoryTitle)}` : ""}</button>
     <div class="cat-resource-edit-form" id="cat-edit-form-${safeKey}" style="display:none;">
       <input type="text" id="cat-edit-input-${safeKey}" placeholder="${t("resource_url_ph")}">
       <button class="cat-resource-save-btn" data-catid="${escapeHtml(catId)}">${t("save_word")}</button>
@@ -2828,11 +2832,14 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
   // Collapsible link-group cards
   container.querySelectorAll(".link-cat-head").forEach(head=>{
     head.addEventListener("click", ()=>{
-      const body = head.parentElement.querySelector(".link-cat-body");
+      const card = head.parentElement;
+      const body = card.querySelector(".link-cat-body");
       const chev = head.querySelector(".link-cat-chev");
       const open = body.style.display !== "none";
       body.style.display = open ? "none" : "block";
       if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+      const openKey = card.dataset.openkey;
+      if(openKey) setOpenState(openKey, !open);
     });
   });
 
@@ -2993,15 +3000,17 @@ function renderMgrDetail(container, p, opts){
         </div>
       `;
     }).join("");
+    const assignedOpenKey = `assigned_${p.id}_${catKeySafe}`;
+    const assignedIsOpen = getOpenState(assignedOpenKey, true);
     return `
-      <div class="assigned-cat-card" data-catkey="${catKeySafe}">
+      <div class="assigned-cat-card" data-catkey="${catKeySafe}" data-openkey="${escapeHtml(assignedOpenKey)}">
         <div class="assigned-cat-head">
           <span class="assigned-cat-title">${escapeHtml(cat.title)}</span>
           <span class="assigned-cat-count">${doneCount}/${catTasks.length}</span>
-          <span class="assigned-cat-chev">▾</span>
+          <span class="assigned-cat-chev" style="transform:${assignedIsOpen ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
-        <div class="assigned-cat-body">
-          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasks, true)}</div>
+        <div class="assigned-cat-body" style="display:${assignedIsOpen ? 'block' : 'none'};">
+          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasks, true, cat.title)}</div>
           ${rowsHtml}
         </div>
       </div>
@@ -3029,6 +3038,8 @@ function renderMgrDetail(container, p, opts){
     const items = recommended.filter(r=>r.catTitle===catTitle);
     const isRole = catTitle === roleLabel;
     const catKey = cssEscape(catTitle) || ("cat"+gi);
+    const openKey = `rec_${p.id}_${catKey}`;
+    const isOpenNow = getOpenState(openKey, isRole);
     const itemsHtml = items.map(r=>`
       <div class="rec-task" data-search="${escapeHtml(r.text.toLowerCase())}">
         <div class="rec-task-main">
@@ -3043,16 +3054,16 @@ function renderMgrDetail(container, p, opts){
     `).join("");
     const recCatId = items[0] && items[0].catId;
     return `
-      <div class="rec-cat-card ${isRole ? 'rec-cat-featured' : ''}" data-catkey="${escapeHtml(catKey)}">
+      <div class="rec-cat-card ${isRole ? 'rec-cat-featured' : ''}" data-catkey="${escapeHtml(catKey)}" data-openkey="${escapeHtml(openKey)}">
         <div class="rec-cat-head">
-          ${isRole ? `<span class="rec-cat-star">★</span>` : ""}
+          ${isRole ? `<span class="rec-cat-star">★</span>` : `<span class="rec-cat-badge">${t("recommended_tag")}</span>`}
           <span class="rec-cat-title">${escapeHtml(catTitle)}</span>
           <span class="rec-cat-count">${items.length}</span>
           <button class="rec-cat-addall" data-catkey="${escapeHtml(catKey)}">${t("add_all")}</button>
-          <span class="rec-cat-chev">▾</span>
+          <span class="rec-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
-        <div class="rec-cat-body" style="display:${isRole ? 'block' : 'none'};">
-          <div class="cat-resource-wrap">${renderCatResourceHtml(recCatId, [], true)}</div>
+        <div class="rec-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">
+          <div class="cat-resource-wrap">${renderCatResourceHtml(recCatId, [], true, catTitle)}</div>
           ${itemsHtml}
         </div>
       </div>
@@ -3081,14 +3092,16 @@ function renderMgrDetail(container, p, opts){
         <button class="assigned-link-delete" data-linkid="${escapeHtml(l.id)}" title="Remove this link">✕</button>
       </div>
     `).join("");
+    const openKey = `link_assigned_${p.id}_${cssEscape(groupName)}`;
+    const isOpenNow = getOpenState(openKey, true);
     return `
-      <div class="link-cat-card">
+      <div class="link-cat-card" data-openkey="${escapeHtml(openKey)}">
         <div class="link-cat-head">
           <span class="link-cat-title">${escapeHtml(groupName)}</span>
           <span class="link-cat-count">${linksInGroup.length}</span>
-          <span class="link-cat-chev">▾</span>
+          <span class="link-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
-        <div class="link-cat-body">${rowsHtml}</div>
+        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">${rowsHtml}</div>
       </div>
     `;
   }).join("");
@@ -3114,14 +3127,16 @@ function renderMgrDetail(container, p, opts){
         <button class="rec-link-add" data-recid="${escapeHtml(rl.id)}">+ Add</button>
       </div>
     `).join("");
+    const openKey = `link_rec_${p.id}_${cssEscape(groupName)}`;
+    const isOpenNow = getOpenState(openKey, false);
     return `
-      <div class="link-cat-card">
+      <div class="link-cat-card" data-openkey="${escapeHtml(openKey)}">
         <div class="link-cat-head">
           <span class="link-cat-title">${escapeHtml(groupName)}</span>
           <span class="link-cat-count">${items.length}</span>
-          <span class="link-cat-chev">▾</span>
+          <span class="link-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
-        <div class="link-cat-body" style="display:none;">${itemsHtml}</div>
+        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">${itemsHtml}</div>
       </div>
     `;
   }).join("");
@@ -3255,11 +3270,14 @@ function renderMgrDetail(container, p, opts){
   container.querySelectorAll(".rec-cat-head").forEach(head=>{
     head.addEventListener("click", (e)=>{
       if(e.target.closest(".rec-cat-addall")) return;
-      const body = head.parentElement.querySelector(".rec-cat-body");
+      const card = head.parentElement;
+      const body = card.querySelector(".rec-cat-body");
       const chev = head.querySelector(".rec-cat-chev");
-      const open = body.style.display !== "none";
-      body.style.display = open ? "none" : "block";
-      if(chev) chev.style.transform = open ? "" : "rotate(180deg)";
+      const wasOpen = body.style.display !== "none";
+      body.style.display = wasOpen ? "none" : "block";
+      if(chev) chev.style.transform = wasOpen ? "rotate(-90deg)" : "";
+      const openKey = card.dataset.openkey;
+      if(openKey) setOpenState(openKey, !wasOpen);
     });
   });
 
@@ -3415,11 +3433,14 @@ function renderMgrDetail(container, p, opts){
   // Collapsible assigned-task category cards (default open, click header to toggle)
   container.querySelectorAll(".assigned-cat-head").forEach(head=>{
     head.addEventListener("click", ()=>{
-      const body = head.parentElement.querySelector(".assigned-cat-body");
+      const card = head.parentElement;
+      const body = card.querySelector(".assigned-cat-body");
       const chev = head.querySelector(".assigned-cat-chev");
       const open = body.style.display !== "none";
       body.style.display = open ? "none" : "block";
       if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+      const openKey = card.dataset.openkey;
+      if(openKey) setOpenState(openKey, !open);
     });
   });
 
@@ -3532,6 +3553,17 @@ async function removeLinkFromCloud(profileId, linkId){
    clicking multiple "+ Add" buttons quickly causes a fetch-then-overwrite
    race where the last write wins and earlier additions silently vanish. */
 let taskOpBusy = false;
+
+/* Remembers which category cards are expanded, across the many full
+   re-renders that happen after every add/remove — without this, every
+   click on "+ Add" silently re-collapses everything back to its default
+   state and the user has to scroll down and reopen it all over again. */
+let uiOpenState = {};
+function getOpenState(key, defaultOpen){
+  if(!(key in uiOpenState)) uiOpenState[key] = !!defaultOpen;
+  return uiOpenState[key];
+}
+function setOpenState(key, val){ uiOpenState[key] = val; }
 
 function genId(prefix){
   return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2,8);
