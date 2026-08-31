@@ -461,6 +461,75 @@ body{
   color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;
 }
 .assigned-task-delete:hover{border-color:var(--coral);color:var(--coral);}
+
+.links-section{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);}
+
+.link-cat-card{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.link-cat-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:var(--paper);}
+.link-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
+.link-cat-count{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+}
+.link-cat-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
+.link-cat-body{padding:4px 14px 8px;}
+
+.assigned-link-row, .rec-link-row{
+  display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+}
+.assigned-link-row:last-child, .rec-link-row:last-child{border-bottom:none;}
+.assigned-link-main, .rec-link-main{flex:1;min-width:0;}
+.assigned-link-name, .rec-link-name{font-size:13px;font-weight:600;color:var(--ink);}
+.assigned-link-url, .rec-link-url{
+  font-size:11px;color:var(--ink-soft);display:block;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;max-width:320px;
+}
+.assigned-link-open{
+  flex:0 0 auto;padding:6px 12px;background:var(--cyan-soft);color:var(--navy);border-radius:20px;
+  font-size:11.5px;font-weight:600;text-decoration:none;white-space:nowrap;
+}
+.assigned-link-open:hover{background:var(--cyan);color:#fff;}
+.assigned-link-delete{
+  flex:0 0 auto;background:none;border:1px solid var(--line);border-radius:50%;width:22px;height:22px;
+  color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;
+}
+.assigned-link-delete:hover{border-color:var(--coral);color:var(--coral);}
+.rec-link-add{
+  flex:0 0 auto;padding:6px 14px;background:var(--navy);color:#fff;border:none;border-radius:20px;
+  font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+}
+.rec-link-add:hover{background:#0a1c66;}
+.rec-link-add:disabled{background:var(--slate);cursor:not-allowed;}
+
+.joiner-links-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;}
+.joiner-links-head{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 22px;cursor:pointer;
+}
+.joiner-links-title{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--navy-ink);}
+.joiner-links-sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+.joiner-links-head-right{display:flex;align-items:center;gap:10px;flex:0 0 auto;}
+.joiner-links-chev{color:var(--ink-soft);font-size:12px;transition:transform .15s ease;}
+.joiner-links-card.collapsed .joiner-links-chev{transform:rotate(-90deg);}
+.joiner-links-body{padding:0 22px 18px;}
+
+.joiner-link-group{background:var(--paper);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.joiner-link-group-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.joiner-link-group-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;}
+.joiner-link-group-icon img{height:20px;width:auto;max-width:24px;object-fit:contain;}
+.joiner-link-group-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
+.joiner-link-group-count{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+}
+.joiner-link-group-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
+.joiner-link-group-body{padding:0 14px 8px;}
+.joiner-link-item{
+  display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);
+  text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:500;
+}
+.joiner-link-item:last-child{border-bottom:none;}
+.joiner-link-item:hover{color:var(--navy);}
+.joiner-link-item-arrow{color:var(--cyan);font-weight:700;}
 .mgr-section-label{
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
   margin:16px 0 8px;
@@ -845,7 +914,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title:"Guide & access", resource_sub:"Click through to this system", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title:"Guide & access", resource_sub:"Click through to this system", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category", section_links_assigned:"Assigned links", section_links_recommended:"Recommended links", empty_links_assigned:"No links assigned yet — pick from the recommendations below, or add your own.", empty_links_recommended:"Nothing left to recommend.", add_own_link:"+ Add your own link", link_group_ph:"System / group (e.g. Mural, SAP)", link_name_ph:"Link name (e.g. Team board)", add_link_word:"Add link", no_links_yet:"No links assigned yet.",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -912,7 +981,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title:"Anleitung & Zugang", resource_sub:"Klicke durch zu diesem System", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title:"Anleitung & Zugang", resource_sub:"Klicke durch zu diesem System", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen", section_links_assigned:"Zugewiesene Links", section_links_recommended:"Empfohlene Links", empty_links_assigned:"Noch keine Links zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.", empty_links_recommended:"Keine weiteren Empfehlungen.", add_own_link:"+ Eigenen Link hinzufügen", link_group_ph:"System / Gruppe (z.B. Mural, SAP)", link_name_ph:"Linkname (z.B. Team-Board)", add_link_word:"Link hinzufügen", no_links_yet:"Noch keine Links zugewiesen.",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -979,7 +1048,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title:"Návod a prístup", resource_sub:"Kliknutím sa dostaneš priamo do systému", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title:"Návod a prístup", resource_sub:"Kliknutím sa dostaneš priamo do systému", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu", section_links_assigned:"Pridelené odkazy", section_links_recommended:"Odporúčané odkazy", empty_links_assigned:"Zatiaľ žiadne pridelené odkazy — vyber si z odporúčaní nižšie alebo pridaj vlastný.", empty_links_recommended:"Už niet čo odporučiť.", add_own_link:"+ Pridať vlastný odkaz", link_group_ph:"Systém / skupina (napr. Mural, SAP)", link_name_ph:"Názov odkazu (napr. Team board)", add_link_word:"Pridať odkaz", no_links_yet:"Zatiaľ žiadne pridelené odkazy.",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -1175,6 +1244,21 @@ function getCategoryLink(catId, tasksInCat){
   return LINKS_BY_CATID[catId] || null;
 }
 
+/* ============ ASSIGNABLE LINKS (separate from tasks) ============
+   A recommended pool of links, grouped by system (a group can hold
+   several links — e.g. a team's own Mural board vs. the general one),
+   which a manager or buddy picks from and assigns per joiner — exactly
+   like tasks. Nothing shows to a joiner until it's actually assigned. */
+const RECOMMENDED_LINKS = [
+  {id:"rl_s4", groupName:"SAP S/4HANA", groupIcon:"🏢", groupSlug:"sap", linkName:"Timesheets, project data, ERP", url:"https://my417565.s4hana.cloud.sap"},
+  {id:"rl_confluence", groupName:"Confluence", groupIcon:"📘", groupSlug:"confluence", linkName:"DMS Project Template space", url:"https://syntax.atlassian.net/wiki/spaces/DPT/overview?homepageId=3080450"},
+  {id:"rl_jira", groupName:"Jira", groupIcon:"🗂️", groupSlug:"jira", linkName:"Tasks, tickets, project boards", url:"https://syntax.atlassian.net/jira"},
+  {id:"rl_sharepoint", groupName:"SharePoint", groupIcon:"📁", groupSlug:"microsoftsharepoint", linkName:"Shared files and project documents", url:"https://syntaxsystems.sharepoint.com"},
+  {id:"rl_successfactors", groupName:"SuccessFactors", groupIcon:"👤", groupSlug:"sap", linkName:"HR profile, goals, learning", url:"https://performancemanager.successfactors.eu"},
+  {id:"rl_helpdesk", groupName:"IT Help Desk", groupIcon:"🎫", groupSlug:"servicenow", linkName:"Access requests and IT tickets", url:"https://simplified.service-now.com/esc"},
+  {id:"rl_mural", groupName:"Mural", groupIcon:"🧠", groupSlug:"mural", linkName:"SAP DM Onboarding Academy board", url:"https://app.mural.co/t/syntaxsystems1645/m/syntaxsystems1645/1687374734289/e427f6be79fe1bfd95f761ab4514e87757309275"}
+];
+
 const POSITIONS = [
   "Developer","SAP Consultant","DM Consultant","Senior Consultant","Project Manager",
   "Senior Project Manager","Solution Architect","Business Architect",
@@ -1331,6 +1415,7 @@ async function resumeFromCode(){
       id: r.id, name: r.name, position: r.position, manager: r.manager,
       country: r.country, startDate: r.start_date, accessCode: r.access_code, buddyCode: r.buddy_code,
       tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || [],
+      assignedLinks: r.assigned_links || [],
       targetDays: r.target_days || 10, completedDates: r.completed_dates || {}
     };
     await kvSet(STORAGE_KEY, JSON.stringify(state));
@@ -1366,6 +1451,7 @@ async function syncProfileToCloud(){
       notes: state.notes,
       completed_dates: state.completedDates || {},
       custom_tasks: state.customTasks || [],
+      assigned_links: state.assignedLinks || [],
       target_days: state.targetDays || 10,
       updated_at: new Date().toISOString()
     };
@@ -1600,7 +1686,7 @@ function renderSetupZone(){
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
       const accessCode = genAccessCode();
       const buddyCode = genAccessCode();
-      state = { id: profileId, name, position, manager, country, startDate, accessCode, buddyCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10, completedDates:{} };
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, buddyCode, tasks:{}, notes:{}, customTasks:[], assignedLinks:[], targetDays: 10, completedDates:{} };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -1671,30 +1757,81 @@ function renderSetupZone(){
   }
 }
 
-function renderQuickLinksHtml(withTourLink){
-  return `
-    <div class="quick-links-card">
-      <div class="quick-links-head-row">
-        <div>
-          <div class="quick-links-title">${t("quick_links_title")}</div>
-          <div class="quick-links-sub">${t("quick_links_sub")}</div>
+function renderJoinerLinksHtml(withTourLink){
+  const links = state.assignedLinks || [];
+  const groups = [];
+  const seen = new Set();
+  links.forEach(l=>{
+    if(!seen.has(l.groupName)){ seen.add(l.groupName); groups.push(l.groupName); }
+  });
+  const groupsHtml = groups.map((groupName, gi)=>{
+    const itemsInGroup = links.filter(l=>l.groupName===groupName);
+    const sample = itemsInGroup[0];
+    const slug = RECOMMENDED_LINKS.find(rl=>rl.groupName===groupName);
+    const icon = slug ? slug.groupIcon : "🔗";
+    const iconSlug = slug ? slug.groupSlug : null;
+    return `
+      <div class="joiner-link-group">
+        <div class="joiner-link-group-head" data-gi="${gi}">
+          <div class="joiner-link-group-icon">
+            ${iconSlug ? `<img src="https://cdn.simpleicons.org/${iconSlug}" alt=""
+                 onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${icon}'}))">` : icon}
+          </div>
+          <span class="joiner-link-group-title">${escapeHtml(groupName)}</span>
+          <span class="joiner-link-group-count">${itemsInGroup.length}</span>
+          <span class="joiner-link-group-chev">▾</span>
         </div>
-        ${withTourLink ? `<button class="tour-link-small" id="tour-link-small">${t("tour_button")}</button>` : ""}
+        <div class="joiner-link-group-body">
+          ${itemsInGroup.map(l=>`
+            <a class="joiner-link-item" href="${l.url}" target="_blank" rel="noopener">
+              <span class="joiner-link-item-name">${escapeHtml(l.linkName)}</span>
+              <span class="joiner-link-item-arrow">→</span>
+            </a>
+          `).join("")}
+        </div>
       </div>
-      <div class="quick-links-grid">
-        ${LINKS_CATALOG.map(l=>`
-          <a class="quick-link-box" href="${l.url}" target="_blank" rel="noopener">
-            <div class="quick-link-icon">
-              <img src="https://cdn.simpleicons.org/${l.slug}" alt=""
-                   onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${l.icon}',className:'quick-link-icon-fallback'}))">
-            </div>
-            <div class="quick-link-name">${escapeHtml(t(l.key))}</div>
-            <div class="quick-link-desc">${escapeHtml(t(l.key+"_desc"))}</div>
-          </a>
-        `).join("")}
+    `;
+  }).join("");
+
+  return `
+    <div class="joiner-links-card" id="joiner-links-card">
+      <div class="joiner-links-head" id="joiner-links-toggle">
+        <div>
+          <div class="joiner-links-title">${t("quick_links_title")}</div>
+          <div class="joiner-links-sub">${t("quick_links_sub")}</div>
+        </div>
+        <div class="joiner-links-head-right">
+          ${withTourLink ? `<button class="tour-link-small" id="tour-link-small" onclick="event.stopPropagation()">${t("tour_button")}</button>` : ""}
+          <span class="joiner-links-chev">▾</span>
+        </div>
+      </div>
+      <div class="joiner-links-body" id="joiner-links-body">
+        ${groups.length ? groupsHtml : `<div class="mgr-empty-note">${t("no_links_yet")}</div>`}
       </div>
     </div>
   `;
+}
+
+function wireJoinerLinksToggle(){
+  const toggle = document.getElementById("joiner-links-toggle");
+  const body = document.getElementById("joiner-links-body");
+  const card = document.getElementById("joiner-links-card");
+  if(!toggle || !body) return;
+  toggle.addEventListener("click", ()=>{
+    const open = body.style.display !== "none";
+    body.style.display = open ? "none" : "block";
+    if(card) card.classList.toggle("collapsed", open);
+  });
+  card.querySelectorAll(".joiner-link-group-head").forEach(head=>{
+    head.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const groupBody = head.parentElement.querySelector(".joiner-link-group-body");
+      const chev = head.querySelector(".joiner-link-group-chev");
+      const open = groupBody.style.display !== "none";
+      groupBody.style.display = open ? "none" : "block";
+      if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+    });
+  });
 }
 
 function renderDashboardZone(){
@@ -1705,7 +1842,6 @@ function renderDashboardZone(){
     if(dashLabel) dashLabel.style.display = "none";
     zone.innerHTML = `
       <button class="tour-btn" id="tour-btn-1">${t("tour_button")}</button>
-      ${renderQuickLinksHtml()}
     `;
     document.getElementById("tour-btn-1").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
     return;
@@ -1723,9 +1859,10 @@ function renderDashboardZone(){
         <div class="lock-sub">${t("empty_tasks_sub")}</div>
       </div>
       <button class="tour-btn" id="tour-btn-2">${t("tour_button")}</button>
-      ${renderQuickLinksHtml()}
+      ${state.assignedLinks && state.assignedLinks.length ? renderJoinerLinksHtml() : ""}
     `;
     document.getElementById("tour-btn-2").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
+    wireJoinerLinksToggle();
     return;
   }
 
@@ -1747,7 +1884,7 @@ function renderDashboardZone(){
         <div class="feedback-thanks" id="feedback-thanks" style="display:none;">${t("feedback_thanks")}</div>
       </div>
     ` : ""}
-    ${renderQuickLinksHtml(true)}
+    ${renderJoinerLinksHtml(true)}
     <div class="routing-strip">
       <div class="strip-title">${t("strip_title")}</div>
       <div class="strip-row" id="strip-row"></div>
@@ -1757,6 +1894,7 @@ function renderDashboardZone(){
   `;
 
   document.getElementById("tour-link-small").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
+  wireJoinerLinksToggle();
 
   if(isComplete){
     document.getElementById("feedback-submit").addEventListener("click", async ()=>{
@@ -2684,6 +2822,128 @@ function wireCatResourceHandlers(container, onSaved){
   });
 }
 
+function wireLinkHandlers(container, p, opts, actorRole, actorName){
+  const id = cssEscape(p.id);
+
+  // Collapsible link-group cards
+  container.querySelectorAll(".link-cat-head").forEach(head=>{
+    head.addEventListener("click", ()=>{
+      const body = head.parentElement.querySelector(".link-cat-body");
+      const chev = head.querySelector(".link-cat-chev");
+      const open = body.style.display !== "none";
+      body.style.display = open ? "none" : "block";
+      if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+    });
+  });
+
+  // Add a recommended link
+  container.querySelectorAll(".rec-link-add").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(taskOpBusy) return;
+      taskOpBusy = true;
+      const recId = btn.dataset.recid;
+      const rec = RECOMMENDED_LINKS.find(r=>r.id===recId);
+      if(!rec){ taskOpBusy = false; return; }
+      btn.disabled = true;
+      btn.textContent = "…";
+      const newLink = {
+        id: genId("lk"), recommendedId: rec.id, groupName: rec.groupName,
+        linkName: rec.linkName, url: rec.url
+      };
+      const ok = await addLinkToCloud(p.id, newLink);
+      taskOpBusy = false;
+      if(ok){
+        p.assignedLinks = [...(p.assignedLinks||p.assigned_links||[]), newLink];
+        p.assigned_links = p.assignedLinks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
+        logAudit(p.id, p.name, actorRole, actorName, "link_added", rec.linkName);
+        renderMgrDetail(container, p, opts);
+      } else {
+        btn.disabled = false;
+        btn.textContent = "+ Add";
+      }
+    });
+  });
+
+  // Toggle the "add your own link" form
+  const addLinkBtn = container.querySelector(`#mgr-add-link-${id}`);
+  const addLinkForm = container.querySelector(`#mgr-add-link-form-${id}`);
+  if(addLinkBtn && addLinkForm){
+    addLinkBtn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      addLinkForm.style.display = addLinkForm.style.display === "none" ? "block" : "none";
+    });
+  }
+
+  // Submit a fully custom link
+  const submitLinkBtn = container.querySelector(`#mgr-newlink-submit-${id}`);
+  if(submitLinkBtn){
+    submitLinkBtn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(taskOpBusy) return;
+      const groupInput = container.querySelector(`#mgr-newlink-group-${id}`);
+      const nameInput = container.querySelector(`#mgr-newlink-name-${id}`);
+      const urlInput = container.querySelector(`#mgr-newlink-url-${id}`);
+      const groupName = groupInput.value.trim() || t("task_category_default");
+      const linkName = nameInput.value.trim();
+      const url = urlInput.value.trim();
+      if(!linkName || !url){ (linkName ? urlInput : nameInput).focus(); return; }
+      taskOpBusy = true;
+      submitLinkBtn.disabled = true;
+      submitLinkBtn.textContent = "…";
+      const newLink = { id: genId("lk"), groupName, linkName, url };
+      const ok = await addLinkToCloud(p.id, newLink);
+      taskOpBusy = false;
+      if(ok){
+        p.assignedLinks = [...(p.assignedLinks||p.assigned_links||[]), newLink];
+        p.assigned_links = p.assignedLinks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
+        logAudit(p.id, p.name, actorRole, actorName, "custom_link_added", linkName);
+        renderMgrDetail(container, p, opts);
+      } else {
+        submitLinkBtn.disabled = false;
+        submitLinkBtn.textContent = t("add_link_word");
+      }
+    });
+  }
+
+  // Remove an assigned link (two-click inline confirm, same pattern as tasks)
+  container.querySelectorAll(".assigned-link-delete").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(btn.dataset.confirming !== "1"){
+        btn.dataset.confirming = "1";
+        btn.textContent = "✓?";
+        btn.title = "Click again to confirm removal";
+        setTimeout(()=>{ if(btn.dataset.confirming==="1"){ btn.dataset.confirming="0"; btn.textContent="✕"; btn.title="Remove this link"; } }, 3000);
+        return;
+      }
+      if(taskOpBusy) return;
+      taskOpBusy = true;
+      const linkId = btn.dataset.linkid;
+      const current = p.assignedLinks || p.assigned_links || [];
+      const removed = current.find(x=>x.id===linkId);
+      btn.disabled = true;
+      const ok = await removeLinkFromCloud(p.id, linkId);
+      taskOpBusy = false;
+      if(ok){
+        p.assignedLinks = current.filter(x=>x.id!==linkId);
+        p.assigned_links = p.assignedLinks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
+        logAudit(p.id, p.name, actorRole, actorName, "link_removed", removed ? removed.linkName : linkId);
+        renderMgrDetail(container, p, opts);
+        if(opts.onChange) opts.onChange();
+      } else {
+        btn.disabled = false;
+      }
+    });
+  });
+}
+
 function renderMgrDetail(container, p, opts){
   opts = opts || {};
   const allowRemove = opts.allowRemove !== false;
@@ -2692,6 +2952,7 @@ function renderMgrDetail(container, p, opts){
   const tasks = p.tasks || {};
   const notes = p.notes || {};
   const assigned = p.customTasks || p.custom_tasks || [];
+  const assignedLinks = p.assignedLinks || p.assigned_links || [];
   const id = cssEscape(p.id);
 
   // group assigned tasks by category for display
@@ -2798,6 +3059,74 @@ function renderMgrDetail(container, p, opts){
     `;
   }).join("");
 
+  // ---- Links: grouped the same way as tasks, but assigned/removed as a
+  // separate, simpler thing (no day, no notes, just name + URL). ----
+  const linkGroups = [];
+  const seenLinkGroup = new Set();
+  assignedLinks.forEach(l=>{
+    if(!seenLinkGroup.has(l.groupName)){
+      seenLinkGroup.add(l.groupName);
+      linkGroups.push(l.groupName);
+    }
+  });
+  const assignedLinkBlocks = linkGroups.map(groupName=>{
+    const linksInGroup = assignedLinks.filter(l=>l.groupName===groupName);
+    const rowsHtml = linksInGroup.map(l=>`
+      <div class="assigned-link-row">
+        <div class="assigned-link-main">
+          <div class="assigned-link-name">${escapeHtml(l.linkName)}</div>
+          <a class="assigned-link-url" href="${l.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${escapeHtml(l.url)}</a>
+        </div>
+        <a class="assigned-link-open" href="${l.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${t("open_link")}</a>
+        <button class="assigned-link-delete" data-linkid="${escapeHtml(l.id)}" title="Remove this link">✕</button>
+      </div>
+    `).join("");
+    return `
+      <div class="link-cat-card">
+        <div class="link-cat-head">
+          <span class="link-cat-title">${escapeHtml(groupName)}</span>
+          <span class="link-cat-count">${linksInGroup.length}</span>
+          <span class="link-cat-chev">▾</span>
+        </div>
+        <div class="link-cat-body">${rowsHtml}</div>
+      </div>
+    `;
+  }).join("");
+
+  const assignedLinkIds = new Set(assignedLinks.map(l=>l.recommendedId).filter(Boolean));
+  const remainingLinks = RECOMMENDED_LINKS.filter(rl=>!assignedLinkIds.has(rl.id));
+  const linkRecGroups = [];
+  const seenLinkRecGroup = new Set();
+  remainingLinks.forEach(rl=>{
+    if(!seenLinkRecGroup.has(rl.groupName)){
+      seenLinkRecGroup.add(rl.groupName);
+      linkRecGroups.push(rl.groupName);
+    }
+  });
+  const recommendedLinkBlocks = linkRecGroups.map(groupName=>{
+    const items = remainingLinks.filter(rl=>rl.groupName===groupName);
+    const itemsHtml = items.map(rl=>`
+      <div class="rec-link-row">
+        <div class="rec-link-main">
+          <div class="rec-link-name">${escapeHtml(rl.linkName)}</div>
+          <div class="rec-link-url">${escapeHtml(rl.url)}</div>
+        </div>
+        <button class="rec-link-add" data-recid="${escapeHtml(rl.id)}">+ Add</button>
+      </div>
+    `).join("");
+    return `
+      <div class="link-cat-card">
+        <div class="link-cat-head">
+          <span class="link-cat-title">${escapeHtml(groupName)}</span>
+          <span class="link-cat-count">${items.length}</span>
+          <span class="link-cat-chev">▾</span>
+        </div>
+        <div class="link-cat-body" style="display:none;">${itemsHtml}</div>
+      </div>
+    `;
+  }).join("");
+  const existingLinkGroupNames = [...new Set([...RECOMMENDED_LINKS.map(rl=>rl.groupName), ...assignedLinks.map(l=>l.groupName)])];
+
   container.innerHTML = `
     <div class="mgr-detail-inner">
       <div class="mgr-target-days">
@@ -2830,12 +3159,34 @@ function renderMgrDetail(container, p, opts){
         </datalist>
         <input type="text" id="mgr-newtask-text-${id}" placeholder="${t("task_name_ph")}">
         <textarea id="mgr-newtask-desc-${id}" placeholder="${t("task_desc_ph")}"></textarea>
-        <input type="text" id="mgr-newtask-url-${id}" placeholder="${t("task_link_ph")}" style="margin-top:8px;">
         <div class="mgr-newtask-row">
           <select id="mgr-newtask-day-${id}">
             ${Array.from({length:30},(_,i)=>i+1).map(d=>`<option value="${d}">${t("day_word")} ${d}</option>`).join("")}
           </select>
           <button id="mgr-newtask-submit-${id}">${t("button_add_task")}</button>
+        </div>
+      </div>
+
+      <div class="links-section">
+        <div class="mgr-section-label">${t("section_links_assigned")} ${assignedLinks.length ? `(${assignedLinks.length})` : ""}</div>
+        ${assignedLinks.length ? assignedLinkBlocks : `<div class="mgr-empty-note">${t("empty_links_assigned")}</div>`}
+
+        <div class="mgr-section-label rec-label">${t("section_links_recommended")} ${remainingLinks.length ? `(${remainingLinks.length})` : ""}</div>
+        <div class="rec-wrap">
+          ${remainingLinks.length ? recommendedLinkBlocks : `<div class="mgr-empty-note">${t("empty_links_recommended")}</div>`}
+        </div>
+
+        <button class="mgr-add-task-btn" id="mgr-add-link-${id}">${t("add_own_link")}</button>
+        <div class="mgr-add-task-form" id="mgr-add-link-form-${id}" style="display:none;">
+          <input type="text" id="mgr-newlink-group-${id}" placeholder="${t("link_group_ph")}" list="existing-link-groups-${id}">
+          <datalist id="existing-link-groups-${id}">
+            ${existingLinkGroupNames.map(g=>`<option value="${escapeHtml(g)}">`).join("")}
+          </datalist>
+          <input type="text" id="mgr-newlink-name-${id}" placeholder="${t("link_name_ph")}" style="margin-top:8px;">
+          <input type="text" id="mgr-newlink-url-${id}" placeholder="${t("resource_url_ph")}" style="margin-top:8px;">
+          <div class="mgr-newtask-row">
+            <button id="mgr-newlink-submit-${id}" style="flex:1;">${t("add_link_word")}</button>
+          </div>
         </div>
       </div>
 
@@ -2851,6 +3202,7 @@ function renderMgrDetail(container, p, opts){
   `;
 
   wireCatResourceHandlers(container, ()=>renderMgrDetail(container, p, opts));
+  wireLinkHandlers(container, p, opts, actorRole, actorName);
 
   container.querySelector(`#mgr-target-days-${id}`).addEventListener("change", async (e)=>{
     const newDays = parseInt(e.target.value, 10);
@@ -3010,18 +3362,15 @@ function renderMgrDetail(container, p, opts){
     const catInput = container.querySelector(`#mgr-newtask-cat-${id}`);
     const textInput = container.querySelector(`#mgr-newtask-text-${id}`);
     const descInput = container.querySelector(`#mgr-newtask-desc-${id}`);
-    const urlInput = container.querySelector(`#mgr-newtask-url-${id}`);
     const dayInput = container.querySelector(`#mgr-newtask-day-${id}`);
     const text = textInput.value.trim();
     if(!text) { textInput.focus(); return; }
     taskOpBusy = true;
     const catTitle = catInput.value.trim() || t("task_category_default");
-    const urlVal = urlInput.value.trim();
     const newTask = {
       id: genId("ct"),
       catId: "custom_"+cssEscape(catTitle).toLowerCase(), catTitle,
-      text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom",
-      url: urlVal || undefined
+      text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom"
     };
     const submitBtn = container.querySelector(`#mgr-newtask-submit-${id}`);
     submitBtn.disabled = true;
@@ -3129,6 +3478,54 @@ async function deleteAssignedTaskFromCloud(profileId, taskId){
     });
     return patchRes.ok;
   }catch(e){ console.error("delete task failed", e); return false; }
+}
+
+async function addLinkToCloud(profileId, newLink){
+  if(!cloudConfigured()) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=assigned_links&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].assigned_links) || [];
+    const updated = [...current, newLink];
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ assigned_links: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("add link failed", e); return false; }
+}
+
+async function removeLinkFromCloud(profileId, linkId){
+  if(!cloudConfigured()) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=assigned_links&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].assigned_links) || [];
+    const updated = current.filter(x=>x.id!==linkId);
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ assigned_links: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("remove link failed", e); return false; }
 }
 
 /* Prevents overlapping add/remove requests to custom_tasks — without this,
@@ -3562,7 +3959,7 @@ function updateCopyStatusVisibility(){
 async function mergeCustomTasksFromCloud(){
   if(!cloudConfigured() || !state || !state.id) return;
   try{
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks,target_days&id=eq.${encodeURIComponent(state.id)}`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks,target_days,assigned_links&id=eq.${encodeURIComponent(state.id)}`, {
       headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
     });
     if(!res.ok) return;
@@ -3577,6 +3974,13 @@ async function mergeCustomTasksFromCloud(){
     const cloudIds = cloudCustom.map(t=>t.id).sort().join(",");
     if(localIds !== cloudIds){
       state.customTasks = cloudCustom;
+      changed = true;
+    }
+    const cloudLinks = rows[0].assigned_links || [];
+    const localLinkIds = (state.assignedLinks||[]).map(l=>l.id).sort().join(",");
+    const cloudLinkIds = cloudLinks.map(l=>l.id).sort().join(",");
+    if(localLinkIds !== cloudLinkIds){
+      state.assignedLinks = cloudLinks;
       changed = true;
     }
     if(rows[0].target_days && rows[0].target_days !== state.targetDays){
