@@ -505,17 +505,34 @@ body{
 
 .links-section{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);}
 
-.link-cat-card{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;}
-.link-cat-card.link-cat-assigned{border-left:4px solid var(--green);}
-.link-cat-card.link-cat-recommended{border-left:4px solid var(--cyan);}
-.link-cat-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:var(--paper);}
-.link-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
-.link-cat-count{
-  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
-  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+.link-tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:start;margin-bottom:14px;}
+@media(max-width:640px){.link-tile-grid{grid-template-columns:repeat(2,1fr);}}
+.link-tile{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  text-align:left;font-family:'Inter',sans-serif;padding:0;cursor:pointer;
 }
-.link-cat-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
-.link-cat-body{padding:4px 14px 8px;}
+.link-tile-assigned{border-left:4px solid var(--green);}
+.link-tile-recommended{border-left:4px solid var(--cyan);position:relative;}
+.link-tile-addnew{border:1.5px dashed var(--line);background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px 10px;}
+.link-tile-addnew:hover{border-color:var(--cyan);}
+.link-tile-addnew .link-tile-icon{font-size:20px;}
+.link-tile-addnew .link-tile-name{font-size:11.5px;color:var(--ink-soft);text-align:center;font-weight:600;}
+.link-tile-head{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:14px 12px;}
+.link-tile-icon{height:22px;display:flex;align-items:center;}
+.link-tile-icon img{height:20px;width:auto;max-width:28px;object-fit:contain;}
+.link-tile-icon span{font-size:17px;}
+.link-tile-name{font-weight:600;font-size:12px;color:var(--navy-ink);}
+.link-tile-count{
+  position:absolute;top:8px;right:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:1px 7px;
+}
+.link-tile-assigned .link-tile-count{position:static;margin-top:-2px;}
+.link-tile-add-badge{
+  position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:var(--cyan);
+  color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+.link-tile-body{display:none;padding:0 12px 12px;}
+.link-tile-assigned.expanded .link-tile-body{display:block;}
 
 .assigned-link-row, .rec-link-row{
   display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
@@ -1319,7 +1336,11 @@ const RECOMMENDED_LINKS = [
   {id:"rl_sharepoint", groupName:"SharePoint", groupIcon:"📁", groupSlug:"microsoftsharepoint", linkName:"Shared files and project documents", url:"https://syntaxsystems.sharepoint.com"},
   {id:"rl_successfactors", groupName:"SuccessFactors", groupIcon:"👤", groupSlug:"sap", linkName:"HR profile, goals, learning", url:"https://performancemanager.successfactors.eu"},
   {id:"rl_helpdesk", groupName:"IT Help Desk", groupIcon:"🎫", groupSlug:"servicenow", linkName:"Access requests and IT tickets", url:"https://simplified.service-now.com/esc"},
-  {id:"rl_mural", groupName:"Mural", groupIcon:"🧠", groupSlug:"mural", linkName:"SAP DM Onboarding Academy board", url:"https://app.mural.co/t/syntaxsystems1645/m/syntaxsystems1645/1687374734289/e427f6be79fe1bfd95f761ab4514e87757309275"}
+  {id:"rl_mural", groupName:"Mural", groupIcon:"🧠", groupSlug:"mural", linkName:"SAP DM Onboarding Academy board", url:"https://app.mural.co/t/syntaxsystems1645/m/syntaxsystems1645/1687374734289/e427f6be79fe1bfd95f761ab4514e87757309275"},
+  {id:"rl_sirion", groupName:"Sirion", groupIcon:"📄", groupSlug:null, linkName:"Contract & vendor management", url:"https://app.sirionlabs.com"},
+  {id:"rl_activated", groupName:"Activated by Syntax", groupIcon:"🚀", groupSlug:null, linkName:"Global rollout methodology", url:"https://activated.syntaxsystems.com"},
+  {id:"rl_smartsheets", groupName:"Smartsheets", groupIcon:"📊", groupSlug:"smartsheet", linkName:"Project forecasting & budget", url:"https://app.smartsheet.com"},
+  {id:"rl_sac", groupName:"SAP Analytics Cloud", groupIcon:"📈", groupSlug:"sap", linkName:"Resource & capacity planning", url:"https://syntax.eu10.sapanalytics.cloud"}
 ];
 
 const POSITIONS = [
@@ -1425,6 +1446,20 @@ const CATEGORIES = [
     {day:4, text:{en:"Added to all relevant Teams groups and chats (team, project, general DM channels)", de:"Zu allen relevanten Teams-Gruppen und Chats hinzugefügt (Team, Projekt, allgemeine DM-Kanäle)", sk:"Pridaný do všetkých relevantných Teams skupín a chatov (tím, projekt, všeobecné DM kanály)"}, desc:{en:"Covers your team channel, project channel(s), and general DM community chats.", de:"Umfasst deinen Team-Kanal, Projekt-Kanäle und allgemeine DM-Community-Chats.", sk:"Zahŕňa tvoj tímový kanál, projektové kanály a všeobecné DM komunitné chaty."}},
     {day:5, text:{en:"SharePoint / OneDrive access received from {manager}", de:"SharePoint-/OneDrive-Zugang von {manager} erhalten", sk:"Získaný prístup do SharePoint / OneDrive od {manager}"}, desc:{en:"Shared project files, templates, and working documents.", de:"Geteilte Projektdateien, Vorlagen und Arbeitsdokumente.", sk:"Zdieľané projektové súbory, šablóny a pracovné dokumenty."}},
     {day:7, text:{en:"All key links saved as browser bookmarks", de:"Alle wichtigen Links als Browser-Lesezeichen gespeichert", sk:"Uložené všetky kľúčové odkazy ako záložky v prehliadači"}, desc:{en:"Small habit that saves real time later — Jira, Confluence, SAC, Smartsheets, etc.", de:"Kleine Angewohnheit, die später viel Zeit spart — Jira, Confluence, SAC, Smartsheets usw.", sk:"Drobný zvyk, ktorý neskôr ušetrí čas — Jira, Confluence, SAC, Smartsheets atď."}}
+  ]},
+  {id:"c11", num:"11", title:{en:"Culture & Team", de:"Kultur & Team", sk:"Kultúra & tím"}, owner:"{manager}", tasks:[
+    {day:2, text:{en:"First 1:1 with {manager} completed", de:"Erstes 1:1 mit {manager} abgeschlossen", sk:"Absolvovaný prvý 1:1 rozhovor s {manager}"}, desc:{en:"A proper welcome conversation — expectations, working style, first weeks plan.", de:"Ein richtiges Willkommensgespräch — Erwartungen, Arbeitsstil, Plan für die ersten Wochen.", sk:"Poriadny privítací rozhovor — očakávania, štýl práce, plán na prvé týždne."}},
+    {day:5, text:{en:"Team introduced — know who's who and what everyone works on", de:"Team kennengelernt — weißt, wer wer ist und woran alle arbeiten", sk:"Predstavený tím — vieš, kto je kto a na čom kto pracuje"}, desc:{en:"Short intro calls or a team lunch — put faces and projects to names early.", de:"Kurze Vorstellungsgespräche oder ein Team-Lunch — früh Gesichter und Projekte zu Namen zuordnen.", sk:"Krátke zoznamovacie hovory alebo tímový obed — čím skôr si spoj mená s tvárami a projektmi."}},
+    {day:10, text:{en:"Employee Handbook / Code of Conduct reviewed", de:"Mitarbeiterhandbuch / Verhaltenskodex durchgesehen", sk:"Preštudovaný Employee Handbook / Kódex správania"}, desc:{en:"Company policies, expected conduct, and where to find them again later.", de:"Unternehmensrichtlinien, erwartetes Verhalten, und wo man sie später wiederfindet.", sk:"Firemné pravidlá, očakávané správanie, a kde ich neskôr znova nájsť."}},
+    {day:14, text:{en:"Recurring 1:1 cadence agreed with {manager}", de:"Wiederkehrender 1:1-Rhythmus mit {manager} vereinbart", sk:"Dohodnutý pravidelný rytmus 1:1 s {manager}"}, desc:{en:"Weekly or bi-weekly check-ins going forward — set the rhythm early.", de:"Wöchentliche oder zweiwöchentliche Check-ins ab jetzt — den Rhythmus früh festlegen.", sk:"Týždenné alebo dvojtýždňové stretnutia odteraz — nastav si rytmus čo najskôr."}}
+  ]},
+  {id:"c12", num:"12", title:{en:"Activated by Syntax", de:"Activated by Syntax", sk:"Activated by Syntax"}, owner:"Self-guided", tasks:[
+    {day:8, text:{en:"Activated by Syntax global site explored", de:"Globale Activated-by-Syntax-Seite erkundet", sk:"Preskúmaná globálna stránka Activated by Syntax"}, desc:{en:"Company-wide implementation methodology — make sure you're on the global site, not an old local copy.", de:"Unternehmensweite Implementierungsmethodik — stelle sicher, dass du auf der globalen Seite bist, nicht auf einer alten lokalen Kopie.", sk:"Firemná implementačná metodika naprieč celou spoločnosťou — over si, že si na globálnej stránke, nie na starej lokálnej kópii."}},
+    {day:12, text:{en:"Rollout phase structure understood (Discover / Prepare / Explore / Realize)", de:"Rollout-Phasenstruktur verstanden (Discover / Prepare / Explore / Realize)", sk:"Pochopená štruktúra fáz rolloutu (Discover / Prepare / Explore / Realize)"}, desc:{en:"The shared framework behind how Syntax runs every customer project.", de:"Der gemeinsame Rahmen, nach dem Syntax jedes Kundenprojekt durchführt.", sk:"Spoločný rámec, podľa ktorého Syntax realizuje každý zákaznícky projekt."}}
+  ]},
+  {id:"c13", num:"13", title:{en:"SAP Analytics Cloud (SAC)", de:"SAP Analytics Cloud (SAC)", sk:"SAP Analytics Cloud (SAC)"}, owner:"IT Help Desk", tasks:[
+    {day:8, text:{en:"SAC access confirmed and resource calendar reviewed", de:"SAC-Zugang bestätigt und Ressourcenkalender durchgesehen", sk:"Potvrdený prístup do SAC a preštudovaný resource kalendár"}, desc:{en:"Shows your planned staffing across projects — worth understanding early.", de:"Zeigt deine geplante Auslastung über Projekte hinweg — lohnt sich, das früh zu verstehen.", sk:"Zobrazuje tvoje plánované vyťaženie naprieč projektmi — oplatí sa to pochopiť čoskoro."}},
+    {day:15, text:{en:"Project profitability / forecast dashboard explored", de:"Projekt-Profitabilitäts-/Forecast-Dashboard erkundet", sk:"Preskúmaný dashboard projektovej profitability / forecastu"}, desc:{en:"Where project financials and forecasts are tracked at Syntax.", de:"Wo Projektfinanzen und Forecasts bei Syntax verfolgt werden.", sk:"Kde sa v Syntaxe sledujú projektové financie a forecasty."}}
   ]}
 ];
 
@@ -2906,17 +2941,14 @@ function wireCatResourceHandlers(container, onSaved){
 function wireLinkHandlers(container, p, opts, actorRole, actorName){
   const id = cssEscape(p.id);
 
-  // Collapsible link-group cards
-  container.querySelectorAll(".link-cat-head").forEach(head=>{
+  // Assigned link tiles — click to expand/collapse in place
+  container.querySelectorAll(".link-tile-assigned .link-tile-head").forEach(head=>{
     head.addEventListener("click", ()=>{
-      const card = head.parentElement;
-      const body = card.querySelector(".link-cat-body");
-      const chev = head.querySelector(".link-cat-chev");
-      const open = body.style.display !== "none";
-      body.style.display = open ? "none" : "block";
-      if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
-      const openKey = card.dataset.openkey;
-      if(openKey) setOpenState(openKey, !open);
+      const tile = head.closest(".link-tile");
+      const wasOpen = tile.classList.contains("expanded");
+      tile.classList.toggle("expanded");
+      const openKey = tile.dataset.openkey;
+      if(openKey) setOpenState(openKey, !wasOpen);
     });
   });
 
@@ -2952,7 +2984,7 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
         const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
         if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
         logAudit(p.id, p.name, actorRole, actorName, "custom_link_added", linkName);
-        // Keep this group's card open so the new link is visible right away
+        // Keep this group's tile expanded so the new link is visible right away
         setOpenState(`link_assigned_${p.id}_${groupKey}`, true);
         renderMgrDetail(container, p, opts);
       } else {
@@ -2962,8 +2994,8 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
     });
   });
 
-  // Add a recommended link
-  container.querySelectorAll(".rec-link-add").forEach(btn=>{
+  // Recommended link tiles — click adds it directly
+  container.querySelectorAll(".link-tile-recommended").forEach(btn=>{
     btn.addEventListener("click", async (e)=>{
       e.stopPropagation();
       if(taskOpBusy) return;
@@ -2972,7 +3004,8 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
       const rec = RECOMMENDED_LINKS.find(r=>r.id===recId);
       if(!rec){ taskOpBusy = false; return; }
       btn.disabled = true;
-      btn.textContent = "…";
+      const badge = btn.querySelector(".link-tile-add-badge");
+      if(badge) badge.textContent = "…";
       const newLink = {
         id: genId("lk"), recommendedId: rec.id, groupName: rec.groupName,
         linkName: rec.linkName, url: rec.url
@@ -2985,10 +3018,11 @@ function wireLinkHandlers(container, p, opts, actorRole, actorName){
         const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
         if(rowInList){ rowInList.assigned_links = p.assignedLinks; rowInList.assignedLinks = p.assignedLinks; }
         logAudit(p.id, p.name, actorRole, actorName, "link_added", rec.linkName);
+        setOpenState(`link_assigned_${p.id}_${cssEscape(rec.groupName)}`, true);
         renderMgrDetail(container, p, opts);
       } else {
         btn.disabled = false;
-        btn.textContent = "+ Add";
+        if(badge) badge.textContent = "+";
       }
     });
   });
@@ -3210,8 +3244,9 @@ function renderMgrDetail(container, p, opts){
     `;
   }).join("");
 
-  // ---- Links: grouped the same way as tasks, but assigned/removed as a
-  // separate, simpler thing (no day, no notes, just name + URL). ----
+  // ---- Links: shown as a tile grid (like Quick Links), with real system
+  // logos. Assigned tiles expand in place to show/add/remove links;
+  // Recommended tiles add directly on click; last tile adds a custom one. ----
   const linkGroups = [];
   const seenLinkGroup = new Set();
   assignedLinks.forEach(l=>{
@@ -3220,7 +3255,16 @@ function renderMgrDetail(container, p, opts){
       linkGroups.push(l.groupName);
     }
   });
-  const assignedLinkBlocks = linkGroups.map(groupName=>{
+  const renderLogoIcon = (groupName, iconEmoji)=>{
+    const rec = RECOMMENDED_LINKS.find(r=>r.groupName===groupName);
+    const slug = rec ? rec.groupSlug : null;
+    const emoji = iconEmoji || (rec ? rec.groupIcon : "🔗");
+    return slug
+      ? `<img src="https://cdn.simpleicons.org/${slug}" alt=""
+             onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${emoji}'}))">`
+      : `<span>${emoji}</span>`;
+  };
+  const assignedLinkTiles = linkGroups.map(groupName=>{
     const linksInGroup = assignedLinks.filter(l=>l.groupName===groupName);
     const groupKeySafe = cssEscape(groupName);
     const rowsHtml = linksInGroup.map(l=>`
@@ -3234,15 +3278,15 @@ function renderMgrDetail(container, p, opts){
       </div>
     `).join("");
     const openKey = `link_assigned_${p.id}_${groupKeySafe}`;
-    const isOpenNow = getOpenState(openKey, true);
+    const isOpenNow = getOpenState(openKey, false);
     return `
-      <div class="link-cat-card link-cat-assigned" data-openkey="${escapeHtml(openKey)}">
-        <div class="link-cat-head">
-          <span class="link-cat-title">${escapeHtml(groupName)}</span>
-          <span class="link-cat-count">${linksInGroup.length}</span>
-          <span class="link-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
+      <div class="link-tile link-tile-assigned ${isOpenNow ? 'expanded' : ''}" data-openkey="${escapeHtml(openKey)}">
+        <div class="link-tile-head">
+          <div class="link-tile-icon">${renderLogoIcon(groupName)}</div>
+          <div class="link-tile-name">${escapeHtml(groupName)}</div>
+          <div class="link-tile-count">${linksInGroup.length}</div>
         </div>
-        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">
+        <div class="link-tile-body">
           ${rowsHtml}
           <button class="add-more-link-btn" data-group="${escapeHtml(groupName)}" data-groupkey="${groupKeySafe}">${t("add_another_link_btn")}</button>
           <div class="mgr-add-task-form add-more-link-form" id="add-more-link-form-${groupKeySafe}-${id}" style="display:none;">
@@ -3259,38 +3303,13 @@ function renderMgrDetail(container, p, opts){
 
   const assignedLinkIds = new Set(assignedLinks.map(l=>l.recommendedId).filter(Boolean));
   const remainingLinks = RECOMMENDED_LINKS.filter(rl=>!assignedLinkIds.has(rl.id));
-  const linkRecGroups = [];
-  const seenLinkRecGroup = new Set();
-  remainingLinks.forEach(rl=>{
-    if(!seenLinkRecGroup.has(rl.groupName)){
-      seenLinkRecGroup.add(rl.groupName);
-      linkRecGroups.push(rl.groupName);
-    }
-  });
-  const recommendedLinkBlocks = linkRecGroups.map(groupName=>{
-    const items = remainingLinks.filter(rl=>rl.groupName===groupName);
-    const itemsHtml = items.map(rl=>`
-      <div class="rec-link-row">
-        <div class="rec-link-main">
-          <div class="rec-link-name">${escapeHtml(rl.linkName)}</div>
-          <div class="rec-link-url">${escapeHtml(rl.url)}</div>
-        </div>
-        <button class="rec-link-add" data-recid="${escapeHtml(rl.id)}">+ Add</button>
-      </div>
-    `).join("");
-    const openKey = `link_rec_${p.id}_${cssEscape(groupName)}`;
-    const isOpenNow = getOpenState(openKey, false);
-    return `
-      <div class="link-cat-card link-cat-recommended" data-openkey="${escapeHtml(openKey)}">
-        <div class="link-cat-head">
-          <span class="link-cat-title">${escapeHtml(groupName)}</span>
-          <span class="link-cat-count">${items.length}</span>
-          <span class="link-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
-        </div>
-        <div class="link-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">${itemsHtml}</div>
-      </div>
-    `;
-  }).join("");
+  const recommendedLinkTiles = remainingLinks.map(rl=>`
+    <button class="link-tile link-tile-recommended" data-recid="${escapeHtml(rl.id)}" title="${t("add_link_word")}: ${escapeHtml(rl.linkName)}">
+      <div class="link-tile-icon">${renderLogoIcon(rl.groupName, rl.groupIcon)}</div>
+      <div class="link-tile-name">${escapeHtml(rl.groupName)}</div>
+      <div class="link-tile-add-badge">+</div>
+    </button>
+  `).join("");
   const existingLinkGroupNames = [...new Set([...RECOMMENDED_LINKS.map(rl=>rl.groupName), ...assignedLinks.map(l=>l.groupName)])];
 
   container.innerHTML = `
@@ -3335,14 +3354,17 @@ function renderMgrDetail(container, p, opts){
 
       <div class="links-section">
         <div class="mgr-section-label">${t("section_links_assigned")} ${assignedLinks.length ? `(${assignedLinks.length})` : ""}</div>
-        ${assignedLinks.length ? assignedLinkBlocks : `<div class="mgr-empty-note">${t("empty_links_assigned")}</div>`}
+        ${assignedLinks.length ? `<div class="link-tile-grid">${assignedLinkTiles}</div>` : `<div class="mgr-empty-note">${t("empty_links_assigned")}</div>`}
 
         <div class="mgr-section-label rec-label">${t("section_links_recommended")} ${remainingLinks.length ? `(${remainingLinks.length})` : ""}</div>
-        <div class="rec-wrap">
-          ${remainingLinks.length ? recommendedLinkBlocks : `<div class="mgr-empty-note">${t("empty_links_recommended")}</div>`}
+        <div class="link-tile-grid">
+          ${recommendedLinkTiles}
+          <button class="link-tile link-tile-addnew" id="mgr-add-link-${id}">
+            <div class="link-tile-icon">➕</div>
+            <div class="link-tile-name">${t("add_own_link")}</div>
+          </button>
         </div>
 
-        <button class="mgr-add-task-btn" id="mgr-add-link-${id}">${t("add_own_link")}</button>
         <div class="mgr-add-task-form" id="mgr-add-link-form-${id}" style="display:${getOpenState('addlinkform_'+p.id, false) ? 'block' : 'none'};">
           <input type="text" id="mgr-newlink-group-${id}" placeholder="${t("link_group_ph")}" list="existing-link-groups-${id}" value="${escapeHtml((lastAddFormValues[p.id]||{}).linkGroup || '')}">
           <datalist id="existing-link-groups-${id}">
