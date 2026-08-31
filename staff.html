@@ -77,7 +77,7 @@ body{
 .wordmark .brand .label{
   font-family:'Inter',sans-serif;font-weight:600;
   font-size:12.5px;letter-spacing:.01em;text-transform:none;
-  color:var(--navy);background:var(--card);border:1.5px solid var(--cyan);
+  color:var(--navy-ink);background:var(--card);border:1.5px solid var(--cyan);
   border-radius:20px;padding:4px 12px;
 }
 .wordmark .reset-link{
@@ -313,6 +313,21 @@ body{
   background:linear-gradient(90deg, var(--cyan), var(--green));
   transition:width .5s ease;
 }
+
+.summary-strip{
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+  margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);
+}
+.summary-strip-label{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9AAAD8;font-weight:600;}
+.summary-strip-chev{color:#9AAAD8;font-size:11px;}
+.summary-strip-body{margin-top:12px;}
+.summary-strip-body .strip-row{overflow-x:auto;padding-bottom:4px;}
+.summary-strip-body .strip-op .dot{border-color:rgba(255,255,255,.35);background:transparent;}
+.summary-strip-body .strip-op.status-done .dot{background:var(--green);border-color:var(--green);}
+.summary-strip-body .strip-op.status-progress .dot{background:var(--amber);border-color:var(--amber);}
+.summary-strip-body .strip-op.status-attention .dot{background:var(--coral);border-color:var(--coral);}
+.summary-strip-body .strip-op .num{color:#9AAAD8;}
+.summary-strip-body .strip-line{background:rgba(255,255,255,.2);}
 
 .role-toggle-bar{display:flex;gap:8px;margin-bottom:22px;}
 .role-toggle-bar button{
@@ -690,7 +705,7 @@ body{
 .quick-links-title{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;color:var(--navy-ink);margin-bottom:2px;}
 .quick-links-sub{font-size:12.5px;color:var(--ink-soft);}
 .tour-link-small{
-  flex:0 0 auto;padding:7px 14px;background:var(--cyan-soft);color:var(--navy);border:none;border-radius:20px;
+  flex:0 0 auto;padding:7px 14px;background:var(--cyan-soft);color:var(--navy-ink);border:none;border-radius:20px;
   font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
 }
 .tour-link-small:hover{background:var(--cyan);color:#fff;}
@@ -1773,6 +1788,13 @@ function renderSetupZone(){
           <div class="lbl">${t("confirmed_word")} · ${done}/${total} operations</div>
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="summary-strip" id="summary-strip-toggle">
+          <span class="summary-strip-label">${t("strip_title")}</span>
+          <span class="summary-strip-chev" id="summary-strip-chev">▸</span>
+        </div>
+        <div class="summary-strip-body" id="summary-strip-body" style="display:none;">
+          <div class="strip-row" id="strip-row"></div>
+        </div>
       </div>
       <div class="code-boxes-grid">
         <div class="mgr-code-box code-box-private">
@@ -1787,6 +1809,23 @@ function renderSetupZone(){
         </div>
       </div>
     `;
+
+    const summaryStripToggle = document.getElementById("summary-strip-toggle");
+    if(summaryStripToggle){
+      summaryStripToggle.addEventListener("click", ()=>{
+        const body = document.getElementById("summary-strip-body");
+        const chev = document.getElementById("summary-strip-chev");
+        const willOpen = body.style.display === "none";
+        body.style.display = willOpen ? "block" : "none";
+        chev.textContent = willOpen ? "▾" : "▸";
+        setOpenState('routing_strip_'+state.id, willOpen);
+      });
+      const wasOpen = getOpenState('routing_strip_'+state.id, false);
+      if(wasOpen){
+        document.getElementById("summary-strip-body").style.display = "block";
+        document.getElementById("summary-strip-chev").textContent = "▾";
+      }
+    }
 
     const confirmBar = document.getElementById("reset-confirm");
     resetBtn.onclick = ()=>{
@@ -1921,13 +1960,6 @@ function renderDashboardZone(){
       </div>
     ` : ""}
     ${renderJoinerLinksHtml(true)}
-    <div class="routing-strip ${getOpenState('routing_strip_'+state.id, true) ? '' : 'collapsed'}" id="routing-strip">
-      <div class="strip-title" id="routing-strip-toggle">
-        <span>${t("strip_title")}</span>
-        <span class="strip-chev">▾</span>
-      </div>
-      <div class="strip-row" id="strip-row"></div>
-    </div>
     <div id="op-list"></div>
     <div class="footer-note">${t("footer_note")}</div>
     ${isComplete ? `
@@ -1942,12 +1974,6 @@ function renderDashboardZone(){
 
   document.getElementById("tour-link-small").addEventListener("click", ()=>{ guideActiveTab="joiner"; openGuide(); });
   wireJoinerLinksToggle();
-  document.getElementById("routing-strip-toggle").addEventListener("click", ()=>{
-    const stripEl = document.getElementById("routing-strip");
-    const willBeOpen = stripEl.classList.contains("collapsed");
-    stripEl.classList.toggle("collapsed");
-    setOpenState('routing_strip_'+state.id, willBeOpen);
-  });
 
   if(isComplete){
     document.getElementById("feedback-submit").addEventListener("click", async ()=>{
@@ -2056,9 +2082,7 @@ function renderOpList(currentDay){
         <div class="op-badge ${badgeClass}">${badgeText}</div>
         <div class="chev">▾</div>
       </div>
-      <div class="op-body">
-        <div class="op-body-resource">${renderCatResourceHtml(cat.id, tasks, false, cat.title)}</div>
-      </div>
+      <div class="op-body"></div>
     `;
     const body = card.querySelector(".op-body");
     tasks.forEach(t=>{
@@ -3128,7 +3152,6 @@ function renderMgrDetail(container, p, opts){
           <span class="assigned-cat-chev" style="transform:${assignedIsOpen ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
         <div class="assigned-cat-body" style="display:${assignedIsOpen ? 'block' : 'none'};">
-          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasksRaw, true, cat.title)}</div>
           ${rowsHtml}
         </div>
       </div>
@@ -3181,7 +3204,6 @@ function renderMgrDetail(container, p, opts){
           <span class="rec-cat-chev" style="transform:${isOpenNow ? '' : 'rotate(-90deg)'};">▾</span>
         </div>
         <div class="rec-cat-body" style="display:${isOpenNow ? 'block' : 'none'};">
-          <div class="cat-resource-wrap">${renderCatResourceHtml(recCatId, [], true, catTitle)}</div>
           ${itemsHtml}
         </div>
       </div>
