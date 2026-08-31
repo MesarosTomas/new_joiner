@@ -635,6 +635,11 @@ body{
 .op-head .op-title{
   font-family:'Inter',sans-serif;font-weight:600;font-size:15.5px;flex:1 1 auto;
 }
+.cat-link-btn{
+  flex:0 0 auto;font-size:11px;font-weight:600;color:var(--navy);background:var(--cyan-soft);
+  border-radius:20px;padding:4px 10px;text-decoration:none;white-space:nowrap;
+}
+.cat-link-btn:hover{background:var(--cyan);color:#fff;}
 .op-head .op-owner{
   font-size:12px;color:var(--ink-soft);flex:0 0 auto;display:none;
 }
@@ -804,7 +809,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", button_add_task:"Add task",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -871,7 +876,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", button_add_task:"Aufgabe hinzufügen",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -938,7 +943,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", button_add_task:"Pridať úlohu",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -1081,6 +1086,25 @@ const LINKS_CATALOG = [
   {icon:"🎫", slug:"servicenow", url:"https://simplified.service-now.com/esc", key:"link_helpdesk"},
   {icon:"🧠", slug:"mural", url:"https://app.mural.co/t/syntaxsystems1645/m/syntaxsystems1645/1687374734289/e427f6be79fe1bfd95f761ab4514e87757309275", key:"link_mural"}
 ];
+
+/* Wires each standard onboarding category straight to the system it's
+   actually about, so a task never leaves someone wondering where to click. */
+const LINKS_BY_CATID = {
+  c1: LINKS_CATALOG.find(l=>l.key==="link_successfactors"),
+  c3: LINKS_CATALOG.find(l=>l.key==="link_helpdesk"),
+  c4: LINKS_CATALOG.find(l=>l.key==="link_jira"),
+  c5: LINKS_CATALOG.find(l=>l.key==="link_confluence"),
+  c7: LINKS_CATALOG.find(l=>l.key==="link_mural"),
+  c10: LINKS_CATALOG.find(l=>l.key==="link_sharepoint")
+};
+
+/* Resolves the best link for a category: a custom URL attached to one of
+   its tasks (set by whoever assigned it) wins over the standard system link. */
+function getCategoryLink(catId, tasksInCat){
+  const customUrl = (tasksInCat||[]).map(t=>t.url).find(Boolean);
+  if(customUrl) return { url: customUrl, icon: "🔗", slug: null };
+  return LINKS_BY_CATID[catId] || null;
+}
 
 const POSITIONS = [
   "Developer","SAP Consultant","DM Consultant","Senior Consultant","Project Manager",
@@ -1762,10 +1786,12 @@ function renderOpList(currentDay){
     const card = document.createElement("div");
     card.className = "op-card" + (status==="done" ? " collapsed" : "");
     card.id = "card-"+cat.id;
+    const catLink = getCategoryLink(cat.id, tasks);
     card.innerHTML = `
       <div class="op-head">
         <div class="op-num mono">OP ${String((i+1)*10).padStart(3,"0")}</div>
         <div class="op-title">${escapeHtml(cat.title)}</div>
+        ${catLink ? `<a class="cat-link-btn" href="${catLink.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""}
         <div class="op-count mono">${doneCount}/${tasks.length}</div>
         <div class="op-badge ${badgeClass}">${badgeText}</div>
         <div class="chev">▾</div>
@@ -2582,6 +2608,7 @@ function renderMgrDetail(container, p, opts){
       <div class="assigned-cat-card" data-catkey="${catKeySafe}">
         <div class="assigned-cat-head">
           <span class="assigned-cat-title">${escapeHtml(cat.title)}</span>
+          ${(()=>{ const lk = getCategoryLink(cat.id, catTasks); return lk ? `<a class="cat-link-btn" href="${lk.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""; })()}
           <span class="assigned-cat-count">${doneCount}/${catTasks.length}</span>
           <span class="assigned-cat-chev">▾</span>
         </div>
@@ -2628,6 +2655,7 @@ function renderMgrDetail(container, p, opts){
         <div class="rec-cat-head">
           ${isRole ? `<span class="rec-cat-star">★</span>` : ""}
           <span class="rec-cat-title">${escapeHtml(catTitle)}</span>
+          ${(()=>{ const lk = getCategoryLink(items[0] && items[0].catId, []); return lk ? `<a class="cat-link-btn" href="${lk.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""; })()}
           <span class="rec-cat-count">${items.length}</span>
           <button class="rec-cat-addall" data-catkey="${escapeHtml(catKey)}">${t("add_all")}</button>
           <span class="rec-cat-chev">▾</span>
@@ -2669,6 +2697,7 @@ function renderMgrDetail(container, p, opts){
         </datalist>
         <input type="text" id="mgr-newtask-text-${id}" placeholder="${t("task_name_ph")}">
         <textarea id="mgr-newtask-desc-${id}" placeholder="${t("task_desc_ph")}"></textarea>
+        <input type="text" id="mgr-newtask-url-${id}" placeholder="${t("task_link_ph")}" style="margin-top:8px;">
         <div class="mgr-newtask-row">
           <select id="mgr-newtask-day-${id}">
             ${Array.from({length:30},(_,i)=>i+1).map(d=>`<option value="${d}">${t("day_word")} ${d}</option>`).join("")}
@@ -2705,9 +2734,11 @@ function renderMgrDetail(container, p, opts){
   container.querySelectorAll(".rec-task-add").forEach(btn=>{
     btn.addEventListener("click", async (e)=>{
       e.stopPropagation();
+      if(taskOpBusy) return;
+      taskOpBusy = true;
       const key = btn.dataset.key;
       const rec = recommended.find(r=>r.key===key);
-      if(!rec) return;
+      if(!rec) { taskOpBusy = false; return; }
       const daySelect = container.querySelector(`.rec-task-day[data-key="${CSS.escape(key)}"]`);
       const chosenDay = parseInt(daySelect.value, 10);
       const newTask = {
@@ -2718,6 +2749,7 @@ function renderMgrDetail(container, p, opts){
       btn.disabled = true;
       btn.textContent = "Adding...";
       const ok = await addCustomTaskToCloud(p.id, newTask);
+      taskOpBusy = false;
       if(ok){
         p.customTasks = [...(p.customTasks||p.custom_tasks||[]), newTask];
         p.custom_tasks = p.customTasks;
@@ -2748,6 +2780,8 @@ function renderMgrDetail(container, p, opts){
   container.querySelectorAll(".rec-cat-addall").forEach(btn=>{
     btn.addEventListener("click", async (e)=>{
       e.stopPropagation();
+      if(taskOpBusy) return;
+      taskOpBusy = true;
       const catKey = btn.dataset.catkey;
       const card = container.querySelector(`.rec-cat-card[data-catkey="${CSS.escape(catKey)}"]`);
       const daySelects = card.querySelectorAll(".rec-task-day");
@@ -2757,7 +2791,7 @@ function renderMgrDetail(container, p, opts){
         const sel = card.querySelector(`.rec-task-day[data-key="${CSS.escape(k)}"]`);
         return { rec, day: parseInt(sel.value,10) };
       }).filter(x=>x.rec);
-      if(!items.length) return;
+      if(!items.length) { taskOpBusy = false; return; }
       btn.disabled = true;
       btn.textContent = "…";
       const newTasks = items.map(({rec,day})=>({
@@ -2765,6 +2799,7 @@ function renderMgrDetail(container, p, opts){
         text: rec.text, desc: rec.desc, day, source:"template", role: !!rec.role
       }));
       const ok = await addMultipleTasksToCloud(p.id, newTasks);
+      taskOpBusy = false;
       if(ok){
         p.customTasks = [...(p.customTasks||p.custom_tasks||[]), ...newTasks];
         p.custom_tasks = p.customTasks;
@@ -2783,6 +2818,8 @@ function renderMgrDetail(container, p, opts){
   const quickAddBtn = container.querySelector(`#rec-quickadd-${id}`);
   if(quickAddBtn){
     quickAddBtn.addEventListener("click", async ()=>{
+      if(taskOpBusy) return;
+      taskOpBusy = true;
       quickAddBtn.disabled = true;
       quickAddBtn.textContent = "…";
       const newTasks = recommended.map(rec=>({
@@ -2790,6 +2827,7 @@ function renderMgrDetail(container, p, opts){
         text: rec.text, desc: rec.desc, day: rec.day, source:"template", role: !!rec.role
       }));
       const ok = await addMultipleTasksToCloud(p.id, newTasks);
+      taskOpBusy = false;
       if(ok){
         p.customTasks = [...(p.customTasks||p.custom_tasks||[]), ...newTasks];
         p.custom_tasks = p.customTasks;
@@ -2833,22 +2871,28 @@ function renderMgrDetail(container, p, opts){
   });
   container.querySelector(`#mgr-newtask-submit-${id}`).addEventListener("click", async (e)=>{
     e.stopPropagation();
+    if(taskOpBusy) return;
     const catInput = container.querySelector(`#mgr-newtask-cat-${id}`);
     const textInput = container.querySelector(`#mgr-newtask-text-${id}`);
     const descInput = container.querySelector(`#mgr-newtask-desc-${id}`);
+    const urlInput = container.querySelector(`#mgr-newtask-url-${id}`);
     const dayInput = container.querySelector(`#mgr-newtask-day-${id}`);
     const text = textInput.value.trim();
     if(!text) { textInput.focus(); return; }
+    taskOpBusy = true;
     const catTitle = catInput.value.trim() || t("task_category_default");
+    const urlVal = urlInput.value.trim();
     const newTask = {
       id: genId("ct"),
       catId: "custom_"+cssEscape(catTitle).toLowerCase(), catTitle,
-      text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom"
+      text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom",
+      url: urlVal || undefined
     };
     const submitBtn = container.querySelector(`#mgr-newtask-submit-${id}`);
     submitBtn.disabled = true;
     submitBtn.textContent = "Adding...";
     const ok = await addCustomTaskToCloud(p.id, newTask);
+    taskOpBusy = false;
     if(ok){
       p.customTasks = [...(p.customTasks||p.custom_tasks||[]), newTask];
       p.custom_tasks = p.customTasks;
@@ -2907,9 +2951,12 @@ function renderMgrDetail(container, p, opts){
         return;
       }
       const taskId = btn.dataset.taskid;
+      if(taskOpBusy) return;
+      taskOpBusy = true;
       const removedTask = assigned.find(x=>x.id===taskId);
       btn.disabled = true;
       const ok = await deleteAssignedTaskFromCloud(p.id, taskId);
+      taskOpBusy = false;
       if(ok){
         p.customTasks = assigned.filter(x=>x.id!==taskId);
         p.custom_tasks = p.customTasks;
@@ -2948,6 +2995,11 @@ async function deleteAssignedTaskFromCloud(profileId, taskId){
     return patchRes.ok;
   }catch(e){ console.error("delete task failed", e); return false; }
 }
+
+/* Prevents overlapping add/remove requests to custom_tasks — without this,
+   clicking multiple "+ Add" buttons quickly causes a fetch-then-overwrite
+   race where the last write wins and earlier additions silently vanish. */
+let taskOpBusy = false;
 
 function genId(prefix){
   return prefix + "-" + Date.now() + "-" + Math.random().toString(36).slice(2,8);
