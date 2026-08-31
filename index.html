@@ -635,11 +635,45 @@ body{
 .op-head .op-title{
   font-family:'Inter',sans-serif;font-weight:600;font-size:15.5px;flex:1 1 auto;
 }
-.cat-link-btn{
-  flex:0 0 auto;font-size:11px;font-weight:600;color:var(--navy);background:var(--cyan-soft);
-  border-radius:20px;padding:4px 10px;text-decoration:none;white-space:nowrap;
+.op-body-resource{padding:12px 20px 0;}
+.cat-resource-wrap{padding:0 0 4px;}
+.cat-resource{
+  display:flex;align-items:center;gap:12px;background:var(--cyan-soft);border:1px solid var(--cyan);
+  border-radius:10px;padding:12px 16px;margin:8px 0;
 }
-.cat-link-btn:hover{background:var(--cyan);color:#fff;}
+.cat-resource-icon{
+  width:34px;height:34px;border-radius:50%;background:var(--card);display:flex;align-items:center;
+  justify-content:center;font-size:15px;flex:0 0 auto;
+}
+.cat-resource-text{flex:1;min-width:0;}
+.cat-resource-title{font-family:'Inter',sans-serif;font-weight:700;font-size:13px;color:var(--navy-ink);}
+.cat-resource-sub{font-size:11.5px;color:var(--ink-soft);margin-top:1px;}
+.cat-resource-actions{display:flex;gap:6px;flex:0 0 auto;align-items:center;}
+.cat-resource-open-btn{
+  padding:9px 16px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:600;
+  font-size:12.5px;text-decoration:none;white-space:nowrap;
+}
+.cat-resource-open-btn:hover{background:#0a1c66;}
+.cat-resource-edit-btn{
+  padding:8px 10px;background:var(--card);border:1px solid var(--line);border-radius:8px;font-size:12px;
+  cursor:pointer;color:var(--ink-soft);
+}
+.cat-resource-edit-btn:hover{border-color:var(--navy);color:var(--navy);}
+.cat-resource-add-btn{
+  width:100%;padding:10px;background:none;border:1.5px dashed var(--line);border-radius:10px;
+  color:var(--ink-soft);font-size:12.5px;cursor:pointer;font-family:'Inter',sans-serif;margin:8px 0;
+}
+.cat-resource-add-btn:hover{border-color:var(--cyan);color:var(--navy);}
+.cat-resource-edit-form{display:flex;gap:8px;margin:-4px 0 10px;}
+.cat-resource-edit-form input{
+  flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;
+  background:var(--card);color:var(--ink);font-family:'Inter',sans-serif;
+}
+.cat-resource-save-btn{
+  padding:9px 16px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:600;
+  font-size:12.5px;cursor:pointer;white-space:nowrap;
+}
+.cat-resource-save-btn:hover{background:#0a1c66;}
 .op-head .op-owner{
   font-size:12px;color:var(--ink-soft);flex:0 0 auto;display:none;
 }
@@ -809,7 +843,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", task_link_ph:"Link (optional, e.g. a specific page)", open_link:"Open", button_add_task:"Add task", resource_title:"Guide & access", resource_sub:"Click through to this system", resource_url_ph:"https://...", save_word:"Save", add_link_btn:"+ Add a link / guide for this category",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -876,7 +910,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", task_link_ph:"Link (optional, z.B. eine bestimmte Seite)", open_link:"Öffnen", button_add_task:"Aufgabe hinzufügen", resource_title:"Anleitung & Zugang", resource_sub:"Klicke durch zu diesem System", resource_url_ph:"https://...", save_word:"Speichern", add_link_btn:"+ Link / Anleitung für diese Kategorie hinzufügen",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -943,7 +977,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", task_link_ph:"Odkaz (voliteľné, napr. konkrétna stránka)", open_link:"Otvoriť", button_add_task:"Pridať úlohu", resource_title:"Návod a prístup", resource_sub:"Kliknutím sa dostaneš priamo do systému", resource_url_ph:"https://...", save_word:"Uložiť", add_link_btn:"+ Pridať odkaz / návod pre túto kategóriu",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -1098,11 +1132,44 @@ const LINKS_BY_CATID = {
   c10: LINKS_CATALOG.find(l=>l.key==="link_sharepoint")
 };
 
-/* Resolves the best link for a category: a custom URL attached to one of
-   its tasks (set by whoever assigned it) wins over the standard system link. */
+/* Resolves the best link for a category, checked in priority order:
+   1) a global override set by any manager/buddy/admin for this category
+      (persisted in Supabase — applies to every joiner from then on)
+   2) a one-off URL attached directly to a custom task
+   3) the built-in standard system link, if this is a catalog category */
+let categoryLinksOverride = {};
+async function loadCategoryLinks(){
+  if(!cloudConfigured()) return;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/category_links?select=cat_key,url`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!res.ok) return;
+    const rows = await res.json();
+    rows.forEach(r=>{ categoryLinksOverride[r.cat_key] = r.url; });
+  }catch(e){ console.error("load category links failed", e); }
+}
+async function saveCategoryLink(catKey, url){
+  if(!cloudConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/category_links`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "resolution=merge-duplicates,return=minimal"
+      },
+      body: JSON.stringify({ cat_key: catKey, url })
+    });
+    return res.ok;
+  }catch(e){ console.error("save category link failed", e); return false; }
+}
+
 function getCategoryLink(catId, tasksInCat){
+  if(categoryLinksOverride[catId]) return { url: categoryLinksOverride[catId], icon:"🔗" };
   const customUrl = (tasksInCat||[]).map(t=>t.url).find(Boolean);
-  if(customUrl) return { url: customUrl, icon: "🔗", slug: null };
+  if(customUrl) return { url: customUrl, icon: "🔗" };
   return LINKS_BY_CATID[catId] || null;
 }
 
@@ -1786,17 +1853,17 @@ function renderOpList(currentDay){
     const card = document.createElement("div");
     card.className = "op-card" + (status==="done" ? " collapsed" : "");
     card.id = "card-"+cat.id;
-    const catLink = getCategoryLink(cat.id, tasks);
     card.innerHTML = `
       <div class="op-head">
         <div class="op-num mono">OP ${String((i+1)*10).padStart(3,"0")}</div>
         <div class="op-title">${escapeHtml(cat.title)}</div>
-        ${catLink ? `<a class="cat-link-btn" href="${catLink.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""}
         <div class="op-count mono">${doneCount}/${tasks.length}</div>
         <div class="op-badge ${badgeClass}">${badgeText}</div>
         <div class="chev">▾</div>
       </div>
-      <div class="op-body"></div>
+      <div class="op-body">
+        <div class="op-body-resource">${renderCatResourceHtml(cat.id, tasks, false)}</div>
+      </div>
     `;
     const body = card.querySelector(".op-body");
     tasks.forEach(t=>{
@@ -2556,6 +2623,65 @@ function renderTeamCompareChart(rows){
 }
 
 
+function renderCatResourceHtml(catId, tasksInCat, editable){
+  const link = getCategoryLink(catId, tasksInCat);
+  const safeKey = cssEscape(catId);
+  if(link){
+    return `
+      <div class="cat-resource" data-catid="${escapeHtml(catId)}">
+        <div class="cat-resource-icon">🔗</div>
+        <div class="cat-resource-text">
+          <div class="cat-resource-title">${t("resource_title")}</div>
+          <div class="cat-resource-sub">${t("resource_sub")}</div>
+        </div>
+        <div class="cat-resource-actions">
+          <a class="cat-resource-open-btn" href="${link.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${t("open_link")} →</a>
+          ${editable ? `<button class="cat-resource-edit-btn" data-catid="${escapeHtml(catId)}">✎</button>` : ""}
+        </div>
+      </div>
+      ${editable ? `<div class="cat-resource-edit-form" id="cat-edit-form-${safeKey}" style="display:none;">
+        <input type="text" id="cat-edit-input-${safeKey}" value="${escapeHtml(link.url)}" placeholder="${t("resource_url_ph")}">
+        <button class="cat-resource-save-btn" data-catid="${escapeHtml(catId)}">${t("save_word")}</button>
+      </div>` : ""}
+    `;
+  }
+  if(!editable) return "";
+  return `
+    <button class="cat-resource-add-btn" data-catid="${escapeHtml(catId)}">${t("add_link_btn")}</button>
+    <div class="cat-resource-edit-form" id="cat-edit-form-${safeKey}" style="display:none;">
+      <input type="text" id="cat-edit-input-${safeKey}" placeholder="${t("resource_url_ph")}">
+      <button class="cat-resource-save-btn" data-catid="${escapeHtml(catId)}">${t("save_word")}</button>
+    </div>
+  `;
+}
+
+function wireCatResourceHandlers(container, onSaved){
+  container.querySelectorAll(".cat-resource-edit-btn, .cat-resource-add-btn").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      e.stopPropagation();
+      const catId = btn.dataset.catid;
+      const form = container.querySelector(`#cat-edit-form-${cssEscape(catId)}`);
+      if(form) form.style.display = form.style.display==="none" ? "flex" : "none";
+    });
+  });
+  container.querySelectorAll(".cat-resource-save-btn").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      const catId = btn.dataset.catid;
+      const input = container.querySelector(`#cat-edit-input-${cssEscape(catId)}`);
+      const url = input.value.trim();
+      if(!url) return;
+      btn.disabled = true;
+      const ok = await saveCategoryLink(catId, url);
+      if(ok){
+        categoryLinksOverride[catId] = url;
+        if(onSaved) onSaved();
+      }
+      btn.disabled = false;
+    });
+  });
+}
+
 function renderMgrDetail(container, p, opts){
   opts = opts || {};
   const allowRemove = opts.allowRemove !== false;
@@ -2608,11 +2734,13 @@ function renderMgrDetail(container, p, opts){
       <div class="assigned-cat-card" data-catkey="${catKeySafe}">
         <div class="assigned-cat-head">
           <span class="assigned-cat-title">${escapeHtml(cat.title)}</span>
-          ${(()=>{ const lk = getCategoryLink(cat.id, catTasks); return lk ? `<a class="cat-link-btn" href="${lk.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""; })()}
           <span class="assigned-cat-count">${doneCount}/${catTasks.length}</span>
           <span class="assigned-cat-chev">▾</span>
         </div>
-        <div class="assigned-cat-body">${rowsHtml}</div>
+        <div class="assigned-cat-body">
+          <div class="cat-resource-wrap">${renderCatResourceHtml(cat.id, catTasks, true)}</div>
+          ${rowsHtml}
+        </div>
       </div>
     `;
   }).join("");
@@ -2650,17 +2778,20 @@ function renderMgrDetail(container, p, opts){
         <button class="rec-task-add" data-key="${escapeHtml(r.key)}">+ Add</button>
       </div>
     `).join("");
+    const recCatId = items[0] && items[0].catId;
     return `
       <div class="rec-cat-card ${isRole ? 'rec-cat-featured' : ''}" data-catkey="${escapeHtml(catKey)}">
         <div class="rec-cat-head">
           ${isRole ? `<span class="rec-cat-star">★</span>` : ""}
           <span class="rec-cat-title">${escapeHtml(catTitle)}</span>
-          ${(()=>{ const lk = getCategoryLink(items[0] && items[0].catId, []); return lk ? `<a class="cat-link-btn" href="${lk.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🔗 ${t("open_link")}</a>` : ""; })()}
           <span class="rec-cat-count">${items.length}</span>
           <button class="rec-cat-addall" data-catkey="${escapeHtml(catKey)}">${t("add_all")}</button>
           <span class="rec-cat-chev">▾</span>
         </div>
-        <div class="rec-cat-body" style="display:${isRole ? 'block' : 'none'};">${itemsHtml}</div>
+        <div class="rec-cat-body" style="display:${isRole ? 'block' : 'none'};">
+          <div class="cat-resource-wrap">${renderCatResourceHtml(recCatId, [], true)}</div>
+          ${itemsHtml}
+        </div>
       </div>
     `;
   }).join("");
@@ -2716,6 +2847,8 @@ function renderMgrDetail(container, p, opts){
       ` : ""}
     </div>
   `;
+
+  wireCatResourceHandlers(container, ()=>renderMgrDetail(container, p, opts));
 
   container.querySelector(`#mgr-target-days-${id}`).addEventListener("change", async (e)=>{
     const newDays = parseInt(e.target.value, 10);
@@ -3466,6 +3599,7 @@ async function mergeCustomTasksFromCloud(){
   state = await loadState();
   await loadAdminTemplates();
   await loadManagerDirectory();
+  await loadCategoryLinks();
   await mergeCustomTasksFromCloud();
   renderAll();
   updateCopyStatusVisibility();
