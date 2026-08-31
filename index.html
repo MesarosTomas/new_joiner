@@ -2583,24 +2583,24 @@ function renderMgrDetail(container, p, opts){
     const catTasks = assigned.filter(t=>(t.catId||"assigned")===cat.id);
     const doneCount = catTasks.filter(t=>tasks[t.id]).length;
     const catKeySafe = cssEscape(cat.id) || ("acat"+gi);
-    const rowsHtml = catTasks.map(t=>{
-      const isDone = !!tasks[t.id];
-      const note = notes[t.id];
-      const completedAt = completedDates[t.id];
+    const rowsHtml = catTasks.map(tk=>{
+      const isDone = !!tasks[tk.id];
+      const note = notes[tk.id];
+      const completedAt = completedDates[tk.id];
       const completedStr = completedAt ? new Date(completedAt).toLocaleDateString() : "";
       return `
         <div class="assigned-task-row">
           <span class="assigned-task-check">${isDone ? "✅" : "⬜"}</span>
           <div class="assigned-task-main">
-            <div class="assigned-task-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
-            ${t.desc ? `<div class="assigned-task-desc">${escapeHtml(t.desc)}</div>` : ""}
+            <div class="assigned-task-text ${isDone?'done':''}">${escapeHtml(tk.text)}</div>
+            ${tk.desc ? `<div class="assigned-task-desc">${escapeHtml(tk.desc)}</div>` : ""}
             ${note ? `<div class="assigned-task-note">"${escapeHtml(note)}"</div>` : ""}
             <div class="assigned-task-meta">
-              <span class="tag-day">${t("day_word")} ${t.day||1}</span>
+              <span class="tag-day">${t("day_word")} ${tk.day||1}</span>
               ${isDone && completedStr ? `<span class="tag-done-date">✓ ${completedStr}</span>` : ""}
             </div>
           </div>
-          <button class="assigned-task-delete" data-taskid="${escapeHtml(t.id)}" title="Remove this task">✕</button>
+          <button class="assigned-task-delete" data-taskid="${escapeHtml(tk.id)}" title="Remove this task">✕</button>
         </div>
       `;
     }).join("");
