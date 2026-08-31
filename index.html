@@ -319,6 +319,13 @@ body{
 }
 .role-toggle-bar button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 
+.staff-link-wrap{text-align:right;margin-bottom:18px;}
+.staff-link{
+  font-size:12.5px;color:var(--ink-soft);text-decoration:none;padding:7px 12px;border:1px solid var(--line);
+  border-radius:20px;background:var(--card);transition:border-color .15s ease, color .15s ease;
+}
+.staff-link:hover{border-color:var(--cyan);color:var(--navy);}
+
 .mgr-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 34px;margin-bottom:22px;box-shadow:0 1px 2px rgba(13,36,128,.05);}
 .admin-link-wrap{text-align:center;}
 .buddy-recent-row{
@@ -722,10 +729,8 @@ body{
       <button id="reset-no" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:8px;padding:3px 8px;font-size:11.5px;cursor:pointer;">Cancel</button>
     </span>
   </div>
-  <div class="role-toggle-bar" id="role-toggle-bar">
-    <button data-role="joiner" class="active" data-i18n="role_joiner">🧑‍💻 New Joiner</button>
-    <button data-role="manager" data-i18n="role_manager">🧑‍💼 Team Manager</button>
-    <button data-role="buddy" data-i18n="role_buddy">🤝 Buddy</button>
+  <div class="staff-link-wrap">
+    <a href="./staff.html" class="staff-link">🧑‍💼 Team Manager or Buddy? Go to the staff page →</a>
   </div>
   <div id="setup-zone"></div>
   <div class="section-label" id="dashboard-section-label" data-i18n="section_your_routing" style="display:none;">Your routing</div>
