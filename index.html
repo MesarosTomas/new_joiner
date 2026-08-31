@@ -424,12 +424,36 @@ body{
 .mgr-row .pct-txt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
 .mgr-back{font-size:12.5px;color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;}
 .mgr-detail-inner{background:var(--paper);border:1px solid var(--line);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:16px 18px;margin-top:-11px;margin-bottom:10px;}
-.mgr-detail-cat{margin-bottom:14px;}
-.mgr-detail-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--navy-ink);margin-bottom:6px;}
-.mgr-detail-task{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:12.5px;}
-.mgr-detail-check{flex:0 0 auto;}
-.mgr-detail-text.done{color:var(--slate);text-decoration:line-through;}
-.mgr-detail-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:2px;}
+
+.assigned-cat-card{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+.assigned-cat-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;background:var(--paper);}
+.assigned-cat-title{font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:var(--navy-ink);flex:1;}
+.assigned-cat-count{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+  background:var(--slate-soft);border-radius:20px;padding:2px 8px;
+}
+.assigned-cat-chev{color:var(--ink-soft);font-size:11px;transition:transform .15s ease;}
+.assigned-cat-body{padding:4px 14px 8px;}
+.assigned-task-row{
+  display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+}
+.assigned-task-row:last-child{border-bottom:none;}
+.assigned-task-check{flex:0 0 auto;font-size:14px;padding-top:1px;}
+.assigned-task-main{flex:1;min-width:0;}
+.assigned-task-text{font-size:13px;color:var(--ink);line-height:1.4;}
+.assigned-task-text.done{color:var(--slate);text-decoration:line-through;}
+.assigned-task-desc{font-size:11.5px;color:var(--ink-soft);margin-top:2px;line-height:1.4;}
+.assigned-task-note{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:3px;}
+.assigned-task-meta{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.tag-done-date{
+  font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;
+  background:var(--green-soft);color:var(--green);
+}
+.assigned-task-delete{
+  flex:0 0 auto;background:none;border:1px solid var(--line);border-radius:50%;width:22px;height:22px;
+  color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;
+}
+.assigned-task-delete:hover{border-color:var(--coral);color:var(--coral);}
 .mgr-section-label{
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;
   margin:16px 0 8px;
@@ -777,7 +801,7 @@ const TRANSLATIONS = {
     add_all:"+ Add all", search_recommended:"Search recommended tasks...", quick_add_all:"⚡ Quick-add everything",
     empty_assigned:"Nothing assigned yet — pick from the recommendations below, or add your own.",
     empty_recommended:"Nothing left to recommend — everything's been assigned or added.",
-    add_own_task:"+ Add your own task", task_name_ph:"Task name", task_desc_ph:"Description (optional)", button_add_task:"Add task",
+    add_own_task:"+ Add your own task", task_category_ph:"Category (e.g. Payroll, Client onboarding)", task_category_default:"Other", task_name_ph:"Task name", task_desc_ph:"Description (optional)", button_add_task:"Add task",
     remove_view:"Remove from my view", remove_confirm_prefix:"Remove", remove_confirm_suffix:"from your dashboard? This only removes them from view, it doesn't affect their routing.",
     remove_yes:"Yes, remove", remove_no:"Cancel",
     your_joiners:"Your joiners", avg_progress:"Average progress", behind_schedule:"Behind schedule", your_people:"Your people",
@@ -790,7 +814,7 @@ const TRANSLATIONS = {
     admin_eyebrow:"Admin · access", admin_h1:"Manage the onboarding tool",
     admin_sub:"Set your admin PIN the first time, then log in with it going forward.",
     admin_pin_new:"New admin PIN", admin_pin_confirm:"Confirm admin PIN", admin_pin_enter:"Admin PIN",
-    admin_audit_title:"Recent activity", admin_feedback_title:"Feedback from new joiners", admin_templates_title:"Extra recommended tasks",
+    admin_audit_title:"Recent activity", admin_feedback_title:"Feedback from new joiners", admin_templates_title:"Extra recommended tasks", admin_managers_title:"Team managers", admin_manager_name_ph:"Manager full name", admin_add_manager_btn:"Add manager",
     congrats_title:"🎉 Fully onboarded!", congrats_sub:"Every assigned task is complete. Nicely done.",
     feedback_prompt:"What could be improved? Anything missing?", feedback_placeholder:"Your honest feedback helps make this better for the next person...",
     feedback_submit:"Send feedback", feedback_thanks:"Thanks — your feedback was sent.",
@@ -844,7 +868,7 @@ const TRANSLATIONS = {
     add_all:"+ Alle hinzufügen", search_recommended:"Empfohlene Aufgaben durchsuchen...", quick_add_all:"⚡ Alles auf einmal hinzufügen",
     empty_assigned:"Noch nichts zugewiesen — wähle unten aus den Empfehlungen oder füge eigene hinzu.",
     empty_recommended:"Keine weiteren Empfehlungen — alles wurde bereits zugewiesen oder hinzugefügt.",
-    add_own_task:"+ Eigene Aufgabe hinzufügen", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", button_add_task:"Aufgabe hinzufügen",
+    add_own_task:"+ Eigene Aufgabe hinzufügen", task_category_ph:"Kategorie (z.B. Gehaltsabrechnung, Kunde)", task_category_default:"Sonstiges", task_name_ph:"Aufgabenname", task_desc_ph:"Beschreibung (optional)", button_add_task:"Aufgabe hinzufügen",
     remove_view:"Aus meiner Ansicht entfernen", remove_confirm_prefix:"Soll", remove_confirm_suffix:"aus deinem Dashboard entfernt werden? Das betrifft nur deine Ansicht, nicht das Routing selbst.",
     remove_yes:"Ja, entfernen", remove_no:"Abbrechen",
     your_joiners:"Deine Mitarbeiter", avg_progress:"Durchschnittlicher Fortschritt", behind_schedule:"Im Rückstand", your_people:"Deine Leute",
@@ -857,7 +881,7 @@ const TRANSLATIONS = {
     admin_eyebrow:"Admin · Zugang", admin_h1:"Onboarding-Tool verwalten",
     admin_sub:"Lege beim ersten Mal deine Admin-PIN fest, danach meldest du dich damit an.",
     admin_pin_new:"Neue Admin-PIN", admin_pin_confirm:"Admin-PIN bestätigen", admin_pin_enter:"Admin-PIN",
-    admin_audit_title:"Letzte Aktivitäten", admin_feedback_title:"Feedback von neuen Mitarbeitern", admin_templates_title:"Zusätzliche empfohlene Aufgaben",
+    admin_audit_title:"Letzte Aktivitäten", admin_feedback_title:"Feedback von neuen Mitarbeitern", admin_templates_title:"Zusätzliche empfohlene Aufgaben", admin_managers_title:"Team-Manager", admin_manager_name_ph:"Vollständiger Name des Managers", admin_add_manager_btn:"Manager hinzufügen",
     congrats_title:"🎉 Vollständig onboardet!", congrats_sub:"Alle zugewiesenen Aufgaben sind abgeschlossen. Gut gemacht.",
     feedback_prompt:"Was könnte besser sein? Hat etwas gefehlt?", feedback_placeholder:"Dein ehrliches Feedback hilft, das Ganze für die nächste Person zu verbessern...",
     feedback_submit:"Feedback senden", feedback_thanks:"Danke — dein Feedback wurde gesendet.",
@@ -911,7 +935,7 @@ const TRANSLATIONS = {
     add_all:"+ Pridať všetky", search_recommended:"Hľadať v odporúčaných úlohách...", quick_add_all:"⚡ Pridať všetko naraz",
     empty_assigned:"Zatiaľ nič nepridelené — vyber si z odporúčaní nižšie alebo pridaj vlastnú úlohu.",
     empty_recommended:"Už niet čo odporučiť — všetko je pridelené alebo pridané.",
-    add_own_task:"+ Pridať vlastnú úlohu", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", button_add_task:"Pridať úlohu",
+    add_own_task:"+ Pridať vlastnú úlohu", task_category_ph:"Kategória (napr. Mzdy, Zákazník)", task_category_default:"Iné", task_name_ph:"Názov úlohy", task_desc_ph:"Popis (voliteľné)", button_add_task:"Pridať úlohu",
     remove_view:"Odstrániť z môjho zoznamu", remove_confirm_prefix:"Odstrániť", remove_confirm_suffix:"z tvojho dashboardu? Ovplyvní to len tvoj pohľad, nie jeho/jej routing.",
     remove_yes:"Áno, odstrániť", remove_no:"Zrušiť",
     your_joiners:"Tvoji noví kolegovia", avg_progress:"Priemerný progress", behind_schedule:"Meškajú", your_people:"Tvoji ľudia",
@@ -924,7 +948,7 @@ const TRANSLATIONS = {
     admin_eyebrow:"Admin · prístup", admin_h1:"Správa onboarding nástroja",
     admin_sub:"Prvýkrát si nastav admin PIN, potom sa ním prihlasuj.",
     admin_pin_new:"Nový admin PIN", admin_pin_confirm:"Potvrdiť admin PIN", admin_pin_enter:"Admin PIN",
-    admin_audit_title:"Nedávna aktivita", admin_feedback_title:"Spätná väzba od nových kolegov", admin_templates_title:"Ďalšie odporúčané úlohy",
+    admin_audit_title:"Nedávna aktivita", admin_feedback_title:"Spätná väzba od nových kolegov", admin_templates_title:"Ďalšie odporúčané úlohy", admin_managers_title:"Team manažéri", admin_manager_name_ph:"Celé meno manažéra", admin_add_manager_btn:"Pridať manažéra",
     congrats_title:"🎉 Onboarding dokončený!", congrats_sub:"Všetky pridelené úlohy sú hotové. Skvelá práca.",
     feedback_prompt:"Čo by sa dalo zlepšiť? Niečo chýbalo?", feedback_placeholder:"Tvoja úprimná spätná väzba pomôže vylepšiť to pre ďalšieho kolegu...",
     feedback_submit:"Odoslať spätnú väzbu", feedback_thanks:"Ďakujeme — tvoja spätná väzba bola odoslaná.",
@@ -1213,7 +1237,7 @@ async function resumeFromCode(){
       id: r.id, name: r.name, position: r.position, manager: r.manager,
       country: r.country, startDate: r.start_date, accessCode: r.access_code, buddyCode: r.buddy_code,
       tasks: r.tasks || {}, notes: r.notes || {}, customTasks: r.custom_tasks || [],
-      targetDays: r.target_days || 10
+      targetDays: r.target_days || 10, completedDates: r.completed_dates || {}
     };
     await kvSet(STORAGE_KEY, JSON.stringify(state));
     renderAll();
@@ -1246,6 +1270,7 @@ async function syncProfileToCloud(){
       pct: total ? Math.round((done/total)*100) : 0,
       tasks: state.tasks,
       notes: state.notes,
+      completed_dates: state.completedDates || {},
       custom_tasks: state.customTasks || [],
       target_days: state.targetDays || 10,
       updated_at: new Date().toISOString()
@@ -1447,7 +1472,7 @@ function renderSetupZone(){
     });
     const mgrSel = document.getElementById("f-manager");
     addPlaceholder(mgrSel, t("placeholder_choose"));
-    MANAGERS.forEach(m=>{
+    managerDirectory.forEach(m=>{
       const o = document.createElement("option"); o.value=m; o.textContent=m; mgrSel.appendChild(o);
     });
     const countrySel = document.getElementById("f-country");
@@ -1481,7 +1506,7 @@ function renderSetupZone(){
       const profileId = (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(36).slice(2)));
       const accessCode = genAccessCode();
       const buddyCode = genAccessCode();
-      state = { id: profileId, name, position, manager, country, startDate, accessCode, buddyCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10 };
+      state = { id: profileId, name, position, manager, country, startDate, accessCode, buddyCode, tasks:{}, notes:{}, customTasks:[], targetDays: 10, completedDates:{} };
       await saveState();
       renderAll();
       document.getElementById("dashboard-zone").scrollIntoView({behavior:"smooth", block:"start"});
@@ -1780,6 +1805,9 @@ function renderOpList(currentDay){
     cb.addEventListener("change", async (e)=>{
       const tid = e.target.dataset.tid;
       state.tasks[tid] = e.target.checked;
+      state.completedDates = state.completedDates || {};
+      if(e.target.checked){ state.completedDates[tid] = new Date().toISOString(); }
+      else{ delete state.completedDates[tid]; }
       await saveState();
       renderAll();
     });
@@ -1856,7 +1884,7 @@ function renderManagerZone(){
     const sel = document.getElementById("mgr-name-select");
     const ph = document.createElement("option"); ph.value=""; ph.textContent="Choose..."; ph.disabled=true; ph.selected=true;
     sel.appendChild(ph);
-    MANAGERS.filter(m=>m!=="Other").forEach(m=>{
+    managerDirectory.filter(m=>m!=="Other").forEach(m=>{
       const o = document.createElement("option"); o.value=m; o.textContent=m; sel.appendChild(o);
     });
     sel.addEventListener("change", onManagerNameChosen);
@@ -1917,6 +1945,18 @@ function renderManagerZone(){
 /* ============ BUDDY MODE ============ */
 let buddyView = { verified:false, profile:null };
 let adminTemplates = [];
+let managerDirectory = [...MANAGERS];
+async function loadManagerDirectory(){
+  if(!cloudConfigured()) return;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/manager_directory?select=name&order=name.asc`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!res.ok) return;
+    const rows = await res.json();
+    if(rows.length) managerDirectory = [...rows.map(r=>r.name), "Other"];
+  }catch(e){ console.error("load manager directory failed", e); }
+}
 let adminView = { verified:false };
 
 async function loadAdminTemplates(){
@@ -2119,6 +2159,15 @@ function renderAdminZone(){
     <div class="setup-eyebrow">${t("admin_h1")}</div>
 
     <div class="admin-section">
+      <h3>${t("admin_managers_title")}</h3>
+      <div id="admin-managers-list"><div class="sub">Loading...</div></div>
+      <div class="mgr-add-task-form" style="display:block;margin-top:10px;">
+        <input type="text" id="admin-newmgr-name" placeholder="${t("admin_manager_name_ph")}">
+        <button id="admin-newmgr-submit" style="margin-top:8px;">${t("admin_add_manager_btn")}</button>
+      </div>
+    </div>
+
+    <div class="admin-section">
       <h3>${t("admin_templates_title")}</h3>
       <div id="admin-templates-list"><div class="sub">Loading...</div></div>
       <div class="mgr-add-task-form" style="display:block;margin-top:10px;">
@@ -2153,10 +2202,74 @@ function renderAdminZone(){
     applyRoleView();
   });
   document.getElementById("admin-newtpl-submit").addEventListener("click", submitNewTemplate);
+  document.getElementById("admin-newmgr-submit").addEventListener("click", submitNewManager);
 
+  renderAdminManagersList();
   renderAdminTemplatesList();
   loadAndRenderFeedback();
   loadAndRenderAudit();
+}
+
+function renderAdminManagersList(){
+  const wrap = document.getElementById("admin-managers-list");
+  const names = managerDirectory.filter(m=>m!=="Other");
+  if(!names.length){ wrap.innerHTML = `<div class="mgr-empty-note">No managers yet.</div>`; return; }
+  wrap.innerHTML = names.map(name=>`
+    <div class="template-row">
+      <div style="flex:1;font-weight:600;font-size:12.5px;">${escapeHtml(name)}</div>
+      <button class="mgr-remove-btn" data-name="${escapeHtml(name)}">${t("remove_view")}</button>
+    </div>
+  `).join("");
+  wrap.querySelectorAll(".mgr-remove-btn").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      btn.disabled = true;
+      const ok = await removeManagerFromDirectory(btn.dataset.name);
+      if(ok){
+        managerDirectory = managerDirectory.filter(m=>m!==btn.dataset.name);
+        renderAdminManagersList();
+      } else {
+        btn.disabled = false;
+      }
+    });
+  });
+}
+
+async function submitNewManager(){
+  const input = document.getElementById("admin-newmgr-name");
+  const name = input.value.trim();
+  if(!name) return;
+  if(managerDirectory.includes(name)) { input.value = ""; return; }
+  const btn = document.getElementById("admin-newmgr-submit");
+  btn.disabled = true;
+  const ok = await addManagerToDirectory(name);
+  if(ok){
+    managerDirectory = [...managerDirectory.filter(m=>m!=="Other"), name, "Other"];
+    input.value = "";
+    renderAdminManagersList();
+  }
+  btn.disabled = false;
+}
+
+async function addManagerToDirectory(name){
+  if(!cloudConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/manager_directory`, {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}`, "Prefer":"return=minimal" },
+      body: JSON.stringify({ name })
+    });
+    return res.ok;
+  }catch(e){ console.error("add manager failed", e); return false; }
+}
+async function removeManagerFromDirectory(name){
+  if(!cloudConfigured()) return false;
+  try{
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/manager_directory?name=eq.${encodeURIComponent(name)}`, {
+      method: "DELETE",
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    return res.ok;
+  }catch(e){ console.error("remove manager failed", e); return false; }
 }
 
 async function checkAdminExists(){
@@ -2427,6 +2540,7 @@ function renderMgrDetail(container, p, opts){
   const id = cssEscape(p.id);
 
   // group assigned tasks by category for display
+  const completedDates = p.completedDates || p.completed_dates || {};
   const assignedGroups = [];
   const seenCat = new Set();
   assigned.forEach(t=>{
@@ -2436,24 +2550,43 @@ function renderMgrDetail(container, p, opts){
       assignedGroups.push({ id: catId, title: t.catTitle || "Assigned" });
     }
   });
+  const existingCatTitles = [...new Set(assigned.map(t=>t.catTitle).filter(Boolean))];
 
-  const assignedBlocks = assignedGroups.map(cat=>{
+  const assignedBlocks = assignedGroups.map((cat, gi)=>{
     const catTasks = assigned.filter(t=>(t.catId||"assigned")===cat.id);
+    const doneCount = catTasks.filter(t=>tasks[t.id]).length;
+    const catKeySafe = cssEscape(cat.id) || ("acat"+gi);
     const rowsHtml = catTasks.map(t=>{
       const isDone = !!tasks[t.id];
       const note = notes[t.id];
+      const completedAt = completedDates[t.id];
+      const completedStr = completedAt ? new Date(completedAt).toLocaleDateString() : "";
       return `
-        <div class="mgr-detail-task">
-          <span class="mgr-detail-check">${isDone ? "✅" : "⬜"}</span>
-          <div>
-            <div class="mgr-detail-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
-            ${t.desc ? `<div class="mgr-detail-note">${escapeHtml(t.desc)}</div>` : ""}
-            ${note ? `<div class="mgr-detail-note">"${escapeHtml(note)}"</div>` : ""}
+        <div class="assigned-task-row">
+          <span class="assigned-task-check">${isDone ? "✅" : "⬜"}</span>
+          <div class="assigned-task-main">
+            <div class="assigned-task-text ${isDone?'done':''}">${escapeHtml(t.text)}</div>
+            ${t.desc ? `<div class="assigned-task-desc">${escapeHtml(t.desc)}</div>` : ""}
+            ${note ? `<div class="assigned-task-note">"${escapeHtml(note)}"</div>` : ""}
+            <div class="assigned-task-meta">
+              <span class="tag-day">${t("day_word")} ${t.day||1}</span>
+              ${isDone && completedStr ? `<span class="tag-done-date">✓ ${completedStr}</span>` : ""}
+            </div>
           </div>
+          <button class="assigned-task-delete" data-taskid="${escapeHtml(t.id)}" title="Remove this task">✕</button>
         </div>
       `;
     }).join("");
-    return `<div class="mgr-detail-cat"><div class="mgr-detail-cat-title">${escapeHtml(cat.title)}</div>${rowsHtml}</div>`;
+    return `
+      <div class="assigned-cat-card" data-catkey="${catKeySafe}">
+        <div class="assigned-cat-head">
+          <span class="assigned-cat-title">${escapeHtml(cat.title)}</span>
+          <span class="assigned-cat-count">${doneCount}/${catTasks.length}</span>
+          <span class="assigned-cat-chev">▾</span>
+        </div>
+        <div class="assigned-cat-body">${rowsHtml}</div>
+      </div>
+    `;
   }).join("");
 
   // recommended = template library minus anything already assigned from a template
@@ -2529,6 +2662,10 @@ function renderMgrDetail(container, p, opts){
 
       <button class="mgr-add-task-btn" id="mgr-add-task-${id}">${t("add_own_task")}</button>
       <div class="mgr-add-task-form" id="mgr-add-task-form-${id}" style="display:none;">
+        <input type="text" id="mgr-newtask-cat-${id}" placeholder="${t("task_category_ph")}" list="existing-cats-${id}">
+        <datalist id="existing-cats-${id}">
+          ${existingCatTitles.map(c=>`<option value="${escapeHtml(c)}">`).join("")}
+        </datalist>
         <input type="text" id="mgr-newtask-text-${id}" placeholder="${t("task_name_ph")}">
         <textarea id="mgr-newtask-desc-${id}" placeholder="${t("task_desc_ph")}"></textarea>
         <div class="mgr-newtask-row">
@@ -2695,14 +2832,16 @@ function renderMgrDetail(container, p, opts){
   });
   container.querySelector(`#mgr-newtask-submit-${id}`).addEventListener("click", async (e)=>{
     e.stopPropagation();
+    const catInput = container.querySelector(`#mgr-newtask-cat-${id}`);
     const textInput = container.querySelector(`#mgr-newtask-text-${id}`);
     const descInput = container.querySelector(`#mgr-newtask-desc-${id}`);
     const dayInput = container.querySelector(`#mgr-newtask-day-${id}`);
     const text = textInput.value.trim();
     if(!text) { textInput.focus(); return; }
+    const catTitle = catInput.value.trim() || t("task_category_default");
     const newTask = {
       id: genId("ct"),
-      catId: "assigned", catTitle: "Added just for you",
+      catId: "custom_"+cssEscape(catTitle).toLowerCase(), catTitle,
       text, desc: descInput.value.trim(), day: parseInt(dayInput.value, 10), source:"custom"
     };
     const submitBtn = container.querySelector(`#mgr-newtask-submit-${id}`);
@@ -2743,6 +2882,70 @@ function renderMgrDetail(container, p, opts){
       renderManagerZone();
     });
   }
+
+  // Collapsible assigned-task category cards (default open, click header to toggle)
+  container.querySelectorAll(".assigned-cat-head").forEach(head=>{
+    head.addEventListener("click", ()=>{
+      const body = head.parentElement.querySelector(".assigned-cat-body");
+      const chev = head.querySelector(".assigned-cat-chev");
+      const open = body.style.display !== "none";
+      body.style.display = open ? "none" : "block";
+      if(chev) chev.style.transform = open ? "rotate(-90deg)" : "";
+    });
+  });
+
+  // Remove a single assigned task (with inline confirm, no browser dialog)
+  container.querySelectorAll(".assigned-task-delete").forEach(btn=>{
+    btn.addEventListener("click", async (e)=>{
+      e.stopPropagation();
+      if(btn.dataset.confirming !== "1"){
+        btn.dataset.confirming = "1";
+        btn.textContent = "✓?";
+        btn.title = "Click again to confirm removal";
+        setTimeout(()=>{ if(btn.dataset.confirming==="1"){ btn.dataset.confirming="0"; btn.textContent="✕"; btn.title="Remove this task"; } }, 3000);
+        return;
+      }
+      const taskId = btn.dataset.taskid;
+      const removedTask = assigned.find(x=>x.id===taskId);
+      btn.disabled = true;
+      const ok = await deleteAssignedTaskFromCloud(p.id, taskId);
+      if(ok){
+        p.customTasks = assigned.filter(x=>x.id!==taskId);
+        p.custom_tasks = p.customTasks;
+        const rowInList = managerView.rows && managerView.rows.find(r=>r.id===p.id);
+        if(rowInList){ rowInList.custom_tasks = p.customTasks; rowInList.customTasks = p.customTasks; }
+        logAudit(p.id, p.name, actorRole, actorName, "task_removed", removedTask ? removedTask.text : taskId);
+        renderMgrDetail(container, p, opts);
+        if(opts.onChange) opts.onChange();
+      } else {
+        btn.disabled = false;
+      }
+    });
+  });
+}
+
+async function deleteAssignedTaskFromCloud(profileId, taskId){
+  if(!cloudConfigured()) return false;
+  try{
+    const getRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?select=custom_tasks&id=eq.${encodeURIComponent(profileId)}`, {
+      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
+    });
+    if(!getRes.ok) return false;
+    const rows = await getRes.json();
+    const current = (rows[0] && rows[0].custom_tasks) || [];
+    const updated = current.filter(x=>x.id!==taskId);
+    const patchRes = await fetch(`${SUPABASE_URL}/rest/v1/onboarding_profiles?id=eq.${encodeURIComponent(profileId)}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({ custom_tasks: updated })
+    });
+    return patchRes.ok;
+  }catch(e){ console.error("delete task failed", e); return false; }
 }
 
 function genId(prefix){
@@ -3179,15 +3382,14 @@ async function mergeCustomTasksFromCloud(){
     if(!rows.length) return;
     const cloudCustom = rows[0].custom_tasks || [];
     let changed = false;
-    if(cloudCustom.length){
-      state.customTasks = state.customTasks || [];
-      const existingIds = new Set(state.customTasks.map(t=>t.id));
-      cloudCustom.forEach(ct=>{
-        if(!existingIds.has(ct.id)){
-          state.customTasks.push(ct);
-          changed = true;
-        }
-      });
+    // Cloud is the source of truth for which tasks are assigned — a manager
+    // or buddy can add or remove tasks remotely, so fully replace (not just
+    // union) to reflect both additions and removals.
+    const localIds = (state.customTasks||[]).map(t=>t.id).sort().join(",");
+    const cloudIds = cloudCustom.map(t=>t.id).sort().join(",");
+    if(localIds !== cloudIds){
+      state.customTasks = cloudCustom;
+      changed = true;
     }
     if(rows[0].target_days && rows[0].target_days !== state.targetDays){
       state.targetDays = rows[0].target_days;
@@ -3210,6 +3412,7 @@ async function mergeCustomTasksFromCloud(){
   applyStaticTranslations();
   state = await loadState();
   await loadAdminTemplates();
+  await loadManagerDirectory();
   await mergeCustomTasksFromCloud();
   renderAll();
   updateCopyStatusVisibility();
